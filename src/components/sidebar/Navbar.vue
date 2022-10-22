@@ -7,7 +7,7 @@
             <bottom-nav-component @click="scrollToTop()" to="/about" icon="fas fa-user" name="About" value="0"/>
             <bottom-nav-component @click="scrollToTop()" to="/experience" icon="fas fa-suitcase" name="Experience" value="0"/>
             <bottom-nav-component @click="scrollToTop()" to="/projects" icon="fas fa-gamepad" name="Projects" value="0"/>
-            <bottom-nav-component @click="scrollToTop()" to="/contact" icon="fas fa-comment-dots" name="" value="0"/>
+            <bottom-nav-component @click="scrollToTop()" to="/contact" icon="fas fa-comment-dots" name="Contact" value="0"/>
           </div>
         </div>
       </div>
