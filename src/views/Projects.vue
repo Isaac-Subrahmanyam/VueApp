@@ -136,11 +136,11 @@
     width: min(30vw, 250px) !important;
     height: min(40vw, 350px) !important;
     text-align: left;
-    opacity: 80%;
+    /* opacity: 80%; */
 }
-.n-card:hover {
+/* .n-card:hover {
     opacity: 100%;
-}
+} */
 
 .n-card .n-card-cover img {
     display: block;
