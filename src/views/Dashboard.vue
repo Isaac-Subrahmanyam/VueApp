@@ -1,6 +1,5 @@
 <template>
-  <h1>The sidebar is {{ collapsed ? 'closed' : 'open' }}</h1>
-  <button @click="toggleSidebar">Toggle Sidebar</button>
+  <h1>This is the checkout page!</h1>
 </template>
 
 <script>
