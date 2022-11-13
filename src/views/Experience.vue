@@ -3,45 +3,82 @@
   <div class="page">
     <div class="timeline">
         <div class="timeline__group">
-        <span class="timeline__year time" aria-hidden="true">2022</span>
+        <!-- <span class="timeline__year time" aria-hidden="true">2023</span> -->
+        <div class="timeline__cards">
+            <div class="timeline__card card">
+            <header class="card__header">
+                <time class="time" datetime="2022-02-02">
+                <span class="time__day">November 2022 - </span>
+                <span class="time__month">Current</span>
+                </time>
+                <h3 class="card__title r-title">Software Engineer
+                  <br>
+                  <a href="https://www.cae.com/" target="_blank">CAE</a></h3>
+            </header>
+            <div class="card__content">
+                <!-- <p>
+                  <br>
+                  Project #1 (Software that predicts the probability of successfully transmitting/receiving radio signals)
+                <ul>
+                  <li>Completed UI development coding tasks that went into production, which include analyzing user 
+                interface issues and creating manageable solutions using agile development.</li>
+                  <li>Improved a Dotnet application that used entity framework to query data and reformat it into more 
+                efficient data structures, which improved retrieval speeds.</li>
+                  <li>Containerized the application using Docker.</li>
+                </ul>
+                <br>
+                Project #2 (Satellite communications system that ensures a survival path is present)
+                <ul>
+                  <li>Refactored a Java thick client into a web application using a Vue.js frontend and Java backend.</li>
+                  <li>Acted as a full-stack developer, creating backend endpoints to retrieve data, and APIs/UI
+                components to visualize data.</li>
+                  <li>Conducted testing and performed documentation of UI and services.</li>
+                </ul>
+                </p> -->
+            </div>
+            </div>
+        </div>
+
         <div class="timeline__cards">
             <div class="timeline__card card">
             <header class="card__header">
                 <time class="time" datetime="2022-02-02">
                 <span class="time__day">May 2022 - </span>
-                <span class="time__month">December 2022</span>
+                <span class="time__month">November 2022</span>
                 </time>
-                <h3 class="card__title r-title">Software Engineer Intern<br>The Johns Hopkins University Applied Physics Laboratory</h3>
+                <h3 class="card__title r-title">Software Engineer Intern
+                  <br>
+                  <a href="https://www.jhuapl.edu/" target="_blank">
+                  The Johns Hopkins University Applied Physics Laboratory
+                  </a>
+                  </h3>
             </header>
             <div class="card__content">
                 <p>
                   <br>
-                  • Project #1 (Software that predicts the probability of successfully transmitting/receiving radio signals)
+                  <b>Project #1 (Software that predicts the probability of successfully transmitting/receiving radio signals)</b>
+                <ul>
+                  <li>Completed UI development coding tasks that went into production, which include analyzing user 
+                interface issues and creating manageable solutions using agile development.</li>
+                  <li>Improved a Dotnet application that used entity framework to query data and reformat it into more 
+                efficient data structures, which improved retrieval speeds.</li>
+                  <li>Containerized the application using Docker.</li>
+                </ul>
                 <br>
-                -> Completed UI development coding tasks that went into production, which include analyzing user 
-                interface issues and creating manageable solutions using agile development.
-                <br>
-                -> Improved a Dotnet application that used entity framework to query data and reformat it into more 
-                efficient data structures, which improved retrieval speeds.
-                <br>
-                -> Containerized the application using Docker.
-                <br><br>
-                • Project #2 (Satellite communications system that ensures a survival path is present)
-                <br>
-                -> Refactored a Java thick client into a web application using a Vue.js frontend and Java backend.
-                <br>
-                -> Acted as a full-stack developer, creating backend endpoints to retrieve data, and APIs/UI
-                components to visualize data.
-                <br>
-                -> Conducted testing and performed documentation of UI and services.
-                <br><br>
+                <b>Project #2 (Satellite communications system that ensures a survival path is present)</b>
+                <ul>
+                  <li>Refactored a Java thick client into a web application using a Vue.js frontend and Java backend.</li>
+                  <li>Acted as a full-stack developer, creating backend endpoints to retrieve data, and APIs/UI
+                components to visualize data.</li>
+                  <li>Conducted testing and performed documentation of UI and services.</li>
+                </ul>
                 </p>
             </div>
             </div>
         </div>
         </div>
         <div class="timeline__group">
-        <span class="timeline__year time" aria-hidden="true">2023</span>
+        <!-- <span class="timeline__year time" aria-hidden="true">2022</span> -->
         </div>
       </div>
     </div>
