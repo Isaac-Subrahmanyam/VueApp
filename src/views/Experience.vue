@@ -8,6 +8,36 @@
             <div class="timeline__card card">
             <header class="card__header">
                 <time class="time" datetime="2022-02-02">
+                <span class="time__day">May 2023 - </span>
+                <span class="time__month">Current</span>
+                </time>
+                <h3 class="card__title r-title">Co-Chief Executive Officer
+                  <br>
+                  <a href="https://artiorganizer.com/home" target="_blank">ArtiOrganizer</a></h3>
+            </header>
+            <div class="card__content">
+                <p>
+                  <br>
+                  <b>Project - (AI-Powered Message Organizer)</b>
+                <ul>
+                  <li>Led and managed the strategic vision and product.</li>
+                  <br>
+                  <li>Designed and implemented the entire frontend architecture in Angular.</li>
+                  <br>
+                  <li>Led all branding and creative design initiatives, establishing a cohesive and impactful brand identity across various channels.</li>
+                  <br>
+                  <li>Collaborated closely with the other 3 Co-CEO to align business objectives and drive overall company performance.</li>
+                </ul>
+                <br>
+                </p>
+            </div>
+            </div>
+        </div>
+        
+        <div class="timeline__cards">
+            <div class="timeline__card card">
+            <header class="card__header">
+                <time class="time" datetime="2022-02-02">
                 <span class="time__day">November 2022 - </span>
                 <span class="time__month">Current</span>
                 </time>
@@ -16,25 +46,20 @@
                   <a href="https://www.cae.com/" target="_blank">CAE</a></h3>
             </header>
             <div class="card__content">
-                <!-- <p>
+                <p>
                   <br>
-                  Project #1 (Software that predicts the probability of successfully transmitting/receiving radio signals)
+                  <b>Project #1 (Common Operating Picture (COP) application using OpenLayers, GeoServer, and Angular)</b>
                 <ul>
-                  <li>Completed UI development coding tasks that went into production, which include analyzing user 
-                interface issues and creating manageable solutions using agile development.</li>
-                  <li>Improved a Dotnet application that used entity framework to query data and reformat it into more 
-                efficient data structures, which improved retrieval speeds.</li>
-                  <li>Containerized the application using Docker.</li>
+                  <li>Held a key role as one of the head UI developers, responsible for designing and implementing the user interface.</li>
+                  <br>
+                  <li>Utilized PrimeNG, a UI component library for Angular, to enhance the user interface and provide a consistent look and feel.</li>
+                  <br>
+                  <li>Integrated interactive maps and data folders/layers to offer a comprehensive view of the operational environment.</li>
+                  <br>
+                  <li>Successfully integrated real-time collaborative features, allowing users to collaboratively draw shapes and routes on the map in real-time.</li>
                 </ul>
                 <br>
-                Project #2 (Satellite communications system that ensures a survival path is present)
-                <ul>
-                  <li>Refactored a Java thick client into a web application using a Vue.js frontend and Java backend.</li>
-                  <li>Acted as a full-stack developer, creating backend endpoints to retrieve data, and APIs/UI
-                components to visualize data.</li>
-                  <li>Conducted testing and performed documentation of UI and services.</li>
-                </ul>
-                </p> -->
+                </p>
             </div>
             </div>
         </div>
@@ -60,16 +85,20 @@
                 <ul>
                   <li>Completed UI development coding tasks that went into production, which include analyzing user 
                 interface issues and creating manageable solutions using agile development.</li>
+                  <br>
                   <li>Improved a Dotnet application that used entity framework to query data and reformat it into more 
                 efficient data structures, which improved retrieval speeds.</li>
+                  <br>
                   <li>Containerized the application using Docker.</li>
                 </ul>
                 <br>
                 <b>Project #2 (Satellite communications system that ensures a survival path is present)</b>
                 <ul>
                   <li>Refactored a Java thick client into a web application using a Vue.js frontend and Java backend.</li>
+                  <br>
                   <li>Acted as a full-stack developer, creating backend endpoints to retrieve data, and APIs/UI
                 components to visualize data.</li>
+                  <br>
                   <li>Conducted testing and performed documentation of UI and services.</li>
                 </ul>
                 </p>

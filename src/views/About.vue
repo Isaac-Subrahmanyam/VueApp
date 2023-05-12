@@ -4,11 +4,11 @@
   <div class="about">
     <div class="pfp">
       <img id = "photo" src = "../../images/profilephoto.jpeg"><br>
-      <h1 class="name">I'm Isaac Subrahmanyam</h1>
+      <h1 class="name">Isaac Subrahmanyam</h1>
     </div>
     <div class="description">
       <h1 class="intro">Hello there,<br><br>
-      I’m Isaac! I am a full-stack developer with an emphasis on front-end development! This is my portfolio website created in Vue.js! Feel free to look around, and be sure to play a few of my JS games while you are at it!
+      I’m Isaac! I am a full-stack developer with an emphasis on front-end development! My favorite frameworks are Angular and Vue. This is my portfolio website! Feel free to look around, and be sure to play a few of my JS games while you are at it!
       </h1>
       <div id="socials">
       <a target="_blank" href="https://github.com/Isaac-Subrahmanyam"><img class = "iconHomePage" src="../../images/git.jpeg"></a>
