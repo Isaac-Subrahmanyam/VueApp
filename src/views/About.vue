@@ -11,8 +11,18 @@
       I’m Isaac! I am a full-stack developer with an emphasis on front-end development! My favorite frameworks are Angular and Vue. This is my portfolio website! Feel free to look around, and be sure to play a few of my JS games while you are at it!
       </h1>
       <div id="socials">
-      <a target="_blank" href="https://github.com/Isaac-Subrahmanyam"><img class = "iconHomePage" src="../../images/git.jpeg"></a>
-      <a target="_blank" href="https://www.linkedin.com/in/isaac-subrahmanyam/"><img class = "iconHomePage" src="../../images/in.jpeg"></a>
+        <n-tooltip placement="top" trigger="hover">
+          <template #trigger>
+            <a target="_blank" href="https://github.com/Isaac-Subrahmanyam"><img class = "iconHomePage" src="../../images/git.jpeg"></a>
+          </template>
+          <span> GitHub </span>
+        </n-tooltip>
+        <n-tooltip placement="top" trigger="hover">
+          <template #trigger>
+            <a target="_blank" href="https://www.linkedin.com/in/isaac-subrahmanyam/"><img class = "iconHomePage" src="../../images/in.jpeg"></a>
+          </template>
+          <span> LinkedIn </span>
+        </n-tooltip>
       </div>
     </div>
   </div>
@@ -70,7 +80,7 @@
   background-color: #449c92;
   width: 100%;
   font-size: min(1.5vw, 7px);
-  height: min(50vw, 250px);
+  height: min(60vw, 250px);
 }
 
 </style>

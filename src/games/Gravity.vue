@@ -17,7 +17,7 @@
         <iframe 
             frameborder="0" 
             scrolling="no" 
-            style="border: 0px; width: 600px; height: 600px;" 
+            style="border: 0px; width:600px; height: 600px;" 
             src="https://www.khanacademy.org/computer-programming/gravity-ft-platformerking/5231693312507904/embedded?id=1664825231357-0.2604617999289034&origin=file%3A%2F%2F&editor=no&buttons=no&author=no&embed=yes">
         </iframe>
         </h2>

@@ -1,29 +1,54 @@
 <template>
   <title>Projects</title>
-    <div class="search">
-        <n-input v-model:value="searchQuery" size="large" round placeholder="Search" />
+    <div class="header-section">
+        <section>
+            <div class="content">
+                <h2>JavaScript Games</h2>
+                <h2>JavaScript Games</h2>
+            </div>
+        </section>
     </div>
     <div class="projects">
-        <div v-for='project in resultQuery' :key='project'>
-            <n-card :title="project.name" size="small">
-                <template #cover>
-                <img :src="project.image">
-                </template>
-                <n-button strong secondary type="primary" @click="project.handleClick()">
-                Play
-                </n-button>
-            </n-card>
-        </div>
+        <swiper-container
+            :slides-per-view="3"
+            navigation
+            :pagination="{ clickable: true }"
+            :scrollbar="{ draggable: true }"
+         >
+            <swiper-slide v-for='project in projects' :key='project'>
+                <n-card :title="project.name" size="small">
+                    <template #cover>
+                    <img :src="project.image">
+                    </template>
+                    <n-button strong secondary type="primary" @click="project.handleClick()">
+                    Play
+                    </n-button>
+                </n-card>
+            </swiper-slide>
+        </swiper-container>
     </div>
-    <div v-if="resultQuery.length === 0">
-        <div class="status418">
-            <n-result
-                status="418"
-                title="No results found..."
-                description="Maybe drink some tea! ;)">
-            </n-result>
-        </div>
+    <n-divider />
+    <div class="header-section">
+        <section>
+            <div class="content">
+                <h2>SD2 Project</h2>
+                <h2>SD2 Project</h2>
+            </div>
+        </section>
     </div>
+    <iframe width="80%" style="max-width: 800px; max-height: 800px; padding-bottom: 5rem;" height="500px" src="https://www.youtube.com/embed/vj2GCrb2X6E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+    </iframe>
+    <n-divider />
+    <div class="header-section">
+        <section>
+            <div class="content">
+                <h2>ArtiOrganizer Project</h2>
+                <h2>ArtiOrganizer Project</h2>
+            </div>
+        </section>
+    </div>
+    <h1><a style="color: rgb(6, 54, 6);" href="https://artiorganizer.com/" target="_blank">artiorganizer.com</a></h1>
+    <iframe width="80%" style="max-width: 800px; max-height: 800px; padding-bottom: 5rem;" height="500px" src="https://www.youtube.com/embed/5TgSjWn_jB0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </template>
 
 <script>
@@ -44,7 +69,6 @@
         name: 'App',
         data: function () {
             return {
-                searchQuery: null,
                 projects: [
                     {
                         name: "Gravity",
@@ -110,24 +134,18 @@
             }
         },
         computed: {
-            resultQuery() {
-                if (this.searchQuery) {
-                    return this.projects.filter(item => {
-                    return this.searchQuery
-                        .toLowerCase()
-                        .split(" ")
-                        .every(v => item.name.toLowerCase().includes(v));
-                    });
-                } else {
-                    return this.projects;
-                }
-            }
         }
     }
 </script>
 
 
 <style scoped>
+
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+    --swiper-theme-color: #10c964;
+}
 
 .n-card {
     --n-title-font-size: min(3vw, 15px) !important;
@@ -154,6 +172,7 @@
     justify-content: center;
     margin: 5vh auto;
     width: 80%;
+    max-width: 800px;
     height: 100%;
     padding-bottom: 10%;
     display: flex;
@@ -161,14 +180,99 @@
     padding-bottom: 60px;
 }
 
-.search {
-    text-align: left;
+
+.gallery {
+  background: #EEE;
+}
+
+.gallery-cell {
+  width: 66%;
+  height: 200px;
+  margin-right: 10px;
+  background: #8C8;
+  counter-increment: gallery-cell;
+}
+
+/* cell number */
+.gallery-cell:before {
+  display: block;
+  text-align: center;
+  content: counter(gallery-cell);
+  line-height: 200px;
+  font-size: 80px;
+  color: white;
+}
+
+.header-section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    text-align: center;
     justify-content: center;
-    margin: 5vh auto;
-    width: min(40vw, 300px);
+    margin: 3vh auto;
+    width: 100%;
     height: 100%;
     display: flex;
+    color: rgb(6, 54, 6);
     flex-wrap: wrap;
+}
+
+@import url("https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900");
+
+body {
+  display: flex;
+  background: #000;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.content h2 {
+  color: #fff;
+  font-size: 2.2em;
+  position: absolute;
+  width: 100%;
+  transform: translate(-50%, -50%);
+}
+
+.content h2:nth-child(1) {
+  color: transparent;
+  -webkit-text-stroke: 2px rgb(6, 54, 6);
+}
+
+.content h2:nth-child(2) {
+  color: rgb(6, 54, 6);
+  animation: animate 1s ease-in-out infinite;
+}
+
+@keyframes animate {
+  0%,
+  100% {
+    clip-path: polygon(
+      0% 45%,
+      16% 44%,
+      33% 50%,
+      54% 60%,
+      70% 61%,
+      84% 59%,
+      100% 52%,
+      100% 100%,
+      0% 100%
+    );
+  }
+
+  50% {
+    clip-path: polygon(
+      0% 60%,
+      15% 65%,
+      34% 66%,
+      51% 62%,
+      67% 50%,
+      84% 45%,
+      100% 46%,
+      100% 100%,
+      0% 100%
+    );
+  }
 }
 
 </style>
