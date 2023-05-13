@@ -14,20 +14,21 @@
             navigation
             :pagination="{ clickable: true }"
             :scrollbar="{ draggable: true }"
-         >
+        >
             <swiper-slide v-for='project in projects' :key='project'>
                 <n-card :title="project.name" size="small">
                     <template #cover>
                     <img :src="project.image">
                     </template>
-                    <n-button strong secondary type="primary" @click="project.handleClick()">
-                    Play
-                    </n-button>
+                    <router-link :to="project.link">
+                        <n-button strong secondary type="info">
+                        Play
+                        </n-button>
+                    </router-link>
                 </n-card>
             </swiper-slide>
         </swiper-container>
     </div>
-    <n-divider />
     <div class="header-section">
         <section>
             <div class="content">
@@ -36,9 +37,8 @@
             </div>
         </section>
     </div>
-    <iframe width="80%" style="max-width: 800px; max-height: 800px; padding-bottom: 5rem;" height="500px" src="https://www.youtube.com/embed/vj2GCrb2X6E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+    <iframe width="80%" style="filter: drop-shadow(0 0 0.75rem #3a93b3); max-width: 800px; max-height: 800px; padding-bottom: 5rem;" height="500px" src="https://www.youtube.com/embed/vj2GCrb2X6E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
     </iframe>
-    <n-divider />
     <div class="header-section">
         <section>
             <div class="content">
@@ -47,8 +47,10 @@
             </div>
         </section>
     </div>
-    <h1><a style="color: rgb(6, 54, 6);" href="https://artiorganizer.com/" target="_blank">artiorganizer.com</a></h1>
-    <iframe width="80%" style="max-width: 800px; max-height: 800px; padding-bottom: 5rem;" height="500px" src="https://www.youtube.com/embed/5TgSjWn_jB0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <h1>
+        <a href="https://artiorganizer.com/" target="_blank">artiorganizer.com</a>
+    </h1>
+    <iframe width="80%" style="padding-top: 2rem; filter: drop-shadow(0 0 0.75rem #3a93b3; max-width: 800px; max-height: 800px; padding-bottom: 5rem;" height="500px" src="https://www.youtube.com/embed/5TgSjWn_jB0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </template>
 
 <script>
@@ -73,62 +75,62 @@
                     {
                         name: "Gravity",
                         image: gravity,
-                        handleClick() { window.location.href="/gravity" }
+                        link: "/gravity"
                     },
                     {
                         name: "Puzzle Ball Sort",
                         image: puzzleballsort,
-                        handleClick() { window.location.href="/puzzleballsort" }
+                        link: "/puzzleballsort"
                     },
                     {
                         name: "The Current",
                         image: thecurrent2,
-                        handleClick() { window.location.href="/thecurrent" }
+                        link: "/thecurrent"
                     },
                     {
                         name: "Fly Bird",
                         image: flybird,
-                        handleClick() { window.location.href="/flybird" }
+                        link: "/flybird"
                     },
                     {
                         name: "Adventures of the South Pole",
                         image: adventuresofthesouthpole,
-                        handleClick() { window.location.href="/adventuresofthesouthpole" }
+                        link: "/adventuresofthesouthpole"
                     },
                     {
                         name: "Rolly",
                         image: rolly,
-                        handleClick() { window.location.href="/rolly" }
+                        link:"/rolly"
                     },
                     {
                         name: "Burger Master",
                         image: burgermaster,
-                        handleClick() { window.location.href="/burgermaster" }
+                        link: "/burgermaster"
                     },
                     {
                         name: "Don't Touch the Red",
                         image: donttouchthered2,
-                        handleClick() { window.location.href="/donttouchthered" }
+                        link: "/donttouchthered"
                     },
                     {
                         name: "Nerds Nightmares",
                         image: nerdsnightmares,
-                        handleClick() { window.location.href="/nerdsnightmares" }
+                        link: "/nerdsnightmares"
                     },
                     {
                         name: "Unicorn Mania",
                         image: unicornmania,
-                        handleClick() { window.location.href="/unicornmania" }
+                        link: "/unicornmania"
                     },
                     {
                         name: "The Emoji Game",
                         image: theemojigame,
-                        handleClick() { window.location.href="/theemojigame" }
+                        link: "/theemojigame"
                     },
                     {
                         name: "Spiral",
                         image: spiral,
-                        handleClick() { window.location.href="/spiral" }
+                        link: "/spiral"
                     }
                 ]
             }
@@ -144,8 +146,33 @@
 * {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-    --swiper-theme-color: #10c964;
+    --swiper-theme-color: #3a93b3;
 }
+
+a {
+	text-decoration: none;
+	color: #bfcad0;
+	font-weight: 700;
+  position: relative;
+}
+
+a::before {
+  content: '';
+  background-color: hsl(196, 51%, 46%, 0.75);
+  position: absolute;
+  left: 0;
+  bottom: 3px;
+  width: 100%;
+  height: 8px;
+  z-index: -1;
+  transition: all .3s ease-in-out;
+}
+
+a:hover::before {
+  bottom: 0;
+  height: 100%;
+}
+
 
 .n-card {
     --n-title-font-size: min(3vw, 15px) !important;
@@ -170,7 +197,8 @@
 
 .projects {
     justify-content: center;
-    margin: 5vh auto;
+    margin: 0vh auto;
+    filter: drop-shadow(0 0 0.75rem #3a93b3);
     width: 80%;
     max-width: 800px;
     height: 100%;
@@ -180,7 +208,6 @@
     padding-bottom: 60px;
 }
 
-
 .gallery {
   background: #EEE;
 }
@@ -189,7 +216,7 @@
   width: 66%;
   height: 200px;
   margin-right: 10px;
-  background: #8C8;
+  background: #3a93b3;
   counter-increment: gallery-cell;
 }
 
@@ -208,11 +235,10 @@
     padding-bottom: 2rem;
     text-align: center;
     justify-content: center;
-    margin: 3vh auto;
+    margin: 5vh auto;
     width: 100%;
     height: 100%;
     display: flex;
-    color: rgb(6, 54, 6);
     flex-wrap: wrap;
 }
 
@@ -232,15 +258,16 @@ body {
   position: absolute;
   width: 100%;
   transform: translate(-50%, -50%);
+  filter: drop-shadow(7px 3px 4px #7bc3dd);
 }
 
 .content h2:nth-child(1) {
   color: transparent;
-  -webkit-text-stroke: 2px rgb(6, 54, 6);
+  -webkit-text-stroke: 2px #3a93b3;
 }
 
 .content h2:nth-child(2) {
-  color: rgb(6, 54, 6);
+  color: #3a93b3;
   animation: animate 1s ease-in-out infinite;
 }
 

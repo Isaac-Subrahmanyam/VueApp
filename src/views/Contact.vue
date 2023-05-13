@@ -30,7 +30,7 @@
 }
 .description {
   padding-top: 10vh;
-  background-color: #449c92;
+  background-color: #3a93b3;
   width: 100%;
   font-size: min(1.5vw, 7px);
   height: min(50vh, 200px);

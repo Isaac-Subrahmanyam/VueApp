@@ -33,8 +33,8 @@ export default {
 <style>
 :root {
   /* --sidebar-bg-color: linear-gradient(#ffffff, #000000); */
-  --sidebar-item-hover: #e4ffe4;
-  --sidebar-item-active: #c2ffb3;
+  --sidebar-item-hover: #e4f9ff;
+  --sidebar-item-active: #b3f5ff;
 }
 </style>
 
@@ -83,7 +83,7 @@ body {
     height: 62px;
     // background-color: rgb(255, 255, 255);
     background: white;
-    box-shadow: 0px 4px 6px 7px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 6px 7px rgba(127, 180, 216, 0.5);
     border-radius: 10px 10px 46px 46px;
     display: flex;
     align-items: center;
@@ -153,7 +153,7 @@ body {
   }
 
   .icon-bg{
-      background-image: linear-gradient(#449c92, #3ab3a4);
+      background-image: linear-gradient(#72d2db, #3a93b3);
       border-radius: 100%;
       height: 48px;
       width: 48px;
@@ -167,13 +167,13 @@ body {
       flex: none;
       z-index: 0;
       transition: all 200ms ease;
-      color: #0C6055;
+      color: #3a93b3;
   }
 
   .icon-title{
       text-align: center;
       font-size: 15px;
-      color: #3ab3a4;
+      color: #3a93b3;
       position: absolute;
       bottom: -16px;
   }

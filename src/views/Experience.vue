@@ -110,7 +110,7 @@
         <!-- <span class="timeline__year time" aria-hidden="true">2022</span> -->
         </div>
       </div>
-    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -291,7 +291,7 @@ SETTINGS
 */
 /**/
 .timeline{
-  --timelineMainColor: #449c92;
+  --timelineMainColor: #3a93b3;
 }
 
 /*
@@ -303,6 +303,7 @@ DEMO
 body{
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans, Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
   color: #222;
+  overflow-y: auto;
 
   background-color: #f0f0f0;
   margin: 0;

@@ -2,12 +2,12 @@
   <title>Rolly</title>
     <div id="projectsStyle1">
         <div id="projectsStyle2">
-            <n-tag type="success" size="large" round dashed>
+            <n-tag type="info" size="large" round dashed>
             #Rolly
             </n-tag>
         </div>
         <div id="projectsStyle2">
-            <n-button strong secondary type="primary" @click="handleClick()">
+            <n-button strong secondary type="info" @click="handleClick()">
             Source Code
             </n-button>
         </div>

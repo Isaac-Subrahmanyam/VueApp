@@ -2,12 +2,12 @@
   <title>Don't Touch the Red</title>
     <div id="projectsStyle1">
         <div id="projectsStyle2">
-            <n-tag type="success" size="large" round dashed>
+            <n-tag type="info" size="large" round dashed>
             #DontTouchTheRed
             </n-tag>
         </div>
         <div id="projectsStyle2">
-            <n-button strong secondary type="primary" @click="handleClick()">
+            <n-button strong secondary type="info" @click="handleClick()">
             Source Code
             </n-button>
         </div>

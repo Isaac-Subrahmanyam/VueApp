@@ -42,6 +42,7 @@
     animation: fadeEffect 6s;
     transition: all 150ms ease-in-out;
     border-radius: 200px;
+    opacity:75%;
     width: min(6vw, 30px);
     height: min(6vw, 30px);
     box-shadow: 0 0 10px 0 #ffffff inset, 0 0 10px 2px #ffffff;
@@ -77,7 +78,7 @@
 }
 .description {
   padding-top: 5vw;
-  background-color: #449c92;
+  background-color: #3a93b3;
   width: 100%;
   font-size: min(1.5vw, 7px);
   height: min(60vw, 250px);
