@@ -133,7 +133,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 120%;
+  height: 180%;
   transform: rotate(-45deg) translateX(30rem);
 }
 
@@ -165,10 +165,10 @@ body {
 
   @for $i from 1 through $star-count {
     &:nth-child(#{$i}) {
-      --star-tail-length: #{random_range(500em, 750em) / 100};
-      --top-offset: #{random_range(0vh, 10000vh) / 100};
-      --fall-duration: #{random_range(6000, 12000s) / 1000};
-      --fall-delay: #{random_range(0, 10000s) / 1000};
+      --star-tail-length: #{calc(random_range(500em, 750em) / 100)};
+      --top-offset: #{calc(random_range(0vh, 10000vh) / 100)};
+      --fall-duration: #{calc(random_range(6000, 12000s) / 1000)};
+      --fall-delay: #{calc(random_range(0, 10000s) / 1000)};
     }
   }
 
@@ -210,7 +210,7 @@ body {
     opacity: 0.4;
   }
 
-  100% {
+  120% {
     width: 0;
     opacity: 0;
   }
