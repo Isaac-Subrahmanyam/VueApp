@@ -134,7 +134,7 @@ body {
   left: 0;
   width: 100%;
   height: 180%;
-  transform: rotate(-45deg) translateX(30rem);
+  transform: rotate(-45deg) translateX(40rem);
 }
 
 .star {
@@ -210,7 +210,7 @@ body {
     opacity: 0.4;
   }
 
-  120% {
+  100% {
     width: 0;
     opacity: 0;
   }
