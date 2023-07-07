@@ -5,7 +5,7 @@
     <div class="description">
       <div class="copy-text phone">
         <h2 class="left">407-725-5513</h2>
-        <button class="right" @:click="copy('.phone', '321-263-7871')">
+        <button class="right" @:click="copy('.phone', '407-725-5513')">
           <i class="fa fa-clone"></i>
         </button>
       </div>
@@ -16,7 +16,7 @@
         <h2 class="left">isaac.subrahmanyam@outlook.com</h2>
         <button
           class="right"
-          @:click="copy('.email', 'kenaniah.subrahmanyam@outlook.com')"
+          @:click="copy('.email', 'isaac.subrahmanyam@outlook.com')"
         >
           <i class="fa fa-clone"></i>
         </button>
