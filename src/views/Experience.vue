@@ -3,7 +3,6 @@
   <div class="page">
     <div class="timeline">
         <div class="timeline__group">
-        <!-- <span class="timeline__year time" aria-hidden="true">2023</span> -->
         <div class="timeline__cards">
             <div class="timeline__card card">
             <header class="card__header">
@@ -33,7 +32,7 @@
             </div>
             </div>
         </div>
-        
+
         <div class="timeline__cards">
             <div class="timeline__card card">
             <header class="card__header">
@@ -164,7 +163,8 @@ skin
 
 .time {
   padding: var(--timePadding, 0.25rem 1.25rem 0.25rem);
-  background-color: var(--timeBackgroundColor, #f0f0f0);
+  background-color: var(--timeBackgroundColor, #f0f0f05b);
+  backdrop-filter: blur(8px);
 
   font-size: var(--timeFontSize, 0.75rem);
   font-weight: var(--timeFontWeight, 700);
@@ -202,7 +202,8 @@ skin
     0 1px 3px 0 rgba(0, 0, 0, 0.12),
     0 1px 2px 0 rgba(0, 0, 0, 0.24)
   );
-  background-color: var(--timelineCardBackgroundColor, #ffffffcc);
+  background-color: var(--timelineCardBackgroundColor, #ffffff91);
+  backdrop-filter: blur(8px);
 }
 
 /*
@@ -332,7 +333,7 @@ p:last-child {
 .page {
   max-width: 47rem;
   padding: 5rem 2rem;
-  padding-bottom: 50px;
+  padding-bottom: 100px;
   margin-left: auto;
   margin-right: auto;
 }

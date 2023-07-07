@@ -13,9 +13,15 @@
         <br />
         <br />
         I’m Isaac! I am a full-stack developer with an emphasis on front-end
-        development! My favorite frameworks are Angular and Vue. This is my
-        portfolio website! Feel free to look around, and be sure to play a few
-        of my JS games while you are at it!
+        development! My favorite frameworks are Angular and Vue.
+        <br />
+        <br />
+        My experience includes the development of GIS / COP Applications, so I
+        am well versed using OpenLayers, GeoServer, and Cesium.
+        <br />
+        <br />
+        Welcome to my portfolio website! Feel free to look around, and be sure
+        to play a few of my JS games while you are at it!
       </h1>
       <div id="socials">
         <n-tooltip placement="top" trigger="hover">
@@ -75,10 +81,11 @@
   margin: 3vh auto;
   width: min(80vw, 500px);
   height: 100%;
-  padding-bottom: 50px;
+  padding-bottom: 130px;
 }
 .pfp {
-  background-color: rgba(255, 255, 255, 0.747);
+  background-color: rgba(255, 255, 255, 0.486);
+  backdrop-filter: blur(8px);
   height: min(80vw, 400px);
   width: 100%;
 }
@@ -89,10 +96,11 @@
   width: 70%;
 }
 .description {
-  padding-top: 5vw;
-  background-color: #3a93b3b9;
+  padding-top: 2vw;
+  background-color: #3a93b386;
+  backdrop-filter: blur(8px);
   width: 100%;
   font-size: min(1.5vw, 7px);
-  height: min(60vw, 250px);
+  height: min(100vw, 350px);
 }
 </style>

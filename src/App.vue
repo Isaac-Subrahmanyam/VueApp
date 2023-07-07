@@ -51,6 +51,14 @@ export default {
   }
 }
 
+.n-tag {
+  backdrop-filter: blur(8px);
+}
+
+.n-button {
+  backdrop-filter: blur(8px);
+}
+
 body {
   display: flex;
   justify-content: center;

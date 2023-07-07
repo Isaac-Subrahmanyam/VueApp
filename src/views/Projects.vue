@@ -1,76 +1,78 @@
 <template>
   <title>Projects</title>
-  <div class="header-section">
-    <section>
-      <div class="content">
-        <h2>JavaScript Games</h2>
-        <h2>JavaScript Games</h2>
-      </div>
-    </section>
+  <div style="padding-bottom: 100px">
+    <div class="header-section">
+      <section>
+        <div class="content">
+          <h2>JavaScript Games</h2>
+          <h2>JavaScript Games</h2>
+        </div>
+      </section>
+    </div>
+    <div class="projects">
+      <swiper-container
+        :slides-per-view="3"
+        navigation
+        :pagination="{ clickable: true }"
+        :scrollbar="{ draggable: true }"
+      >
+        <swiper-slide v-for="project in projects" :key="project">
+          <n-card :title="project.name" size="small">
+            <template #cover>
+              <img :src="project.image" />
+            </template>
+            <router-link :to="project.link">
+              <n-button strong secondary type="info">Play</n-button>
+            </router-link>
+          </n-card>
+        </swiper-slide>
+      </swiper-container>
+    </div>
+    <div class="header-section">
+      <section>
+        <div class="content">
+          <h2>SD2 Project</h2>
+          <h2>SD2 Project</h2>
+        </div>
+      </section>
+    </div>
+    <iframe
+      width="80%"
+      style="
+        filter: drop-shadow(0 0 0.75rem #3a93b3);
+        max-width: 800px;
+        max-height: 800px;
+        padding-bottom: 5rem;
+      "
+      height="500px"
+      src="https://www.youtube.com/embed/vj2GCrb2X6E"
+      title="YouTube video player"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+    ></iframe>
+    <div class="header-section">
+      <section>
+        <div class="content">
+          <h2>ArtiOrganizer Project</h2>
+          <h2>ArtiOrganizer Project</h2>
+        </div>
+      </section>
+    </div>
+    <h1>
+      <a href="https://artiorganizer.com/" target="_blank">artiorganizer.com</a>
+    </h1>
+    <iframe
+      width="80%"
+      style="padding-top: 2rem; filter: drop-shadow(0 0 0.75rem #3a93b3; max-width: 800px; max-height: 800px; padding-bottom: 5rem;"
+      height="500px"
+      src="https://www.youtube.com/embed/5TgSjWn_jB0"
+      title="YouTube video player"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+    ></iframe>
   </div>
-  <div class="projects">
-    <swiper-container
-      :slides-per-view="3"
-      navigation
-      :pagination="{ clickable: true }"
-      :scrollbar="{ draggable: true }"
-    >
-      <swiper-slide v-for="project in projects" :key="project">
-        <n-card :title="project.name" size="small">
-          <template #cover>
-            <img :src="project.image" />
-          </template>
-          <router-link :to="project.link">
-            <n-button strong secondary type="info">Play</n-button>
-          </router-link>
-        </n-card>
-      </swiper-slide>
-    </swiper-container>
-  </div>
-  <div class="header-section">
-    <section>
-      <div class="content">
-        <h2>SD2 Project</h2>
-        <h2>SD2 Project</h2>
-      </div>
-    </section>
-  </div>
-  <iframe
-    width="80%"
-    style="
-      filter: drop-shadow(0 0 0.75rem #3a93b3);
-      max-width: 800px;
-      max-height: 800px;
-      padding-bottom: 5rem;
-    "
-    height="500px"
-    src="https://www.youtube.com/embed/vj2GCrb2X6E"
-    title="YouTube video player"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    allowfullscreen
-  ></iframe>
-  <div class="header-section">
-    <section>
-      <div class="content">
-        <h2>ArtiOrganizer Project</h2>
-        <h2>ArtiOrganizer Project</h2>
-      </div>
-    </section>
-  </div>
-  <h1>
-    <a href="https://artiorganizer.com/" target="_blank">artiorganizer.com</a>
-  </h1>
-  <iframe
-    width="80%"
-    style="padding-top: 2rem; filter: drop-shadow(0 0 0.75rem #3a93b3; max-width: 800px; max-height: 800px; padding-bottom: 5rem;"
-    height="500px"
-    src="https://www.youtube.com/embed/5TgSjWn_jB0"
-    title="YouTube video player"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    allowfullscreen
-  ></iframe>
 </template>
 
 <script>
@@ -265,26 +267,29 @@ body {
 }
 
 .content h2 {
-  color: #fff;
   font-size: 2.2em;
   position: absolute;
-  width: 100%;
+  width: 400px;
+  background-color: rgba(255, 255, 255, 0.466);
+  backdrop-filter: blur(8px);
   transform: translate(-50%, -50%);
-  filter: drop-shadow(7px 3px 4px #7bc3dd);
+  border-radius: 50px;
+  filter: drop-shadow(0px 0px 4px #7bc3dd);
 }
 
 .content h2:nth-child(1) {
   color: transparent;
-  -webkit-text-stroke: 2px #ffffffde;
+  -webkit-text-stroke: 2px #3a93b3a4;
 }
 
 .content h2:nth-child(2) {
-  color: #ffffffe0;
+  color: #3a93b3a4;
   animation: animate 1s ease-in-out infinite;
 }
 
 .n-card {
-  background-color: #ffffff85;
+  background-color: #ffffffa8;
+  backdrop-filter: blur(8px) !important;
 }
 
 @keyframes animate {
