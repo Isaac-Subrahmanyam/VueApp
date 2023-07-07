@@ -114,19 +114,18 @@
 </template>
 
 <style scoped>
-.r-title{
+.r-title {
   margin-top: var(--rTitleMarginTop, 0) !important;
   margin-bottom: var(--rTitleMarginBottom, 0) !important;
 }
 
-
-p:not([class]){
+p:not([class]) {
   line-height: var(--cssTypographyLineHeight, 1.78);
   margin-top: var(--cssTypographyBasicMargin, 1em);
   margin-bottom: 0;
 }
 
-p:not([class]):first-child{
+p:not([class]):first-child {
   margin-top: 0;
 }
 
@@ -134,9 +133,9 @@ p:not([class]):first-child{
 text component
 */
 
-.text{
+.text {
   display: var(--textDisplay, inline-flex);
-  font-size: var(--textFontSize, 1rem);  
+  font-size: var(--textFontSize, 1rem);
 }
 
 /*
@@ -147,7 +146,7 @@ time component
 core styles
 */
 
-.time{
+.time {
   display: var(--timeDisplay, inline-flex);
 }
 
@@ -155,19 +154,19 @@ core styles
 extensions
 */
 
-.time__month{
-  margin-left: var(--timelineMounthMarginLeft, .25em);
+.time__month {
+  margin-left: var(--timelineMounthMarginLeft, 0.25em);
 }
 
 /*
 skin
 */
 
-.time{
-  padding: var(--timePadding, .25rem 1.25rem .25rem);
+.time {
+  padding: var(--timePadding, 0.25rem 1.25rem 0.25rem);
   background-color: var(--timeBackgroundColor, #f0f0f0);
 
-  font-size: var(--timeFontSize, .75rem);
+  font-size: var(--timeFontSize, 0.75rem);
   font-weight: var(--timeFontWeight, 700);
   text-transform: var(--timeTextTransform, uppercase);
   color: var(--timeColor, currentColor);
@@ -181,12 +180,12 @@ card component
 core styles
 */
 
-.card{
+.card {
   padding: var(--timelineCardPadding, 1.5rem 1.5rem 1.25rem);
 }
 
-.card__content{
-  margin-top: var(--cardContentMarginTop, .5rem);
+.card__content {
+  margin-top: var(--cardContentMarginTop, 0.5rem);
   text-align: left;
 }
 
@@ -194,18 +193,23 @@ core styles
 skin
 */
 
-.card{
+.card {
   border-radius: var(--timelineCardBorderRadius, 2px);
-  border-left: var(--timelineCardBorderLeftWidth, 3px) solid var(--timelineCardBorderLeftColor, var(--uiTimelineMainColor));
-  box-shadow: var(--timelineCardBoxShadow, 0 1px 3px 0 rgba(0, 0, 0, .12), 0 1px 2px 0 rgba(0, 0, 0, .24));
-  background-color: var(--timelineCardBackgroundColor, #fff);
+  border-left: var(--timelineCardBorderLeftWidth, 3px) solid
+    var(--timelineCardBorderLeftColor, var(--uiTimelineMainColor));
+  box-shadow: var(
+    --timelineCardBoxShadow,
+    0 1px 3px 0 rgba(0, 0, 0, 0.12),
+    0 1px 2px 0 rgba(0, 0, 0, 0.24)
+  );
+  background-color: var(--timelineCardBackgroundColor, #ffffffcc);
 }
 
 /*
 extensions
 */
 
-.card__title{
+.card__title {
   --rTitleMarginTop: var(--cardTitleMarginTop, 1rem);
   font-size: var(--cardTitleFontSize, 1.25rem);
 }
@@ -216,7 +220,7 @@ CORE STYLES
 =====
 */
 
-.timeline{
+.timeline {
   display: var(--timelineDisplay, grid);
   grid-row-gap: var(--timelineGroupsGap, 2rem);
 }
@@ -225,15 +229,14 @@ CORE STYLES
 1. If timeline__year isn't displaed the gap between it and timeline__cards isn't displayed too
 */
 
-.timeline__year{
+.timeline__year {
   margin-bottom: 1.25rem; /* 1 */
 }
 
-.timeline__cards{
+.timeline__cards {
   display: var(--timeloneCardsDisplay, grid);
   grid-row-gap: var(--timeloneCardsGap, 1.5rem);
 }
-
 
 /*
 =====
@@ -241,23 +244,24 @@ SKIN
 =====
 */
 
-.timeline{
+.timeline {
   --uiTimelineMainColor: var(--timelineMainColor, #222);
   --uiTimelineSecondaryColor: var(--timelineSecondaryColor, #fff);
 
-  border-left: var(--timelineLineWidth, 3px) solid var(--timelineLineBackgroundColor, var(--uiTimelineMainColor));
+  border-left: var(--timelineLineWidth, 3px) solid
+    var(--timelineLineBackgroundColor, var(--uiTimelineMainColor));
   padding-top: 1rem;
   padding-bottom: 1.5rem;
 }
 
-.timeline__year{
-  --timePadding: var(--timelineYearPadding, .5rem 1.5rem);
+.timeline__year {
+  --timePadding: var(--timelineYearPadding, 0.5rem 1.5rem);
   --timeColor: var(--uiTimelineSecondaryColor);
   --timeBackgroundColor: var(--uiTimelineMainColor);
   --timeFontWeight: var(--timelineYearFontWeight, 400);
 }
 
-.timeline__card{
+.timeline__card {
   position: relative;
   margin-left: var(--timelineCardLineGap, 1rem);
 }
@@ -266,17 +270,20 @@ SKIN
 1. Stoping cut box shadow
 */
 
-.timeline__cards{
+.timeline__cards {
   overflow: hidden;
-  padding-top: .25rem; /* 1 */
-  padding-bottom: .25rem; /* 1 */
+  padding-top: 0.25rem; /* 1 */
+  padding-bottom: 0.25rem; /* 1 */
 }
 
-.timeline__card::before{
-  content: "";
+.timeline__card::before {
+  content: '';
   width: 100%;
   height: var(--timelineCardLineWidth, 2px);
-  background-color: var(--timelineCardLineBackgroundColor, var(--uiTimelineMainColor));
+  background-color: var(
+    --timelineCardLineBackgroundColor,
+    var(--uiTimelineMainColor)
+  );
 
   position: absolute;
   top: var(--timelineCardLineTop, 1rem);
@@ -290,7 +297,7 @@ SETTINGS
 =====
 */
 /**/
-.timeline{
+.timeline {
   --timelineMainColor: #3a93b3;
 }
 
@@ -300,8 +307,9 @@ DEMO
 =====
 */
 
-body{
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans, Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans,
+    Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
   color: #222;
   overflow-y: auto;
 
@@ -311,17 +319,17 @@ body{
   flex-direction: column;
 }
 
-p{
+p {
   margin-top: 0;
   margin-bottom: 1rem;
   line-height: 1.5;
 }
 
-p:last-child{
+p:last-child {
   margin-bottom: 0;
 }
 
-.page{
+.page {
   max-width: 47rem;
   padding: 5rem 2rem;
   padding-bottom: 50px;
@@ -329,14 +337,12 @@ p:last-child{
   margin-right: auto;
 }
 
-
-.substack{
-  border:1px solid #EEE; 
+.substack {
+  border: 1px solid #eee;
   background-color: #fff;
   width: 100%;
   max-width: 480px;
   height: 280px;
-  margin: 1rem auto;;
+  margin: 1rem auto;
 }
-
 </style>
