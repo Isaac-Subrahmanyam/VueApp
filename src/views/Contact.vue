@@ -103,6 +103,7 @@ p {
   width: 90%;
   position: relative;
   padding: 10px;
+  filter: drop-shadow(0 0 0.75rem #3a93b3);
   background-color: #ffffff6e;
   backdrop-filter: blur(8px);
   border-radius: 10px;

@@ -203,6 +203,7 @@ skin
     0 1px 2px 0 rgba(0, 0, 0, 0.24)
   );
   background-color: var(--timelineCardBackgroundColor, #ffffff91);
+  filter: drop-shadow(0 0 0.75rem #3a93b381);
   backdrop-filter: blur(8px);
 }
 

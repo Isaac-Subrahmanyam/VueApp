@@ -87,6 +87,7 @@
   background-color: rgba(255, 255, 255, 0.486);
   backdrop-filter: blur(8px);
   height: min(80vw, 400px);
+  filter: drop-shadow(0 0 0.75rem #3a93b3);
   width: 100%;
 }
 .intro {
@@ -97,6 +98,7 @@
 }
 .description {
   padding-top: 2vw;
+  filter: drop-shadow(0 0 0.75rem #3a93b3);
   background-color: #3a93b386;
   backdrop-filter: blur(8px);
   width: 100%;

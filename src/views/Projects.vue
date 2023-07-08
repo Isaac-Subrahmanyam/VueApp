@@ -17,12 +17,15 @@
         :scrollbar="{ draggable: true }"
       >
         <swiper-slide v-for="project in projects" :key="project">
-          <n-card :title="project.name" size="small">
+          <n-card size="small">
             <template #cover>
-              <img :src="project.image" />
+              <img
+                :src="project.image"
+                style="object-fit: cover; width: 100%; max-height: 250px"
+              />
             </template>
             <router-link :to="project.link">
-              <n-button strong secondary type="info">Play</n-button>
+              <div class="btn"><a href="#">Play</a></div>
             </router-link>
           </n-card>
         </swiper-slide>
@@ -60,7 +63,9 @@
       </section>
     </div>
     <h1>
-      <a href="https://artiorganizer.com/" target="_blank">artiorganizer.com</a>
+      <a class="arti" href="https://artiorganizer.com/" target="_blank">
+        artiorganizer.com
+      </a>
     </h1>
     <iframe
       width="80%"
@@ -95,27 +100,22 @@ export default {
     return {
       projects: [
         {
-          name: 'Gravity',
           image: gravity,
           link: '/gravity'
         },
         {
-          name: 'Puzzle Ball Sort',
           image: puzzleballsort,
           link: '/puzzleballsort'
         },
         {
-          name: 'The Current',
           image: thecurrent2,
           link: '/thecurrent'
         },
         {
-          name: 'Fly Bird',
           image: flybird,
           link: '/flybird'
         },
         {
-          name: 'Adventures of the South Pole',
           image: adventuresofthesouthpole,
           link: '/adventuresofthesouthpole'
         },
@@ -125,32 +125,26 @@ export default {
           link: '/rolly'
         },
         {
-          name: 'Burger Master',
           image: burgermaster,
           link: '/burgermaster'
         },
         {
-          name: "Don't Touch the Red",
           image: donttouchthered2,
           link: '/donttouchthered'
         },
         {
-          name: 'Nerds Nightmares',
           image: nerdsnightmares,
           link: '/nerdsnightmares'
         },
         {
-          name: 'Unicorn Mania',
           image: unicornmania,
           link: '/unicornmania'
         },
         {
-          name: 'The Emoji Game',
           image: theemojigame,
           link: '/theemojigame'
         },
         {
-          name: 'Spiral',
           image: spiral,
           link: '/spiral'
         }
@@ -169,14 +163,14 @@ export default {
   --swiper-theme-color: #3a93b3;
 }
 
-a {
+.arti {
   text-decoration: none;
   color: #bfcad0;
   font-weight: 700;
   position: relative;
 }
 
-a::before {
+.arti::before {
   content: '';
   background-color: hsl(196, 51%, 46%, 0.75);
   position: absolute;
@@ -188,7 +182,7 @@ a::before {
   transition: all 0.3s ease-in-out;
 }
 
-a:hover::before {
+.arti:hover::before {
   bottom: 0;
   height: 100%;
 }
@@ -269,7 +263,7 @@ body {
 .content h2 {
   font-size: 2.2em;
   position: absolute;
-  width: 400px;
+  width: 350px;
   background-color: rgba(255, 255, 255, 0.466);
   backdrop-filter: blur(8px);
   transform: translate(-50%, -50%);
@@ -288,10 +282,110 @@ body {
 }
 
 .n-card {
-  background-color: #ffffffa8;
+  background-color: #ffffff2a;
   backdrop-filter: blur(8px) !important;
+  width: 100% !important;
 }
 
+.btn {
+  position: relative;
+  top: 25%;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn a {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 15px 15px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  padding: 10px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  overflow: hidden;
+  color: #fff;
+  font-weight: 400px;
+  z-index: 1;
+  transition: 0.5s;
+  backdrop-filter: blur(15px);
+}
+.btn:hover a {
+  letter-spacing: 3px;
+}
+.btn a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.15), transparent);
+  transform: skewX(45deg) translate(0);
+  transition: 0.5s;
+  filter: blur(0px);
+}
+.btn:hover a::before {
+  transform: skewX(45deg) translate(200px);
+}
+.btn::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translatex(-50%);
+  bottom: -5px;
+  width: 30px;
+  height: 10px;
+  background: #f00;
+  border-radius: 10px;
+  transition: 0.5s;
+  transition-delay: 0.5;
+}
+.btn:hover::before /*lightup button*/ {
+  bottom: 0;
+  height: 50%;
+  width: 80%;
+  border-radius: 30px;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translatex(-50%);
+  top: -5px;
+  width: 30px;
+  height: 10px;
+  background: #f00;
+  border-radius: 10px;
+  transition: 0.5s;
+  transition-delay: 0.5;
+}
+.btn:hover::after /*lightup button*/ {
+  top: 0;
+  height: 50%;
+  width: 80%;
+  border-radius: 30px;
+}
+.btn:nth-child(1)::before, /* 2*/
+.btn:nth-child(1)::after {
+  background: #2db2ff;
+  box-shadow: 0 0 5px #2db2ff, 0 0 15px #2db2ff, 0 0 30px #2db2ff,
+    0 0 60px #2db2ff;
+  backdrop-filter: blur(8px) !important;
+}
 @keyframes animate {
   0%,
   100% {

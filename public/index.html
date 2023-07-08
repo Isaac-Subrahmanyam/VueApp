@@ -33,6 +33,10 @@
       if(lastDirection==='left') viewer.scene.camera.rotateLeft(0.001);
     });
 
+    $(window).unload(function() {
+      console.log("test")
+    });
+
     window.addEventListener("mousemove",(event) => {
       if(event.clientX>lastClientX) {
         viewer.scene.camera.rotateLeft(event.clientX/50000);
