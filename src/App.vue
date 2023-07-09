@@ -29,6 +29,15 @@ export default {
 #gamescript {
   padding-bottom: 40px;
   padding-top: 1rem;
+  filter: drop-shadow(0 0 0.75rem #3a93b3);
+}
+
+.n-tag {
+  filter: drop-shadow(0 0 0.75rem #3a93b3);
+}
+
+.n-button {
+  filter: drop-shadow(0 0 0.75rem #3a93b3);
 }
 
 #projectsStyle1 {

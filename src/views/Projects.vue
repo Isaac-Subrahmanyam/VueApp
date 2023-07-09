@@ -268,7 +268,7 @@ body {
   backdrop-filter: blur(8px);
   transform: translate(-50%, -50%);
   border-radius: 50px;
-  filter: drop-shadow(0px 0px 4px #7bc3dd);
+  filter: drop-shadow(0px 0px 7px #7bc3dd);
 }
 
 .content h2:nth-child(1) {
