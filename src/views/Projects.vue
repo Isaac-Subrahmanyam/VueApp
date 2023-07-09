@@ -24,8 +24,8 @@
                 style="object-fit: cover; width: 100%; max-height: 250px"
               />
             </template>
-            <router-link :to="project.link">
-              <div class="btn"><a href="#">Play</a></div>
+            <router-link :to="project.link" class="btn">
+              <a>Play</a>
             </router-link>
           </n-card>
         </swiper-slide>
