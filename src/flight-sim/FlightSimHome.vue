@@ -150,6 +150,12 @@
                 currentLocation: 0,
                 locations: [
                   {
+                    name: "Grand Canyon, USA",
+                    longitude: -112.1401,
+                    latitude: 36.1069,
+                    altitude: 6000,
+                  },
+                  {
                     name: "Mount Everest, Nepal",
                     longitude: 86.9250,
                     latitude: 27.9881,
@@ -160,12 +166,6 @@
                     longitude: -74.0060,
                     latitude: 40.7128,
                     altitude: 5000,
-                  },
-                  {
-                    name: "Grand Canyon, USA",
-                    longitude: -112.1401,
-                    latitude: 36.1069,
-                    altitude: 6000,
                   },
                   {
                     name: "Dubai, UAE",
