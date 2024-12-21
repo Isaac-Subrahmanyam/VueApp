@@ -2,27 +2,27 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <title>Flight Sim</title>
   <div style="background-color: #ffffffb3; backdrop-filter: blur(8px); box-shadow: 0px 0px 4px 4px rgba(127, 180, 216, 0.5); transform: translateY(-20px);">
-    <h1 style="padding: 0.5rem;">(IFS) - Isaac's Flight Simulator</h1>
+    <h1 style="padding: 0.5rem; user-select: none;">(IFS) - Isaac's Flight Simulator</h1>
   </div>
   <div style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(8px); transform: translateY(-40px);">
-    <h1 style="padding: 0.5rem; font-size: 1.2rem; color: rgba(255, 255, 255, 0.6);" v-if="state === 'start-sim'">{{ planes[currentPlane]?.name || "No Plane Selected" }} - {{locations[currentLocation]?.name || "No Location Selected"}}</h1>
+    <h1 style="padding: 0.5rem; font-size: 1.2rem; color: rgba(255, 255, 255, 0.6); user-select: none;" v-if="state === 'start-sim'">{{ planes[currentPlane]?.name || "No Plane Selected" }} - {{locations[currentLocation]?.name || "No Location Selected"}}</h1>
   </div>
   <div class="keypad-container" v-show="state === 'start-sim'">
     <div class="keypad">
-      <button id="up"><i class="fas fa-arrow-up"></i></button>
-      <button id="left"><i class="fas fa-arrow-left"></i></button>
-      <button id="right"><i class="fas fa-arrow-right"></i></button>
-      <button id="down"><i class="fas fa-arrow-down"></i></button>
+      <button id="up"><i class="fas fa-arrow-up" style="user-select: none;"></i></button>
+      <button id="left"><i class="fas fa-arrow-left" style="user-select: none;"></i></button>
+      <button id="right"><i class="fas fa-arrow-right" style="user-select: none;"></i></button>
+      <button id="down"><i class="fas fa-arrow-down" style="user-select: none;"></i></button>
     </div>
   </div>
   <div class="play-button-container" v-show="state === 'select-plane'">
-      <button class="play-button" @click="togglePlay">
-        <i class="fas fa-play"></i>
+      <button class="play-button" @click="togglePlay" style="user-select: none;">
+        <i class="fas fa-play" style="user-select: none;"></i>
       </button>
   </div>
   <div class="stop-button-container" v-show="state === 'start-sim'">
       <button class="play-button" @click="stopSim">
-        <i class="fas fa-stop"></i>
+        <i class="fas fa-stop" style="user-select: none;"></i>
       </button>
   </div>
   <!-- Toggle Button -->
@@ -51,7 +51,7 @@
           :class="{ selected: index === currentPlane }"
           @click="displayModel(index)"
         >
-          {{ plane.name }} <br> [speed: {{ plane.speed }}, agility: {{ plane.movementIntensity * 1000 }}]
+          {{ plane.name }} <br> [speed: {{ Math.floor(plane.speed * 3.6) }} km/r, agility: {{ (plane?.speed / 100000).toFixed(4) }} radians/frame]
         </li>
       </ul>
       <ul v-if="currentView === 'locations'">
@@ -64,7 +64,11 @@
           {{ location.name }} <br> [long: {{ location.longitude }}, lat: {{ location.latitude }}, alt: {{ location.altitude }}]
         </li>
       </ul>
-    </div>
+  </div>
+
+  <div class="right-container" v-show="state === 'select-plane'">
+      <h2 style="color: #ffffffb3;">{{ planes[currentPlane]?.description }}</h2>
+  </div>
 </template>
 
 <script>
@@ -260,16 +264,16 @@
                 ],
                 planes: [
                   {
-                    name: "C130-H",
+                    name: "Lockheed C130-H",
                     asset: 'yc-130prototype_of_c-130.glb',
                     cameraZ: -100,
                     size: 100,
                     inverse: true,
                     heading: 180,
-                    movementIntensity: 0.004,
-                    speed: 20,
+                    speed: 150,
                     displayZoom: 100,
-                    invert: false
+                    invert: false,
+                    description: "The Lockheed C-130 Hercules, introduced in 1956, is one of the most versatile military aircraft ever built. \nPrimarily used for tactical airlift missions, the C-130 can operate from short and unprepared runways. \nThe C130-H variant, first produced in the 1970s, features upgraded Allison T56-A-15 turboprop engines, \nmodern avionics, and increased range. It can carry up to 20,000 kg of cargo or transport 92 passengers. \nKnown for its rugged design, the C-130 has been adapted for various roles, including search and rescue, \naerial refueling, and gunship operations (AC-130). It has served in over 70 countries and remains active today."
                   },
                   {
                     name: "Tupolev TU-142m Bomber Plane",
@@ -278,10 +282,10 @@
                     size: 500,
                     inverse: false,
                     heading: 0,
-                    movementIntensity: 0.002,
-                    speed: 15,
-                    displayZoom: 1000,
-                    invert: false
+                    speed: 229,
+                    displayZoom: 500,
+                    invert: false,
+                    description: "The Tupolev Tu-142, derived from the iconic Tu-95 'Bear' strategic bomber, \nis a long-range maritime patrol and anti-submarine warfare aircraft. \nFirst introduced in the 1970s, the Tu-142M features enhanced avionics and more efficient NK-12MP turboprop engines, \nallowing it to operate for extended durations over vast oceanic regions. \nIt is known for its distinctive counter-rotating propellers, which make it one of the fastest turboprop aircraft, \nwith a maximum speed of 925 km/h. The Tu-142 has been a cornerstone of Soviet and later Russian naval aviation, \nfrequently spotted during Cold War-era patrols near NATO waters. Its robust airframe and long-range capabilities \nensure its continued relevance in maritime reconnaissance missions."
                   },
                   {
                     name: "Northrop Grumman B-2 Spirit Stealth Bomber Plane",
@@ -290,36 +294,85 @@
                     size: 100,
                     inverse: true,
                     heading: 180,
-                    movementIntensity: 0.01,
-                    speed: 30,
+                    speed: 280.5556,
                     displayZoom: 5000,
-                    invert: false
+                    invert: false,
+                    description: "The Northrop Grumman B-2 Spirit, also known as the Stealth Bomber, \nis a revolutionary aircraft designed to evade radar detection and deliver precision strikes. \nFirst flown in 1989 and introduced into service in 1997, the B-2 features a unique flying-wing design \nthat minimizes its radar cross-section. It can carry up to 18,000 kg of ordnance, including nuclear or conventional weapons. \nWith a combat radius of 11,000 km, it is capable of intercontinental missions without refueling. \nOnly 21 B-2s were built due to their high cost, with each aircraft valued at over $2 billion. \nThe B-2 remains a vital component of the U.S. strategic deterrence arsenal, renowned for its blend of advanced technology \nand unparalleled stealth capabilities."
+                  },
+                  {
+                    name: "Boeing B-52 Stratofortress",
+                    asset: 'boeing_b-52_stratofortress.glb',
+                    cameraZ: -100,
+                    size: 100,
+                    inverse: true,
+                    heading: 180,
+                    speed: 194,
+                    displayZoom: 100,
+                    invert: false,
+                    description: "The Boeing E-767 is an airborne warning and control system (AWACS) aircraft, \nbased on the Boeing 767-200 platform. Developed for Japan's Air Self-Defense Force, \nthe E-767 is equipped with a Northrop Grumman radar system, capable of monitoring \nand tracking aerial threats over vast areas. It is powered by twin General Electric CF6-80C2 engines, \nallowing for a cruising speed of 850 km/h and an operational ceiling of 12,800 meters (42,000 feet). \nThe E-767 plays a critical role in air defense and command, with advanced communication systems \nand a crew of up to 19 personnel, making it a versatile platform for modern military operations."
+                  },
+                  {
+                    name: "Boeing E-767",
+                    asset: 'boeing_e-767_-_free.glb',
+                    cameraZ: -100,
+                    size: 500,
+                    inverse: true,
+                    heading: 180,
+                    speed: 238,
+                    displayZoom: 10,
+                    invert: false,
+                    description: "The Boeing E-767 is an airborne warning and control system (AWACS) aircraft, \nbased on the Boeing 767-200 platform. Developed for Japan's Air Self-Defense Force, \nthe E-767 is equipped with a Northrop Grumman radar system, capable of monitoring \nand tracking aerial threats over vast areas. It is powered by twin General Electric CF6-80C2 engines, \nallowing for a cruising speed of 850 km/h and an operational ceiling of 12,800 meters (42,000 feet). \nThe E-767 plays a critical role in air defense and command, with advanced communication systems \nand a crew of up to 19 personnel, making it a versatile platform for modern military operations."
+                  },
+                  {
+                    name: "Rockwell B-1 Lancer",
+                    asset: 'rockwell_b-1_lancer.glb',
+                    cameraZ: -500,
+                    size: 100,
+                    inverse: false,
+                    heading: 0,
+                    speed: 403,
+                    displayZoom: 100,
+                    invert: false,
+                    description: "The Rockwell B-1 Lancer, known as the 'Bone,' is a supersonic variable-sweep wing bomber \nintroduced in the 1980s as a strategic bomber for the U.S. Air Force. \nIt features a maximum speed of Mach 1.25 (1,335 km/h or 403 m/s) and is capable of low-altitude penetration. \nWith a payload capacity of 84,000 pounds, the B-1 can carry a mix of conventional and nuclear weapons. \nIts advanced terrain-following radar and variable-sweep wings enable it to operate effectively at low altitudes, \navoiding radar detection. The B-1 remains a critical component of the U.S. bomber fleet, \nserving in strategic and tactical roles worldwide."
                   },
                   {
                     name: "Lockheed Martin F-22 Raptor",
                     asset: 'lockheed_martin_f-22_raptor.glb',
-                    cameraZ: -100,
+                    cameraZ: -1000,
                     size: 200,
                     inverse: false,
                     heading: -90,
-                    movementIntensity: 0.003,
-                    speed: 20,
+                    speed: 545,
                     displayZoom: 50,
-                    invert: true
+                    invert: true,
+                    description: "The Lockheed Martin F-22 Raptor is a fifth-generation fighter jet introduced in 2005, \ndesigned to establish air superiority through its unmatched combination of stealth, speed, and agility. \nPowered by twin Pratt & Whitney F119 engines, the F-22 can supercruise at Mach 1.82 without afterburners \nand reach a maximum speed of Mach 2.25. Its advanced avionics and sensor fusion enable it to detect and engage threats \nlong before being spotted. The F-22 is equipped with AIM-120 and AIM-9 missiles for air combat, as well as precision bombs for ground strikes. \nDespite its high cost, at approximately $150 million per unit, the F-22 is regarded as one of the most lethal aircraft ever built, \nsetting a benchmark for modern air combat."
                   },
                   {
-                    name: "USAF F35A",
+                    name: "Eurofighter Typhoon Fighter Jet",
+                    asset: 'eurofighter_typhoon_-_fighter_jet_-_free.glb',
+                    cameraZ: -500,
+                    size: 200,
+                    inverse: true,
+                    heading: -90,
+                    speed: 800,
+                    displayZoom: 50,
+                    invert: true,
+                    description: "The Eurofighter Typhoon is a highly advanced multirole fighter jet, \ndeveloped through a collaboration of European nations including the UK, Germany, Italy, and Spain. \nKnown for its agility, speed, and advanced avionics, the Typhoon excels in both air superiority \nand ground-attack roles. Powered by twin Eurojet EJ200 turbofan engines, it can reach speeds of up to Mach 2.0 (2,470 km/h). \nIts delta-wing design with canards ensures exceptional maneuverability. \nThe Typhoon features state-of-the-art radar and sensor systems, making it a cornerstone of NATO air defenses \nand a key player in modern military operations."
+                  },
+                  {
+                    name: "USAF F35A Lightning II",
                     asset: 'low_poly_11_usaf_f35a.glb',
-                    cameraZ: -50,
-                    size: 100,
+                    cameraZ: -500,
+                    size: 300,
                     inverse: false,
                     heading: 0,
-                    movementIntensity: 0.005,
-                    speed: 10,
+                    speed: 544,
                     displayZoom: 75,
-                    invert: false
+                    invert: false,
+                    description: "The USAF F-35A Lightning II, part of the Joint Strike Fighter program, \nis a multirole stealth fighter introduced in 2016. Designed to perform air-to-air, air-to-ground, \nand intelligence missions, it represents the cutting edge of modern military aviation. \nEquipped with advanced sensors, radar, and electronic warfare systems, the F-35A offers unparalleled situational awareness. \nIt is powered by a single Pratt & Whitney F135 engine, enabling speeds of up to Mach 1.6 and a combat radius of 1,100 km. \nThe F-35A also features stealth technology, enabling it to penetrate advanced air defenses. \nWith over 800 units delivered across allied nations, the F-35 is a key component of 21st-century air power, \nsupporting diverse mission profiles from conventional strikes to electronic warfare."
                   }
-                ],
+                ]
+
             }
         },
         methods: {
@@ -443,11 +496,30 @@
       top: 100px;
       left: 3rem;
       width: 25%; /* Default width for desktop */
-      height: 70vh;
+      height: 67vh;
       backdrop-filter: blur(8px);
       background-color: #ffffffb3;
       border-radius: 46px 46px 46px 46px;
       box-shadow: 0px 0px 4px 4px rgba(127, 180, 216, 0.5);
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px; /* Spacing between cards */
+      z-index: 0;
+    }
+
+    .right-container {
+      position: fixed;
+      top: 100px;
+      right: 3rem;
+      width: 25%; /* Default width for desktop */
+      height: 45vh;
+      backdrop-filter: blur(8px);
+      background-color: #074055bd;
+      border-radius: 46px 46px 46px 0px;
+      text-align: left;
+      box-shadow: 0px 0px 4px 4px rgba(255, 255, 255, 0.5);
       padding: 20px;
       overflow-y: auto;
       display: flex;
@@ -513,13 +585,33 @@
         right: 5px;
         position: fixed;
       }
-      
+        
+      .right-container {
+        position: fixed;
+        top: 145px;
+        right: 1rem;
+        width: 25%; /* Default width for desktop */
+        height: 27vh;
+        backdrop-filter: blur(8px);
+        background-color: #074055bd;
+        border-radius: 46px 46px 46px 46px;
+        box-shadow: 0px 0px 4px 4px rgba(255, 255, 255, 0.5);
+        padding: 20px;
+        overflow-y: auto;
+        text-align: left;
+        display: flex;
+        font-size: 6px;
+        flex-direction: column;
+        gap: 15px; /* Spacing between cards */
+        z-index: 0;
+      }
+
       .left-container {
         position: fixed;
         top: 110px;
         left: 12px;
         width: 25%; /* Default width for desktop */
-        height: 60vh;
+        height: 55vh;
         backdrop-filter: blur(8px);
         background-color: #ffffffb3;
         border-radius: 46px 46px 46px 46px;
@@ -611,7 +703,6 @@
       border: none;
       border-radius: 50%;
       font-size: calc(2vw + 10px); /* Dynamically adjust font size */
-      font-weight: bold;
       color: #07405581;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       cursor: pointer;

@@ -53,13 +53,13 @@
 
     function left(invert) {
       targetHeading = -1;
-      if (invert) targetHeadingOrientation = -6;
+      if (invert) targetPitchOrientation = -6;
       else targetRollOrientation = -6;
     }
 
     function right(invert) {
       targetHeading = 1;
-      if (invert) targetHeadingOrientation = 6;
+      if (invert) targetPitchOrientation = 6;
       else targetRollOrientation = 6;
     }
 
@@ -98,7 +98,7 @@
     const planePitchOffset = Cesium.Math.toRadians(0); // Adjust based on model alignment
     const planeRollOffset = Cesium.Math.toRadians(0); // Adjust based on model alignment
     let airplaneEntity = null;
-    let cameraZ, movementIntensity, size, inverse, speed, plane, location;
+    let cameraZ, size, inverse, speed, plane, location;
 
     function initializeCesium() {
       viewer = new Cesium.Viewer('cesiumContainer', {
@@ -107,6 +107,7 @@
     }
 
     function viewEventListeners() {
+      let lastTime = viewer.clock.currentTime; // Store initial time
       viewer.clock.onTick.addEventListener(() => {
         const currentPath = window.location.pathname;
         if (currentPath !== "/flight-sim") {
@@ -117,12 +118,13 @@
           if (gameMode === 'start-sim') {
             const currentPosition = airplaneEntity.position.getValue(viewer.clock.currentTime);
             const pitch = Cesium.Math.toRadians(planePitch); // Adjust dynamically
-            planePitch += (targetPitch - planePitch) * movementIntensity; // Smooth transition
-            planeRoll += (targetRoll - planeRoll) * movementIntensity;
-            planeHeading += (targetHeading - planeHeading) * movementIntensity;
-            planePitchOrientation += (targetPitchOrientation - planePitchOrientation) * movementIntensity; // Smooth transition
-            planeRollOrientation += (targetRollOrientation - planeRollOrientation) * movementIntensity;
-            planeHeadingOrientation += (targetHeadingOrientation - planeHeadingOrientation) * movementIntensity;
+            const dynamicSmoothingFactor = (plane?.speed / 100000);
+            planePitch += (targetPitch - planePitch) * dynamicSmoothingFactor; // Smooth transition
+            planeRoll += (targetRoll - planeRoll) * dynamicSmoothingFactor;
+            planeHeading += (targetHeading - planeHeading) * dynamicSmoothingFactor;
+            planePitchOrientation += (targetPitchOrientation - planePitchOrientation) * dynamicSmoothingFactor; // Smooth transition
+            planeRollOrientation += (targetRollOrientation - planeRollOrientation) * dynamicSmoothingFactor;
+            planeHeadingOrientation += (targetHeadingOrientation - planeHeadingOrientation) * dynamicSmoothingFactor;
             const isInverse = (inverse ? -1 : 1);
             const hpr = new Cesium.HeadingPitchRoll((planeHeading + headingOffset), (planePitch + planePitchOffset), (planeRoll + planeRollOffset));
             const hprOrientation = new Cesium.HeadingPitchRoll(
@@ -141,10 +143,9 @@
             const movementVector = Cesium.Matrix4.getColumn(transform, 1, new Cesium.Cartesian3());
             Cesium.Cartesian3.normalize(movementVector, movementVector);
 
-            // Scale the forward vector by speed and time delta
             const scaledMovement = Cesium.Cartesian3.multiplyByScalar(
               movementVector,
-              speed,
+              (speed * 0.016) * 10,
               new Cesium.Cartesian3()
             );
 
@@ -186,7 +187,6 @@
         plane = event.detail.plane;
         location = event.detail.location;
         cameraZ = plane.cameraZ;
-        movementIntensity = plane.movementIntensity;
         size = plane.size;
         inverse = plane.inverse;
         speed = plane.speed;
@@ -223,7 +223,6 @@
 
         const plane = event.detail.plane;
         cameraZ = plane.cameraZ;
-        movementIntensity = plane.movementIntensity;
         size = plane.size;
         inverse = plane.inverse;
         speed = plane.speed;
