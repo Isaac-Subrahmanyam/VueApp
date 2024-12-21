@@ -34,7 +34,7 @@
           :class="{ selected: index === currentPlane }"
           @click="displayModel(index)"
         >
-          {{ plane.name }} 
+          {{ plane.name }}<br>[speed: {{ plane.speed }}, agility: {{ plane.movementIntensity * 1000 }}]
         </li>
       </ul>
     </div>
@@ -403,25 +403,25 @@
                 currentPlane: 0,
                 planes: [
                   {
-                    name: "Cesium Air",
-                    asset: 'Cesium_Air.glb',
+                    name: "C130-H",
+                    asset: 'yc-130prototype_of_c-130.glb',
                     cameraZ: -100,
-                    size: 108,
-                    inverse: false,
-                    heading: 0,
-                    movementIntensity: 0.002,
-                    speed: 1,
+                    size: 100,
+                    inverse: true,
+                    heading: 1800,
+                    movementIntensity: 0.004,
+                    speed: 20,
                     displayZoom: 100
                   },
                   {
                     name: "Tupolev TU-142m Bomber Plane",
                     asset: 'tupolev_tu-142m_bomber_plane.glb',
                     cameraZ: -100,
-                    size: 700,
+                    size: 500,
                     inverse: false,
                     heading: 0,
                     movementIntensity: 0.002,
-                    speed: 1,
+                    speed: 15,
                     displayZoom: 1000
                   },
                   {
@@ -431,20 +431,20 @@
                     size: 100,
                     inverse: true,
                     heading: 1800,
-                    movementIntensity: 0.002,
-                    speed: 1,
+                    movementIntensity: 0.01,
+                    speed: 30,
                     displayZoom: 5000
                   },
                   {
-                    name: "C130-H",
-                    asset: 'yc-130prototype_of_c-130.glb',
+                    name: "Lockheed Martin F-22 Raptor",
+                    asset: 'lockheed_martin_f-22_raptor.glb',
                     cameraZ: -100,
-                    size: 100,
+                    size: 200,
                     inverse: true,
-                    heading: 1800,
-                    movementIntensity: 0.002,
-                    speed: 10,
-                    displayZoom: 100
+                    heading: 360 * 3 - 90 - 90,
+                    movementIntensity: 0.003,
+                    speed: 20,
+                    displayZoom: 50
                   },
                   {
                     name: "USAF F35A",
@@ -453,8 +453,8 @@
                     size: 100,
                     inverse: false,
                     heading: 0,
-                    movementIntensity: 0.002,
-                    speed: 1,
+                    movementIntensity: 0.005,
+                    speed: 10,
                     displayZoom: 75
                   }
                 ],
