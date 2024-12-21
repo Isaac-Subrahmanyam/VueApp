@@ -5,7 +5,7 @@
     <h1 style="padding: 0.5rem;">(IFS) - Isaac's Flight Simulator</h1>
   </div>
   <div style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(8px); transform: translateY(-40px);">
-    <h1 style="padding: 0.5rem; font-size: 1.2rem; color: rgba(255, 255, 255, 0.6);" v-if="state === 'start-sim'">{{ planes[currentPlane]?.name || "No Plane Selected" }}</h1>
+    <h1 style="padding: 0.5rem; font-size: 1.2rem; color: rgba(255, 255, 255, 0.6);" v-if="state === 'start-sim'">{{ planes[currentPlane]?.name || "No Plane Selected" }} - {{locations[currentLocation]?.name || "No Location Selected"}}</h1>
   </div>
   <div class="keypad-container" v-show="state === 'start-sim'">
     <div class="keypad">
@@ -25,25 +25,375 @@
         <i class="fas fa-stop"></i>
       </button>
   </div>
+  <!-- Toggle Button -->
+  <div class="toggle-container" v-show="state === 'select-plane'">
+    <button
+      class="toggle-button"
+      :class="{ active: currentView === 'planes' }"
+      @click="switchView('planes')"
+    >
+      Planes
+    </button>
+    <button
+      class="toggle-button"
+      :class="{ active: currentView === 'locations' }"
+      @click="switchView('locations')"
+    >
+      Locations
+    </button>
+  </div>
   <div class="left-container" v-show="state === 'select-plane'">
-      <h2>Select Plane</h2>
-      <ul>
+      <h2>{{ currentView === 'planes' ? 'Select Plane' : 'Select Location' }}</h2>
+      <ul v-if="currentView === 'planes'">
         <li
           v-for="(plane, index) in planes"
           :key="index"
           :class="{ selected: index === currentPlane }"
           @click="displayModel(index)"
         >
-          {{ plane.name }}<br>[speed: {{ plane.speed }}, agility: {{ plane.movementIntensity * 1000 }}]
+          {{ plane.name }} <br> [speed: {{ plane.speed }}, agility: {{ plane.movementIntensity * 1000 }}]
+        </li>
+      </ul>
+      <ul v-if="currentView === 'locations'">
+        <li
+          v-for="(location, index) in locations"
+          :key="index"
+          :class="{ selected: index === currentLocation }"
+          @click="displayLocation(index)"
+        >
+          {{ location.name }} <br> [long: {{ location.longitude }}, lat: {{ location.latitude }}, alt: {{ location.altitude }}]
         </li>
       </ul>
     </div>
-  <!-- <div style="background-color: #ffffffb3; backdrop-filter: blur(8px); box-shadow: 0px 0px 4px 4px rgba(127, 180, 216, 0.5); height: 100%; transform: translateY(-35px);">
-    
-  </div> -->
 </template>
 
+<script>
+    export default {
+        name: 'App',
+        mounted() {
+          const event = new CustomEvent("game", {
+            detail: { message: this.state, plane: this.planes[this.currentPlane], location: this.locations[this.currentLocation] }, // Optional payload
+          });
+          window.dispatchEvent(event); // Or use document.dispatchEvent(event);
+
+          let intervalId = null; // Stores the interval for continuous updates
+
+          // Function to start holding down the button
+          function startHolding(callback) {
+            callback(); // Execute the action immediately
+            intervalId = setInterval(callback, 50); // Execute the action continuously every 50ms
+          }
+
+          // Function to stop holding down the button
+          function stopHolding() {
+            clearInterval(intervalId);
+            const event = new CustomEvent("controls", {
+              detail: { message: "stop" }, // Optional payload
+            });
+            window.dispatchEvent(event);
+          }
+
+          const addControlEventListener = (id, callback) => {
+            const button = document.getElementById(id);
+
+            // Handle mouse and touch events
+            button.addEventListener("mousedown", () => startHolding(callback));
+            button.addEventListener("mouseup", stopHolding);
+            button.addEventListener("mouseleave", stopHolding); // Stop when the mouse leaves the button
+            button.addEventListener("touchstart", (e) => {
+              e.preventDefault();
+              startHolding(callback);
+            });
+            button.addEventListener("touchend", stopHolding);
+            button.addEventListener("touchcancel", stopHolding);
+          };
+
+          addControlEventListener("up", () => {
+            const event = new CustomEvent("controls", {
+              detail: { message: "up" }, // Optional payload
+            });
+            window.dispatchEvent(event);
+          });
+
+          addControlEventListener("down", () => {
+            const event = new CustomEvent("controls", {
+              detail: { message: "down" }, // Optional payload
+            });
+            window.dispatchEvent(event);
+          });
+
+          addControlEventListener("left", () => {
+            const event = new CustomEvent("controls", {
+              detail: { message: "left" }, // Optional payload
+            });
+            window.dispatchEvent(event);
+          });
+
+          addControlEventListener("right", () => {
+            const event = new CustomEvent("controls", {
+              detail: { message: "right" }, // Optional payload
+            });
+            window.dispatchEvent(event);
+          });
+        },
+        beforeUnmount() {
+          const event = new CustomEvent("game", {
+            detail: { message: "stop-sim" }, // Optional payload
+          });
+          window.dispatchEvent(event); // Or use document.dispatchEvent(event);
+        },
+        data: function () {
+            return {
+                state: 'select-plane',
+                currentView: "planes",
+                currentPlane: 0,
+                currentLocation: 0,
+                locations: [
+                  {
+                    name: "Mount Everest, Nepal",
+                    longitude: 86.9250,
+                    latitude: 27.9881,
+                    altitude: 29000, // Simulated altitude to view the summit
+                  },
+                  {
+                    name: "New York City, USA",
+                    longitude: -74.0060,
+                    latitude: 40.7128,
+                    altitude: 5000,
+                  },
+                  {
+                    name: "Grand Canyon, USA",
+                    longitude: -112.1401,
+                    latitude: 36.1069,
+                    altitude: 6000,
+                  },
+                  {
+                    name: "Dubai, UAE",
+                    longitude: 55.2708,
+                    latitude: 25.2048,
+                    altitude: 5000,
+                  },
+                  {
+                    name: "Paris, France",
+                    longitude: 2.3522,
+                    latitude: 48.8566,
+                    altitude: 3000,
+                  },
+                  {
+                    name: "Swiss Alps, Switzerland",
+                    longitude: 8.5417,
+                    latitude: 46.6587,
+                    altitude: 8000,
+                  },
+                  {
+                    name: "Sydney, Australia",
+                    longitude: 151.2093,
+                    latitude: -33.8688,
+                    altitude: 4000,
+                  },
+                  {
+                    name: "Rio de Janeiro, Brazil",
+                    longitude: -43.1729,
+                    latitude: -22.9068,
+                    altitude: 4000,
+                  },
+                  {
+                    name: "Cape Town, South Africa",
+                    longitude: 18.4241,
+                    latitude: -33.9249,
+                    altitude: 5000,
+                  },
+                  {
+                    name: "Tokyo, Japan",
+                    longitude: 139.6917,
+                    latitude: 35.6895,
+                    altitude: 4000,
+                  },
+                  {
+                    name: "Banff National Park, Canada",
+                    longitude: -116.1672,
+                    latitude: 51.1784,
+                    altitude: 7000,
+                  },
+                  {
+                    name: "Iceland Highlands, Iceland",
+                    longitude: -18.0713,
+                    latitude: 64.8403,
+                    altitude: 6000,
+                  },
+                  {
+                    name: "Barcelona, Spain",
+                    longitude: 2.1734,
+                    latitude: 41.3851,
+                    altitude: 3000,
+                  },
+                  {
+                    name: "Himalayas, India",
+                    longitude: 78.9629,
+                    latitude: 30.0668,
+                    altitude: 15000,
+                  },
+                  {
+                    name: "Queenstown, New Zealand",
+                    longitude: 168.6626,
+                    latitude: -45.0312,
+                    altitude: 6000,
+                  },
+                  {
+                    name: "Norwegian Fjords, Norway",
+                    longitude: 7.8500,
+                    latitude: 61.0000,
+                    altitude: 5000,
+                  },
+                  {
+                    name: "Santorini, Greece",
+                    longitude: 25.4319,
+                    latitude: 36.3932,
+                    altitude: 3000,
+                  },
+                  {
+                    name: "Machu Picchu, Peru",
+                    longitude: -72.5448,
+                    latitude: -13.1631,
+                    altitude: 7000,
+                  },
+                ],
+                planes: [
+                  {
+                    name: "C130-H",
+                    asset: 'yc-130prototype_of_c-130.glb',
+                    cameraZ: -100,
+                    size: 100,
+                    inverse: true,
+                    heading: 180,
+                    movementIntensity: 0.004,
+                    speed: 20,
+                    displayZoom: 100,
+                    invert: false
+                  },
+                  {
+                    name: "Tupolev TU-142m Bomber Plane",
+                    asset: 'tupolev_tu-142m_bomber_plane.glb',
+                    cameraZ: -100,
+                    size: 500,
+                    inverse: false,
+                    heading: 0,
+                    movementIntensity: 0.002,
+                    speed: 15,
+                    displayZoom: 1000,
+                    invert: false
+                  },
+                  {
+                    name: "Northrop Grumman B-2 Spirit Stealth Bomber Plane",
+                    asset: 'northrop_grumman_b-2_spirit_stealth_bomber_plane.glb',
+                    cameraZ: -4000,
+                    size: 100,
+                    inverse: true,
+                    heading: 180,
+                    movementIntensity: 0.01,
+                    speed: 30,
+                    displayZoom: 5000,
+                    invert: false
+                  },
+                  {
+                    name: "Lockheed Martin F-22 Raptor",
+                    asset: 'lockheed_martin_f-22_raptor.glb',
+                    cameraZ: -100,
+                    size: 200,
+                    inverse: false,
+                    heading: -90,
+                    movementIntensity: 0.003,
+                    speed: 20,
+                    displayZoom: 50,
+                    invert: true
+                  },
+                  {
+                    name: "USAF F35A",
+                    asset: 'low_poly_11_usaf_f35a.glb',
+                    cameraZ: -50,
+                    size: 100,
+                    inverse: false,
+                    heading: 0,
+                    movementIntensity: 0.005,
+                    speed: 10,
+                    displayZoom: 75,
+                    invert: false
+                  }
+                ],
+            }
+        },
+        methods: {
+          switchView(view) {
+            this.currentView = view;
+            this.selectedIndex = null; // Reset selection when switching views
+          },
+          displayModel(index) {
+            const plane = this.planes[index];
+            this.currentPlane = index;
+            const event = new CustomEvent("game", {
+              detail: { message: this.state, plane: plane, location: this.locations[this.currentLocation] }, // Optional payload
+            });
+            window.dispatchEvent(event); // Or use document.dispatchEvent(event);
+          },
+          displayLocation(index) {
+            const location = this.locations[index];
+            this.currentLocation = index;
+            const event = new CustomEvent("game", {
+              detail: { message: this.state, plane: this.planes[this.currentPlane], location: location }, // Optional payload
+            });
+            window.dispatchEvent(event); // Or use document.dispatchEvent(event);
+          },
+          stopSim() {
+            this.state = 'select-plane';
+            const event = new CustomEvent("game", {
+              detail: { message: this.state, plane: this.planes[this.currentPlane], location: this.locations[this.currentLocation] }, // Optional payload
+            });
+            window.dispatchEvent(event); // Or use document.dispatchEvent(event);
+
+          },
+          togglePlay() {
+            this.state = 'start-sim';
+            const event = new CustomEvent("game", {
+              detail: { message: this.state, plane: this.planes[this.currentPlane] }, // Optional payload
+            });
+            window.dispatchEvent(event); // Or use document.dispatchEvent(event);
+          },
+        }
+    }
+</script>
+
+
 <style>
+    .toggle-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .toggle-button {
+      backdrop-filter: blur(8px);
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.623);
+      border: none;
+      border-radius: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #074055bd;
+      margin: 0 5px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .toggle-button:hover {
+      background: #d5d5d5;
+      backdrop-filter: blur(8px);
+    }
+
+    .toggle-button.active {
+      background: #074055cc;
+      backdrop-filter: blur(8px);
+      color: white;
+    }
     .play-button-container {
       position: fixed;
       bottom: 130px; /* Distance from the bottom of the screen */
@@ -155,6 +505,15 @@
     }
 
     @media screen and (max-width: 768px) {
+      .toggle-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+        transform: translateY(-30px);
+        right: 5px;
+        position: fixed;
+      }
+      
       .left-container {
         position: fixed;
         top: 110px;
@@ -320,171 +679,4 @@
         font-size: calc(2vw + 10px);
       }
     }
-  </style>
-
-<script>
-    export default {
-        name: 'App',
-        mounted() {
-          const event = new CustomEvent("game", {
-            detail: { message: this.state, plane: this.planes[this.currentPlane] }, // Optional payload
-          });
-          window.dispatchEvent(event); // Or use document.dispatchEvent(event);
-
-          let intervalId = null; // Stores the interval for continuous updates
-
-          // Function to start holding down the button
-          function startHolding(callback) {
-            callback(); // Execute the action immediately
-            intervalId = setInterval(callback, 50); // Execute the action continuously every 50ms
-          }
-
-          // Function to stop holding down the button
-          function stopHolding() {
-            clearInterval(intervalId);
-            const event = new CustomEvent("controls", {
-              detail: { message: "stop" }, // Optional payload
-            });
-            window.dispatchEvent(event);
-          }
-
-          const addControlEventListener = (id, callback) => {
-            const button = document.getElementById(id);
-
-            // Handle mouse and touch events
-            button.addEventListener("mousedown", () => startHolding(callback));
-            button.addEventListener("mouseup", stopHolding);
-            button.addEventListener("mouseleave", stopHolding); // Stop when the mouse leaves the button
-            button.addEventListener("touchstart", (e) => {
-              e.preventDefault();
-              startHolding(callback);
-            });
-            button.addEventListener("touchend", stopHolding);
-            button.addEventListener("touchcancel", stopHolding);
-          };
-
-          addControlEventListener("up", () => {
-            const event = new CustomEvent("controls", {
-              detail: { message: "up" }, // Optional payload
-            });
-            window.dispatchEvent(event);
-          });
-
-          addControlEventListener("down", () => {
-            const event = new CustomEvent("controls", {
-              detail: { message: "down" }, // Optional payload
-            });
-            window.dispatchEvent(event);
-          });
-
-          addControlEventListener("left", () => {
-            const event = new CustomEvent("controls", {
-              detail: { message: "left" }, // Optional payload
-            });
-            window.dispatchEvent(event);
-          });
-
-          addControlEventListener("right", () => {
-            const event = new CustomEvent("controls", {
-              detail: { message: "right" }, // Optional payload
-            });
-            window.dispatchEvent(event);
-          });
-        },
-        beforeUnmount() {
-          const event = new CustomEvent("game", {
-            detail: { message: "stop-sim" }, // Optional payload
-          });
-          window.dispatchEvent(event); // Or use document.dispatchEvent(event);
-        },
-        data: function () {
-            return {
-                state: 'select-plane',
-                currentPlane: 0,
-                planes: [
-                  {
-                    name: "C130-H",
-                    asset: 'yc-130prototype_of_c-130.glb',
-                    cameraZ: -100,
-                    size: 100,
-                    inverse: true,
-                    heading: 1800,
-                    movementIntensity: 0.004,
-                    speed: 20,
-                    displayZoom: 100
-                  },
-                  {
-                    name: "Tupolev TU-142m Bomber Plane",
-                    asset: 'tupolev_tu-142m_bomber_plane.glb',
-                    cameraZ: -100,
-                    size: 500,
-                    inverse: false,
-                    heading: 0,
-                    movementIntensity: 0.002,
-                    speed: 15,
-                    displayZoom: 1000
-                  },
-                  {
-                    name: "Northrop Grumman B-2 Spirit Stealth Bomber Plane",
-                    asset: 'northrop_grumman_b-2_spirit_stealth_bomber_plane.glb',
-                    cameraZ: -4000,
-                    size: 100,
-                    inverse: true,
-                    heading: 1800,
-                    movementIntensity: 0.01,
-                    speed: 30,
-                    displayZoom: 5000
-                  },
-                  {
-                    name: "Lockheed Martin F-22 Raptor",
-                    asset: 'lockheed_martin_f-22_raptor.glb',
-                    cameraZ: -100,
-                    size: 200,
-                    inverse: true,
-                    heading: 360 * 3 - 90 - 90,
-                    movementIntensity: 0.003,
-                    speed: 20,
-                    displayZoom: 50
-                  },
-                  {
-                    name: "USAF F35A",
-                    asset: 'low_poly_11_usaf_f35a.glb',
-                    cameraZ: -50,
-                    size: 100,
-                    inverse: false,
-                    heading: 0,
-                    movementIntensity: 0.005,
-                    speed: 10,
-                    displayZoom: 75
-                  }
-                ],
-            }
-        },
-        methods: {
-          displayModel(index) {
-            const plane = this.planes[index];
-            this.currentPlane = index;
-            const event = new CustomEvent("game", {
-              detail: { message: this.state, plane: plane }, // Optional payload
-            });
-            window.dispatchEvent(event); // Or use document.dispatchEvent(event);
-          },
-          stopSim() {
-            this.state = 'select-plane';
-            const event = new CustomEvent("game", {
-              detail: { message: this.state, plane: this.planes[this.currentPlane] }, // Optional payload
-            });
-            window.dispatchEvent(event); // Or use document.dispatchEvent(event);
-
-          },
-          togglePlay() {
-            this.state = 'start-sim';
-            const event = new CustomEvent("game", {
-              detail: { message: this.state, plane: this.planes[this.currentPlane] }, // Optional payload
-            });
-            window.dispatchEvent(event); // Or use document.dispatchEvent(event);
-          },
-        }
-    }
-</script>
-
+</style>

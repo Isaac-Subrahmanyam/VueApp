@@ -29,46 +29,52 @@
     let lastDirection = "right";
 
     let targetPitch = 0;
-    let targetPlanePositionPitch = 0;
     let targetRoll = 0;
     let targetHeading = 0;
+    let targetPitchOrientation = 0;
+    let targetRollOrientation = 0;
+    let targetHeadingOrientation = 0;
 
-    function up() {
-      targetPitch = 1; // Pitch up
-      targetPlanePositionPitch = 1; // Pitch up
-      targetHeading = -0.7;
+    const headingStep = Cesium.Math.toRadians(2); // Change rate for heading (left/right)
+    const pitchStep = Cesium.Math.toRadians(2);   // Change rate for pitch (up/down)
+    const rollStep = Cesium.Math.toRadians(2);    // Change rate for roll (optional)
+
+    function up(invert) {
+      targetRoll = 1;
+      if (invert) targetRollOrientation = -6;
+      else targetPitchOrientation = 6;
     }
 
-    function down() {
-      targetPitch = -1; // Pitch down
-      targetPlanePositionPitch = -1; // Pitch down
-      targetHeading = 1.2;
+    function down(invert) {
+      targetRoll = -1;
+      if (invert) targetRollOrientation = 6;
+      else targetPitchOrientation = -6;
     }
 
-    function left() {
-      targetRoll = -2; // Roll left
+    function left(invert) {
+      targetHeading = -1;
+      if (invert) targetHeadingOrientation = -6;
+      else targetRollOrientation = -6;
+    }
+
+    function right(invert) {
       targetHeading = 1;
-      targetPitch = 1; // Pitch up
-    }
-
-    function right() {
-      targetRoll = 2; // Roll right
-      targetPitch = -1; // Pitch up
-      targetHeading = -0.5;
+      if (invert) targetHeadingOrientation = 6;
+      else targetRollOrientation = 6;
     }
 
     function handleKeyDown(event) {
       if (event.key === 'ArrowUp') {
-        up();
+        up(plane?.invert);
       }
       if (event.key === 'ArrowDown') {
-        down();
+        down(plane?.invert);
       }
       if (event.key === 'ArrowLeft') {
-        left();
+        left(plane?.invert);
       }
       if (event.key === 'ArrowRight') {
-        right();
+        right(plane?.invert);
       }
     }
 
@@ -76,21 +82,23 @@
       targetPitch = 0;
       targetRoll = 0;
       targetHeading = 0;
-      targetPlanePositionPitch = 0;
+      targetPitchOrientation = 0;
+      targetRollOrientation = 0;
+      targetHeadingOrientation = 0;
     }
 
     // Initial settings for the plane
-    const deltaTime = 0.016; // 60 FPS
-    const longitude = -122.4194; // Longitude of the plane's position (e.g., San Francisco)
-    const latitude = 37.7749;    // Latitude of the plane's position (e.g., San Francisco)
-    const altitude = 4000;       // Altitude in meters
     let planeHeading = Cesium.Math.toRadians(0);      // Heading in radians (0 is north)
     let planePitch = Cesium.Math.toRadians(0);        // Pitch in radians (level flight)
-    let planePitchPosition = Cesium.Math.toRadians(0);      // Heading in radians (0 is north)
     let planeRoll = Cesium.Math.toRadians(0);         // Roll in radians (no tilt)
-    const headingOffset = Cesium.Math.toRadians(-30); // Adjust based on model alignment
+    let planeHeadingOrientation = Cesium.Math.toRadians(0);      // Heading in radians (0 is north)
+    let planePitchOrientation = Cesium.Math.toRadians(0);        // Pitch in radians (level flight)
+    let planeRollOrientation = Cesium.Math.toRadians(0);         // Roll in radians (no tilt)
+    const headingOffset = Cesium.Math.toRadians(90); // Adjust based on model alignment
+    const planePitchOffset = Cesium.Math.toRadians(0); // Adjust based on model alignment
+    const planeRollOffset = Cesium.Math.toRadians(0); // Adjust based on model alignment
     let airplaneEntity = null;
-    let cameraZ, movementIntensity, size, inverse, speed, planeHeadingPosition;
+    let cameraZ, movementIntensity, size, inverse, speed, plane, location;
 
     function initializeCesium() {
       viewer = new Cesium.Viewer('cesiumContainer', {
@@ -108,21 +116,29 @@
         if (currentPath === "/flight-sim" && airplaneEntity) {
           if (gameMode === 'start-sim') {
             const currentPosition = airplaneEntity.position.getValue(viewer.clock.currentTime);
-            let correctedHeading = planeHeading + headingOffset;
             const pitch = Cesium.Math.toRadians(planePitch); // Adjust dynamically
             planePitch += (targetPitch - planePitch) * movementIntensity; // Smooth transition
-            planePitchPosition += (targetPlanePositionPitch - planePitchPosition) * movementIntensity;
             planeRoll += (targetRoll - planeRoll) * movementIntensity;
             planeHeading += (targetHeading - planeHeading) * movementIntensity;
+            planePitchOrientation += (targetPitchOrientation - planePitchOrientation) * movementIntensity; // Smooth transition
+            planeRollOrientation += (targetRollOrientation - planeRollOrientation) * movementIntensity;
+            planeHeadingOrientation += (targetHeadingOrientation - planeHeadingOrientation) * movementIntensity;
             const isInverse = (inverse ? -1 : 1);
-            const hpr = new Cesium.HeadingPitchRoll(isInverse * planeHeadingPosition / 10, isInverse * planePitchPosition / 10, isInverse * planeRoll / 10);
+            const hpr = new Cesium.HeadingPitchRoll((planeHeading + headingOffset), (planePitch + planePitchOffset), (planeRoll + planeRollOffset));
+            const hprOrientation = new Cesium.HeadingPitchRoll(
+              isInverse * (Cesium.Math.toRadians((plane?.heading ? plane.heading : 0)) + ((planeHeadingOrientation) / 10)),
+              isInverse * (planePitchOrientation / 10),
+              isInverse * (planeRollOrientation / 10)
+            );
+
+            // Generate the transformation matrix for the plane's local frame
+            const transform = Cesium.Transforms.headingPitchRollToFixedFrame(
+              currentPosition,
+              hpr
+            );
 
             // Calculate the forward movement vector based on heading and pitch
-            const movementVector = new Cesium.Cartesian3(
-              Math.cos(correctedHeading), // X-axis component
-              Math.sin(correctedHeading), // Y-axis component
-              Math.sin(planePitch) * Math.cos(correctedHeading) // Z-axis component
-            );
+            const movementVector = Cesium.Matrix4.getColumn(transform, 1, new Cesium.Cartesian3());
             Cesium.Cartesian3.normalize(movementVector, movementVector);
 
             // Scale the forward vector by speed and time delta
@@ -137,7 +153,7 @@
             airplaneEntity.position = new Cesium.ConstantPositionProperty(newPosition);
             airplaneEntity.orientation = Cesium.Transforms.headingPitchRollQuaternion(
               newPosition,
-              hpr
+              hprOrientation
             );
 
             const planePosition = airplaneEntity.position.getValue(viewer.clock.currentTime);
@@ -167,30 +183,29 @@
         initializeCesium();
         viewEventListeners();
 
-        const plane = event.detail.plane;
+        plane = event.detail.plane;
+        location = event.detail.location;
         cameraZ = plane.cameraZ;
         movementIntensity = plane.movementIntensity;
         size = plane.size;
         inverse = plane.inverse;
         speed = plane.speed;
-        planeHeadingPosition = Cesium.Math.toRadians(plane.heading);
 
         airplaneEntity = viewer.entities.add({
           name: "Cesium Air",
-          position: Cesium.Cartesian3.fromDegrees(longitude, latitude, altitude),
+          position: Cesium.Cartesian3.fromDegrees(location.longitude, location.latitude, location.altitude),
           model: {
             uri: plane.asset, // Replace with the path to your downloaded Cesium Air model
             minimumPixelSize: size,
             debugShowBoundingVolume: true
           },
           orientation: Cesium.Transforms.headingPitchRollQuaternion(
-            Cesium.Cartesian3.fromDegrees(longitude, latitude, altitude),
-            new Cesium.HeadingPitchRoll(planeHeadingPosition, planePitchPosition, planeRoll)
+            Cesium.Cartesian3.fromDegrees(location.longitude, location.latitude, location.altitude),
+            new Cesium.HeadingPitchRoll(planeHeading, planePitch, planeRoll)
           )
         });
         // Automatically track the airplane
         viewer.trackedEntity = airplaneEntity;
-
         viewer.scene.screenSpaceCameraController.minimumZoomDistance = plane.displayZoom
       }
 
@@ -212,20 +227,26 @@
         size = plane.size;
         inverse = plane.inverse;
         speed = plane.speed;
-        planeHeadingPosition = Cesium.Math.toRadians(plane.heading);
+
+        const rotationMatrix = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(-90));
+        const modelMatrix = Cesium.Transforms.headingPitchRollToFixedFrame(
+          Cesium.Cartesian3.fromDegrees(location.longitude, location.latitude, location.altitude),
+          new Cesium.HeadingPitchRoll(0, 0, 0)
+        );
+        Cesium.Matrix4.multiplyByMatrix3(modelMatrix, rotationMatrix, modelMatrix);
 
         // Adding the plane to the Cesium viewer
         airplaneEntity = viewer.entities.add({
           name: "Cesium Air",
-          position: Cesium.Cartesian3.fromDegrees(longitude, latitude, altitude),
+          position: Cesium.Cartesian3.fromDegrees(location.longitude, location.latitude, location.altitude),
           model: {
             uri: plane.asset, // Replace with the path to your downloaded Cesium Air model
             minimumPixelSize: size,
             debugShowBoundingVolume: true
           },
           orientation: Cesium.Transforms.headingPitchRollQuaternion(
-            Cesium.Cartesian3.fromDegrees(longitude, latitude, altitude),
-            new Cesium.HeadingPitchRoll(planeHeadingPosition, planePitchPosition, planeRoll)
+            Cesium.Cartesian3.fromDegrees(location.longitude, location.latitude, location.altitude),
+            new Cesium.HeadingPitchRoll(headingOffset, planePitchOffset, planeRollOffset)
           )
         });
 
@@ -250,15 +271,17 @@
     window.addEventListener("controls", (event) => {
       const control = event.detail.message
 
-      if (control === "up") up();
-      if (control === "down") down();
-      if (control === "left") left();
-      if (control === "right") right();
+      if (control === "up") up(plane?.invert);
+      if (control === "down") down(plane?.invert);
+      if (control === "left") left(plane?.invert);
+      if (control === "right") right(plane?.invert);
       if (control === "stop") {
         targetPitch = 0;
         targetRoll = 0;
         targetHeading = 0;
-        targetPlanePositionPitch = 0;
+        targetPitchOrientation = 0;
+        targetRollOrientation = 0;
+        targetHeadingOrientation = 0;
       }
     })
 
