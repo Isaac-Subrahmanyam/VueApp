@@ -14,6 +14,11 @@ const routes = [
     component: () => import('../views/About.vue')
   },
   {
+    path: '/flight-sim',
+    name: 'Flight Sim',
+    component: () => import('../flight-sim/FlightSimHome.vue')
+  },
+  {
     path: '/',
     redirect: '/about'
   },

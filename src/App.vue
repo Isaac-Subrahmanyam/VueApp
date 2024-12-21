@@ -27,7 +27,7 @@ export default {
 }
 
 #gamescript {
-  padding-bottom: 40px;
+  padding-bottom: 200px;
   padding-top: 1rem;
   filter: drop-shadow(0 0 0.75rem #3a93b3);
 }

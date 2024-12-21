@@ -16,35 +16,271 @@
 <body>
   <div id="cesiumContainer" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;"></div>
   <script type="module">
-    Cesium.Ion.defaultAccessToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3MmI5ZGM0Mi1iNTRjLTQ5NzEtYTZmMi0wYmEwYTRkZGU4MDQiLCJpZCI6MTUyMTE3LCJpYXQiOjE2ODg2OTc1NzN9.uTVUDXycDpVJbRf9kqD0bKrjCoqUsxW4Pj4f3IRrvGg';
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3MmI5ZGM0Mi1iNTRjLTQ5NzEtYTZmMi0wYmEwYTRkZGU4MDQiLCJpZCI6MTUyMTE3LCJpYXQiOjE2ODg2OTc1NzN9.uTVUDXycDpVJbRf9kqD0bKrjCoqUsxW4Pj4f3IRrvGg';
 
     // Initialize the Cesium Viewer in the HTML element with the `cesiumContainer` ID.
-    const viewer=new Cesium.Viewer('cesiumContainer',{
+    let viewer = new Cesium.Viewer('cesiumContainer', {
       terrain: Cesium.Terrain.fromWorldTerrain(),
     });
 
-    let lastClientX=0;
-    let lastClientY=0;
-    let lastDirection="right"
+    let gameMode = "stop-sim";
+    let lastClientX = 0;
+    let lastClientY = 0;
+    let lastDirection = "right";
 
-    // // Orbit this point
-    viewer.clock.onTick.addEventListener(function(clock) {
-      if(lastDirection==='right') viewer.scene.camera.rotateRight(0.001);
-      if(lastDirection==='left') viewer.scene.camera.rotateLeft(0.001);
+    let targetPitch = 0;
+    let targetPlanePositionPitch = 0;
+    let targetRoll = 0;
+    let targetHeading = 0;
+
+    function up() {
+      targetPitch = 1; // Pitch up
+      targetPlanePositionPitch = 1; // Pitch up
+      targetHeading = -0.7;
+    }
+
+    function down() {
+      targetPitch = -1; // Pitch down
+      targetPlanePositionPitch = -1; // Pitch down
+      targetHeading = 1.2;
+    }
+
+    function left() {
+      targetRoll = -2; // Roll left
+      targetHeading = 1;
+      targetPitch = 1; // Pitch up
+    }
+
+    function right() {
+      targetRoll = 2; // Roll right
+      targetPitch = -1; // Pitch up
+      targetHeading = -0.5;
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === 'ArrowUp') {
+        up();
+      }
+      if (event.key === 'ArrowDown') {
+        down();
+      }
+      if (event.key === 'ArrowLeft') {
+        left();
+      }
+      if (event.key === 'ArrowRight') {
+        right();
+      }
+    }
+
+    function handleKeyUp(event) {
+      targetPitch = 0;
+      targetRoll = 0;
+      targetHeading = 0;
+      targetPlanePositionPitch = 0;
+    }
+
+    // Initial settings for the plane
+    const deltaTime = 0.016; // 60 FPS
+    const longitude = -122.4194; // Longitude of the plane's position (e.g., San Francisco)
+    const latitude = 37.7749;    // Latitude of the plane's position (e.g., San Francisco)
+    const altitude = 4000;       // Altitude in meters
+    let planeHeading = Cesium.Math.toRadians(0);      // Heading in radians (0 is north)
+    let planePitch = Cesium.Math.toRadians(0);        // Pitch in radians (level flight)
+    let planePitchPosition = Cesium.Math.toRadians(0);      // Heading in radians (0 is north)
+    let planeRoll = Cesium.Math.toRadians(0);         // Roll in radians (no tilt)
+    const headingOffset = Cesium.Math.toRadians(-30); // Adjust based on model alignment
+    let airplaneEntity = null;
+    const currentPlane = 3;
+    const planes = [
+      {
+        name: "Cesium Air",
+        asset: 'Cesium_Air.glb',
+        cameraZ: -100,
+        size: 108,
+        inverse: false,
+        heading: 0,
+        movementIntensity: 0.002,
+        speed: 1,
+      },
+      {
+        name: "Tupolev TU-142m Bomber Plane",
+        asset: 'tupolev_tu-142m_bomber_plane.glb',
+        cameraZ: -100,
+        size: 700,
+        inverse: false,
+        heading: 0,
+        movementIntensity: 0.002,
+        speed: 1,
+      },
+      {
+        name: "Northrop Grumman B-2 Spirit Stealth Bomber Plane",
+        asset: 'northrop_grumman_b-2_spirit_stealth_bomber_plane.glb',
+        cameraZ: -4000,
+        size: 100,
+        inverse: true,
+        heading: 1800,
+        movementIntensity: 0.002,
+        speed: 1
+      },
+      {
+        name: "C130-H",
+        asset: 'yc-130prototype_of_c-130.glb',
+        cameraZ: -100,
+        size: 100,
+        inverse: true,
+        heading: 1800,
+        movementIntensity: 0.002,
+        speed: 10
+      },
+      {
+        name: "USAF F35A",
+        asset: 'low_poly_11_usaf_f35a.glb',
+        cameraZ: -50,
+        size: 100,
+        inverse: false,
+        heading: 0,
+        movementIntensity: 0.002,
+        speed: 1
+      }
+    ]
+
+    let cameraZ, movementIntensity, size, inverse, speed, planeHeadingPosition;
+
+    function initializeCesium() {
+      viewer = new Cesium.Viewer('cesiumContainer', {
+        terrain: Cesium.Terrain.fromWorldTerrain(),
+      });
+    }
+
+    function viewEventListeners() {
+      viewer.clock.onTick.addEventListener(() => {
+        const currentPath = window.location.pathname;
+        if (currentPath !== "/flight-sim") {
+          if (lastDirection === 'right') viewer.scene.camera.rotateRight(0.001);
+          if (lastDirection === 'left') viewer.scene.camera.rotateLeft(0.001);
+        }
+        if (currentPath === "/flight-sim" && airplaneEntity) {
+          const currentPosition = airplaneEntity.position.getValue(viewer.clock.currentTime);
+          let correctedHeading = planeHeading + headingOffset;
+          const pitch = Cesium.Math.toRadians(planePitch); // Adjust dynamically
+          planePitch += (targetPitch - planePitch) * movementIntensity; // Smooth transition
+          planePitchPosition += (targetPlanePositionPitch - planePitchPosition) * movementIntensity;
+          planeRoll += (targetRoll - planeRoll) * movementIntensity;
+          planeHeading += (targetHeading - planeHeading) * movementIntensity;
+          const isInverse = (inverse ? -1 : 1);
+          const hpr = new Cesium.HeadingPitchRoll(isInverse * planeHeadingPosition / 10, isInverse * planePitchPosition / 10, isInverse * planeRoll / 10);
+
+          // Calculate the forward movement vector based on heading and pitch
+          const movementVector = new Cesium.Cartesian3(
+            Math.cos(correctedHeading), // X-axis component
+            Math.sin(correctedHeading), // Y-axis component
+            Math.sin(planePitch) * Math.cos(correctedHeading) // Z-axis component
+          );
+          Cesium.Cartesian3.normalize(movementVector, movementVector);
+
+          // Scale the forward vector by speed and time delta
+          const scaledMovement = Cesium.Cartesian3.multiplyByScalar(
+            movementVector,
+            speed,
+            new Cesium.Cartesian3()
+          );
+
+          const newPosition = Cesium.Cartesian3.add(currentPosition, scaledMovement, new Cesium.Cartesian3());
+
+          airplaneEntity.position = new Cesium.ConstantPositionProperty(newPosition);
+          airplaneEntity.orientation = Cesium.Transforms.headingPitchRollQuaternion(
+            newPosition,
+            hpr
+          );
+
+          const planePosition = airplaneEntity.position.getValue(viewer.clock.currentTime);
+          // Orbit around the plane at a fixed distance
+          const cameraOffset = new Cesium.Cartesian3(cameraZ, 0, 20); // Customize the distance and height
+          viewer.camera.lookAt(planePosition, cameraOffset);
+        }
+      });
+
+    }
+
+    window.addEventListener("game", (event) => {
+      gameMode = event.detail.message;
+
+      if (event.detail.message === 'start-sim') {
+        cameraZ = planes[currentPlane].cameraZ;
+        movementIntensity = planes[currentPlane].movementIntensity;
+        size = planes[currentPlane].size;
+        inverse = planes[currentPlane].inverse;
+        speed = planes[currentPlane].speed;
+        planeHeadingPosition = Cesium.Math.toRadians(planes[currentPlane].heading);
+
+        // Adding the plane to the Cesium viewer
+        airplaneEntity = viewer.entities.add({
+          name: "Cesium Air",
+          position: Cesium.Cartesian3.fromDegrees(longitude, latitude, altitude),
+          model: {
+            uri: planes[currentPlane].asset, // Replace with the path to your downloaded Cesium Air model
+            minimumPixelSize: size,
+            debugShowBoundingVolume: true
+          },
+          orientation: Cesium.Transforms.headingPitchRollQuaternion(
+            Cesium.Cartesian3.fromDegrees(longitude, latitude, altitude),
+            new Cesium.HeadingPitchRoll(planeHeadingPosition, planePitchPosition, planeRoll)
+          )
+        });
+
+        // Automatically track the airplane
+        viewer.trackedEntity = airplaneEntity;
+
+      } else if (event.detail.message === 'stop-sim') {
+        // Destroy the current viewer
+        viewer.entities.removeAll();
+        viewer.scene.primitives.removeAll();
+        airplaneEntity = null;
+        viewer.trackedEntity = null;
+        viewer.destroy();
+
+        // Reinitialize the viewer
+        initializeCesium();
+        viewEventListeners();
+      }
+
     });
 
-    window.addEventListener("mousemove",(event) => {
-      if(event.clientX>lastClientX) {
-        viewer.scene.camera.rotateLeft(event.clientX/50000);
-        lastDirection="left"
+    window.addEventListener("controls", (event) => {
+      const control = event.detail.message
+      console.log(control)
+
+      if (control === "up") up();
+      if (control === "down") down();
+      if (control === "left") left();
+      if (control === "right") right();
+      if (control === "stop") {
+        targetPitch = 0;
+        targetRoll = 0;
+        targetHeading = 0;
+        targetPlanePositionPitch = 0;
       }
-      else if(event.clientX<lastClientX) {
-        viewer.scene.camera.rotateRight(event.clientX/50000);
-        lastDirection="right"
+    })
+
+    viewEventListeners();
+    window.addEventListener("mousemove", (event) => {
+      const currentPath = window.location.pathname;
+      if (currentPath !== "/flight-sim") {
+        if (event.clientX > lastClientX) {
+          viewer.scene.camera.rotateLeft(event.clientX / 50000);
+          lastDirection = "left"
+        }
+        else if (event.clientX < lastClientX) {
+          viewer.scene.camera.rotateRight(event.clientX / 50000);
+          lastDirection = "right"
+        }
+        lastClientX = event.clientX;
+        lastClientY = event.clientY;
       }
-      lastClientX=event.clientX;
-      lastClientY=event.clientY;
     });
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keyup', handleKeyUp);
 
   </script>
   <div id="app"></div>

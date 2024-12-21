@@ -27,6 +27,13 @@
             />
             <bottom-nav-component
               @click="scrollToTop()"
+              to="/flight-sim"
+              icon="fas fa-plane"
+              name="IFS"
+              value="0"
+            />
+            <bottom-nav-component
+              @click="scrollToTop()"
               to="/contact"
               icon="fas fa-comment-dots"
               name="Contact"
