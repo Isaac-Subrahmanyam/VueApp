@@ -158,6 +158,20 @@
             );
 
             const planePosition = airplaneEntity.position.getValue(viewer.clock.currentTime);
+            const cartographic = Cesium.Cartographic.fromCartesian(planePosition);
+            const long = Cesium.Math.toDegrees(cartographic.longitude);
+            const lat = Cesium.Math.toDegrees(cartographic.latitude);
+            const event2 = new CustomEvent("changeMapView", {
+              detail: {
+                location: {
+                  longitude: long,
+                  latitude: lat,
+                  updateHeading: false
+                }
+              }, // Optional payload
+            });
+            window.dispatchEvent(event2);
+
             // Orbit around the plane at a fixed distance
             const cameraOffset = new Cesium.Cartesian3(cameraZ, 0, 20); // Customize the distance and height
             viewer.camera.lookAt(planePosition, cameraOffset);

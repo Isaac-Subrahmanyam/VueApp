@@ -1,11 +1,10 @@
 <template>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <title>Flight Sim</title>
   <div style="background-color: #ffffffb3; backdrop-filter: blur(8px); box-shadow: 0px 0px 4px 4px rgba(127, 180, 216, 0.5); transform: translateY(-20px);">
-    <h1 style="padding: 0.5rem; user-select: none;">(IFS) - Isaac's Flight Simulator</h1>
+    <h1 style="padding: 0.5rem; user-select: none; font-size: 1.2rem; ">(IFS) - Isaac's Flight Simulator</h1>
   </div>
   <div style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(8px); transform: translateY(-40px);">
-    <h1 style="padding: 0.5rem; font-size: 1.2rem; color: rgba(255, 255, 255, 0.6); user-select: none;" v-if="state === 'start-sim'">{{ planes[currentPlane]?.name || "No Plane Selected" }} - {{locations[currentLocation]?.name || "No Location Selected"}}</h1>
+    <h1 style="padding: 0.5rem; font-size: 0.8rem; color: rgba(255, 255, 255, 0.6); user-select: none;" v-if="state === 'start-sim'">{{ planes[currentPlane]?.name || "No Plane Selected" }} - {{locations[currentLocation]?.name || "No Location Selected"}}</h1>
   </div>
   <div class="keypad-container" v-show="state === 'start-sim'">
     <div class="keypad">
@@ -66,21 +65,136 @@
       </ul>
   </div>
 
-  <div class="right-container" v-show="state === 'select-plane'">
+  <div class="right-container" v-show="state === 'select-plane'" v-if="currentView === 'planes'">
       <h2 style="color: #ffffffb3;">{{ planes[currentPlane]?.description }}</h2>
   </div>
+  
+  <div id="radarMap" class="map-view"></div>
 </template>
 
 <script>
-    export default {
+    import 'ol/ol.css'; // Include OpenLayers CSS
+    import Map from 'ol/Map.js';
+    import View from 'ol/View.js';
+    import TileLayer from 'ol/layer/Tile.js';
+    import OSM from 'ol/source/OSM.js';
+    import Feature from 'ol/Feature.js';
+    import Point from 'ol/geom/Point.js';
+    import VectorLayer from 'ol/layer/Vector.js';
+    import VectorSource from 'ol/source/Vector.js';
+    import { Style, Icon, Stroke } from 'ol/style.js';
+    import { fromLonLat } from 'ol/proj';
+    import { LineString } from 'ol/geom';
+ 
+   export default {
         name: 'App',
         mounted() {
+          // Initialize the radar map
+          const radarSource = new VectorSource();
+          const radarLayer = new VectorLayer({ source: radarSource });
+
+          const radarMap = new Map({
+              target: 'radarMap',
+              layers: [
+                  new TileLayer({ source: new OSM() }),
+                  radarLayer
+              ],
+              view: new View({
+                  center: [0, 0], // Default center, updated dynamically
+                  zoom: 0.5, // Radar map zoom level
+                  maxZoom: 16,
+                  minZoom: 10
+              }),
+              controls: [] // No controls for simplicity
+          });
+
+          radarMap.getView().setRotation(-Math.PI / 2);
+
+          // Global vector source and layer for the heading line
+          let headingLineSource = new VectorSource();
+
+          const headingLineLayer = new VectorLayer({
+              source: headingLineSource,
+              style: new Style({
+                  stroke: new Stroke({
+                      color: 'rgba(255,0,0,0.25)',
+                      width: 5
+                  })
+              })
+          });
+
+          function updateHeadingLine(longitude, latitude, distance = 1000) {
+              const heading = Math.PI / 2;
+              const earthRadius = 6371; // Earth's radius in kilometers
+              const endLatitude = latitude + (distance / earthRadius) * (180 / Math.PI) * Math.cos(heading);
+              const endLongitude = longitude + (distance / earthRadius) * (180 / Math.PI) * Math.sin(heading) / Math.cos(latitude * Math.PI / 180);
+
+              const coordinates = [
+                  fromLonLat([longitude, latitude]),
+                  fromLonLat([endLongitude, endLatitude])
+              ];
+
+              // Use `let` for reassignment
+              let headingLineFeature = headingLineSource.getFeatures()[0];
+              if (!headingLineFeature) {
+                  headingLineFeature = new Feature({
+                      geometry: new LineString(coordinates)
+                  });
+                  headingLineSource.addFeature(headingLineFeature);
+              } else {
+                  headingLineFeature.getGeometry().setCoordinates(coordinates);
+              }
+          }
+
+          // Add a feature to represent the plane's location
+          const planeFeature = new Feature({
+              geometry: new Point([0, 0]) // Updated dynamically
+          });
+          planeFeature.setStyle(new Style({
+              image: new Icon({
+                  src: 'red_marker.png', // Replace with your plane icon
+                  scale: 0.05
+              })
+          }));
+          radarSource.addFeature(planeFeature);
+
+          // Update radar map's view center
+          radarMap.getView().setCenter(fromLonLat([this.locations[this.currentLocation].longitude, this.locations[this.currentLocation].latitude]));
+
+          updateHeadingLine(this.locations[this.currentLocation].longitude, this.locations[this.currentLocation].latitude);
+
+          // Update plane's feature position
+          planeFeature.setGeometry(new Point(fromLonLat([this.locations[this.currentLocation].longitude, this.locations[this.currentLocation].latitude])));
+          
+          // Add the layer to the radar map
+          radarMap.addLayer(headingLineLayer);
+
+          window.addEventListener("changeMapView", (event) => {
+            const long = event.detail.location.longitude;
+            const lat = event.detail.location.latitude;
+
+            // Update radar map's view center
+            radarMap.getView().setCenter(fromLonLat([long, lat]));
+
+            // Update plane's feature position
+            planeFeature.setGeometry(new Point(fromLonLat([long, lat])));
+
+            if(event.detail.updateHeading) updateHeadingLine(long, lat)
+          })
+
           const event = new CustomEvent("game", {
             detail: { message: this.state, plane: this.planes[this.currentPlane], location: this.locations[this.currentLocation] }, // Optional payload
           });
           window.dispatchEvent(event); // Or use document.dispatchEvent(event);
 
           let intervalId = null; // Stores the interval for continuous updates
+
+          const radarMapElement = document.getElementById("radarMap");
+          if (this.currentView === "locations") {
+              radarMapElement.style.display = "block"; // Show the radar map
+          } else {
+              radarMapElement.style.display = "none"; // Hide the radar map
+          }
 
           // Function to start holding down the button
           function startHolding(callback) {
@@ -377,8 +491,13 @@
         },
         methods: {
           switchView(view) {
-            this.currentView = view;
-            this.selectedIndex = null; // Reset selection when switching views
+            this.currentView = view;            
+            const radarMapElement = document.getElementById("radarMap");
+            if (this.currentView === "locations") {
+                radarMapElement.style.display = "block"; // Show the radar map
+            } else {
+                radarMapElement.style.display = "none"; // Hide the radar map
+            }
           },
           displayModel(index) {
             const plane = this.planes[index];
@@ -394,18 +513,33 @@
             const event = new CustomEvent("game", {
               detail: { message: this.state, plane: this.planes[this.currentPlane], location: location }, // Optional payload
             });
+            const event2 = new CustomEvent("changeMapView", {
+              detail: { location: location, updateHeading: true }, // Optional payload
+            });
             window.dispatchEvent(event); // Or use document.dispatchEvent(event);
+            window.dispatchEvent(event2);
           },
           stopSim() {
             this.state = 'select-plane';
+            const radarMapElement = document.getElementById("radarMap");
+            if (this.currentView === "locations") {
+                radarMapElement.style.display = "block"; // Show the radar map
+            } else {
+                radarMapElement.style.display = "none"; // Hide the radar map
+            }
             const event = new CustomEvent("game", {
               detail: { message: this.state, plane: this.planes[this.currentPlane], location: this.locations[this.currentLocation] }, // Optional payload
             });
+            const event2 = new CustomEvent("changeMapView", {
+              detail: { location: this.locations[this.currentLocation], updateHeading: true }, // Optional payload
+            });
             window.dispatchEvent(event); // Or use document.dispatchEvent(event);
-
+            window.dispatchEvent(event2);
           },
           togglePlay() {
             this.state = 'start-sim';
+            const radarMapElement = document.getElementById("radarMap");
+            radarMapElement.style.display = "block"; // Show the radar map
             const event = new CustomEvent("game", {
               detail: { message: this.state, plane: this.planes[this.currentPlane] }, // Optional payload
             });
@@ -588,7 +722,7 @@
         
       .right-container {
         position: fixed;
-        top: 145px;
+        top: 85px;
         right: 1rem;
         width: 25%; /* Default width for desktop */
         height: 27vh;
@@ -608,10 +742,10 @@
 
       .left-container {
         position: fixed;
-        top: 110px;
+        top: 85px;
         left: 12px;
         width: 25%; /* Default width for desktop */
-        height: 55vh;
+        height: 60vh;
         backdrop-filter: blur(8px);
         background-color: #ffffffb3;
         border-radius: 46px 46px 46px 46px;
@@ -755,11 +889,35 @@
       align-items: center;
     }
 
+    .map-view {
+      position: absolute;
+      top: 102px;
+      right: 50px;
+      width: 15%; /* Default width for desktop */
+      height: 30vh;
+      overflow: hidden;
+      z-index: 100;
+      border-radius: 300px 300px 300px 300px;
+      box-shadow: 0px 0px 4px 4px rgba(127, 180, 216, 0.5);
+    }
+
     /* Responsive adjustments */
     @media screen and (max-width: 768px) {
       .keypad-container {
         width: 35vw;
         height: 35vw;
+      }
+
+      .map-view {
+        position: absolute;
+        top: 85px;
+        right: 25px;
+        width: 27%; /* Default width for desktop */
+        height: 20vh;
+        overflow: hidden;
+        z-index: 100;
+        border-radius: 100px 100px 100px 100px;
+        box-shadow: 0px 0px 4px 4px rgba(127, 180, 216, 0.5);
       }
 
       .keypad button {
