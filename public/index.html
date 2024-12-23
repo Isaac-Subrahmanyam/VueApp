@@ -137,7 +137,9 @@
               length: 400000.0, // Infinite altitude
               topRadius: radius,
               bottomRadius: radius,
-              material: color
+              material: color,
+              outline: true,
+              outlineColor: Cesium.Color.BLACK,
             }
           });
         } else if (geometry.getType() === 'Polygon') {
@@ -152,7 +154,9 @@
             polygon: {
               hierarchy: new Cesium.PolygonHierarchy(coordinates),
               extrudedHeight: 400000.0, // Infinite altitude
-              material: color
+              material: color,
+              outline: true,
+              outlineColor: Cesium.Color.BLACK,
             }
           });
         }
