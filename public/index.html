@@ -106,6 +106,62 @@
       });
     }
 
+    function webMercatorToWGS84(x, y) {
+      const R_MAJOR = 6378137.0; // Earth's major axis in meters (Web Mercator reference)
+      const R_MINOR = 6356752.3142; // Earth's minor axis in meters
+
+      const longitude = (x / R_MAJOR) * (180 / Math.PI);
+      const latitude = (Math.atan(Math.exp(y / R_MAJOR)) * 360 / Math.PI) - 90;
+
+      return [longitude, latitude];
+    }
+
+    function convertToCesiumShapes(features) {
+      features.forEach((feature) => {
+        const geometry = feature.getGeometry();
+
+        const color = feature.get('type') === "obstacle" ? Cesium.Color.RED.withAlpha(0.3) : Cesium.Color.GREEN.withAlpha(0.3);
+
+        if (geometry.getType() === 'Circle') {
+          // Get circle center and radius in degrees
+          const [projectedX, projectedY] = geometry.getCenter(); // Assumes [longitude, latitude]
+          const radius = geometry.getRadius();
+          const [longitude, latitude] = webMercatorToWGS84(projectedX, projectedY);
+
+          console.log("[" + longitude + ", " + latitude + "]")
+
+          viewer.entities.add({
+            name: feature.get('type'), // e.g., "obstacle" or "finish-line"
+            position: Cesium.Cartesian3.fromDegrees(longitude, latitude, 10),
+            cylinder: {
+              length: 400000.0, // Infinite altitude
+              topRadius: radius,
+              bottomRadius: radius,
+              material: color
+            }
+          });
+        } else if (geometry.getType() === 'Polygon') {
+          // Convert Polygon coordinates to Cesium Cartesian3
+          const coordinates = geometry.getCoordinates()[0].map((coord) => {
+            const [longitude, latitude] = webMercatorToWGS84(coord[0], coord[1])
+            return Cesium.Cartesian3.fromDegrees(longitude, latitude, 10);
+          });
+
+          viewer.entities.add({
+            name: feature.get('type'), // e.g., "obstacle" or "finish-line"
+            polygon: {
+              hierarchy: new Cesium.PolygonHierarchy(coordinates),
+              extrudedHeight: 400000.0, // Infinite altitude
+              material: color
+            }
+          });
+        }
+      });
+
+      viewer.zoomTo(viewer.entities);
+    }
+
+
     function viewEventListeners() {
       let lastTime = viewer.clock.currentTime; // Store initial time
       viewer.clock.onTick.addEventListener(() => {
@@ -262,6 +318,8 @@
             new Cesium.HeadingPitchRoll(headingOffset, planePitchOffset, planeRollOffset)
           )
         });
+
+        convertToCesiumShapes(event.detail.features);
 
         // Automatically track the airplane
         viewer.trackedEntity = airplaneEntity;

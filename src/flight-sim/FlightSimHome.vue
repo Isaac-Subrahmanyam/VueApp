@@ -14,11 +14,6 @@
       <button id="down"><i class="fas fa-arrow-down" style="user-select: none;"></i></button>
     </div>
   </div>
-  <div class="play-button-container" v-show="state === 'select-plane'">
-      <button class="play-button" @click="togglePlay" style="user-select: none;">
-        <i class="fas fa-play" style="user-select: none;"></i>
-      </button>
-  </div>
   <div class="stop-button-container" v-show="state === 'start-sim'">
       <button class="play-button" @click="stopSim">
         <i class="fas fa-stop" style="user-select: none;"></i>
@@ -40,8 +35,15 @@
     >
       Locations
     </button>
+    <button
+      class="toggle-button"
+      :class="{ active: currentView === 'missions' }"
+      @click="switchView('missions')"
+    >
+      Missions
+    </button>
   </div>
-  <div class="left-container" v-show="state === 'select-plane'">
+  <div class="left-container" v-show="state === 'select-plane' && currentView !== 'missions'">
       <h2>{{ currentView === 'planes' ? 'Select Plane' : 'Select Location' }}</h2>
       <ul v-if="currentView === 'planes'">
         <li
@@ -69,7 +71,45 @@
       <h2 style="color: #ffffffb3;">{{ planes[currentPlane]?.description }}</h2>
   </div>
   
-  <div id="radarMap" class="map-view"></div>
+  <div id="radarMap" class="map-view" :class="{ expand: (currentView === 'missions' && state === 'select-plane') }"></div>
+
+  <div id="toolbar" class="toolbar" v-show="currentView === 'missions' && state === 'select-plane'">
+    <!-- Default tool -->
+    <div class="tool-group default">
+      <button id="defaultTool" class="tool-button active" data-tool="default" title="Default">
+        <i class="fas fa-mouse-pointer" style="color: rgba(0, 0, 0, 0.75);"></i>
+      </button>
+      <button id="eraseTool" class="tool-button" data-tool="erase" title="Erase Shapes">
+        <i class="fas fa-eraser" style="color: rgba(0, 0, 0, 0.75);"></i>
+      </button>
+    </div>
+
+    <!-- Obstacle tools -->
+    <div class="tool-group obstacle-group">
+      <button id="circleToolObstacle" class="tool-button" data-tool="circle-obstacle" title="Draw Obstacle Circle">
+        <i class="far fa-circle" style="color: rgba(0, 0, 0, 0.75);"></i>
+      </button>
+      <button id="polygonToolObstacle" class="tool-button" data-tool="polygon-obstacle" title="Draw Obstacle Polygon">
+        <i class="fas fa-draw-polygon" style="color: rgba(0, 0, 0, 0.75);"></i>
+      </button>
+    </div>
+
+    <!-- Finish line tools -->
+    <div class="tool-group finish-line-group">
+      <button id="circleToolFinish" class="tool-button" data-tool="circle-finish" title="Draw Finish Circle">
+        <i class="far fa-circle" style="color: rgba(0, 0, 0, 0.75);"></i>
+      </button>
+      <button id="polygonToolFinish" class="tool-button" data-tool="polygon-finish" title="Draw Finish Polygon">
+        <i class="fas fa-draw-polygon" style="color: rgba(0, 0, 0, 0.75);"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="play-button-container" v-show="state === 'select-plane'">
+      <button class="play-button" @click="togglePlay" style="user-select: none;">
+        <i class="fas fa-play" style="user-select: none;"></i>
+      </button>
+  </div>
 </template>
 
 <script>
@@ -82,188 +122,18 @@
     import Point from 'ol/geom/Point.js';
     import VectorLayer from 'ol/layer/Vector.js';
     import VectorSource from 'ol/source/Vector.js';
-    import { Style, Icon, Stroke } from 'ol/style.js';
+    import { Style, Icon, Stroke, Fill } from 'ol/style.js';
     import { fromLonLat } from 'ol/proj';
     import { LineString } from 'ol/geom';
+    import Draw from 'ol/interaction/Draw.js';
  
    export default {
         name: 'App',
-        mounted() {
-          // Initialize the radar map
-          const radarSource = new VectorSource();
-          const radarLayer = new VectorLayer({ source: radarSource });
-
-          const radarMap = new Map({
-              target: 'radarMap',
-              layers: [
-                  new TileLayer({ source: new OSM() }),
-                  radarLayer
-              ],
-              view: new View({
-                  center: [0, 0], // Default center, updated dynamically
-                  zoom: 0.5, // Radar map zoom level
-                  maxZoom: 16,
-                  minZoom: 10
-              }),
-              controls: [] // No controls for simplicity
-          });
-
-          radarMap.getView().setRotation(-Math.PI / 2);
-
-          // Global vector source and layer for the heading line
-          let headingLineSource = new VectorSource();
-
-          const headingLineLayer = new VectorLayer({
-              source: headingLineSource,
-              style: new Style({
-                  stroke: new Stroke({
-                      color: 'rgba(255,0,0,0.25)',
-                      width: 5
-                  })
-              })
-          });
-
-          function updateHeadingLine(longitude, latitude, distance = 1000) {
-              const heading = Math.PI / 2;
-              const earthRadius = 6371; // Earth's radius in kilometers
-              const endLatitude = latitude + (distance / earthRadius) * (180 / Math.PI) * Math.cos(heading);
-              const endLongitude = longitude + (distance / earthRadius) * (180 / Math.PI) * Math.sin(heading) / Math.cos(latitude * Math.PI / 180);
-
-              const coordinates = [
-                  fromLonLat([longitude, latitude]),
-                  fromLonLat([endLongitude, endLatitude])
-              ];
-
-              // Use `let` for reassignment
-              let headingLineFeature = headingLineSource.getFeatures()[0];
-              if (!headingLineFeature) {
-                  headingLineFeature = new Feature({
-                      geometry: new LineString(coordinates)
-                  });
-                  headingLineSource.addFeature(headingLineFeature);
-              } else {
-                  headingLineFeature.getGeometry().setCoordinates(coordinates);
-              }
-          }
-
-          // Add a feature to represent the plane's location
-          const planeFeature = new Feature({
-              geometry: new Point([0, 0]) // Updated dynamically
-          });
-          planeFeature.setStyle(new Style({
-              image: new Icon({
-                  src: 'red_marker.png', // Replace with your plane icon
-                  scale: 0.05
-              })
-          }));
-          radarSource.addFeature(planeFeature);
-
-          // Update radar map's view center
-          radarMap.getView().setCenter(fromLonLat([this.locations[this.currentLocation].longitude, this.locations[this.currentLocation].latitude]));
-
-          updateHeadingLine(this.locations[this.currentLocation].longitude, this.locations[this.currentLocation].latitude);
-
-          // Update plane's feature position
-          planeFeature.setGeometry(new Point(fromLonLat([this.locations[this.currentLocation].longitude, this.locations[this.currentLocation].latitude])));
-          
-          // Add the layer to the radar map
-          radarMap.addLayer(headingLineLayer);
-
-          window.addEventListener("changeMapView", (event) => {
-            const long = event.detail.location.longitude;
-            const lat = event.detail.location.latitude;
-
-            // Update radar map's view center
-            radarMap.getView().setCenter(fromLonLat([long, lat]));
-
-            // Update plane's feature position
-            planeFeature.setGeometry(new Point(fromLonLat([long, lat])));
-
-            if(event.detail.updateHeading) updateHeadingLine(long, lat)
-          })
-
-          const event = new CustomEvent("game", {
-            detail: { message: this.state, plane: this.planes[this.currentPlane], location: this.locations[this.currentLocation] }, // Optional payload
-          });
-          window.dispatchEvent(event); // Or use document.dispatchEvent(event);
-
-          let intervalId = null; // Stores the interval for continuous updates
-
-          const radarMapElement = document.getElementById("radarMap");
-          if (this.currentView === "locations") {
-              radarMapElement.style.display = "block"; // Show the radar map
-          } else {
-              radarMapElement.style.display = "none"; // Hide the radar map
-          }
-
-          // Function to start holding down the button
-          function startHolding(callback) {
-            callback(); // Execute the action immediately
-            intervalId = setInterval(callback, 50); // Execute the action continuously every 50ms
-          }
-
-          // Function to stop holding down the button
-          function stopHolding() {
-            clearInterval(intervalId);
-            const event = new CustomEvent("controls", {
-              detail: { message: "stop" }, // Optional payload
-            });
-            window.dispatchEvent(event);
-          }
-
-          const addControlEventListener = (id, callback) => {
-            const button = document.getElementById(id);
-
-            // Handle mouse and touch events
-            button.addEventListener("mousedown", () => startHolding(callback));
-            button.addEventListener("mouseup", stopHolding);
-            button.addEventListener("mouseleave", stopHolding); // Stop when the mouse leaves the button
-            button.addEventListener("touchstart", (e) => {
-              e.preventDefault();
-              startHolding(callback);
-            });
-            button.addEventListener("touchend", stopHolding);
-            button.addEventListener("touchcancel", stopHolding);
-          };
-
-          addControlEventListener("up", () => {
-            const event = new CustomEvent("controls", {
-              detail: { message: "up" }, // Optional payload
-            });
-            window.dispatchEvent(event);
-          });
-
-          addControlEventListener("down", () => {
-            const event = new CustomEvent("controls", {
-              detail: { message: "down" }, // Optional payload
-            });
-            window.dispatchEvent(event);
-          });
-
-          addControlEventListener("left", () => {
-            const event = new CustomEvent("controls", {
-              detail: { message: "left" }, // Optional payload
-            });
-            window.dispatchEvent(event);
-          });
-
-          addControlEventListener("right", () => {
-            const event = new CustomEvent("controls", {
-              detail: { message: "right" }, // Optional payload
-            });
-            window.dispatchEvent(event);
-          });
-        },
-        beforeUnmount() {
-          const event = new CustomEvent("game", {
-            detail: { message: "stop-sim" }, // Optional payload
-          });
-          window.dispatchEvent(event); // Or use document.dispatchEvent(event);
-        },
         data: function () {
             return {
                 state: 'select-plane',
                 currentView: "planes",
+                features: [],
                 currentPlane: 0,
                 currentLocation: 0,
                 locations: [
@@ -489,15 +359,329 @@
 
             }
         },
+        mounted() {
+          // Initialize the radar map
+          const radarSource = new VectorSource();
+          const radarLayer = new VectorLayer({ source: radarSource });
+
+          const radarMap = new Map({
+              target: 'radarMap',
+              layers: [
+                  new TileLayer({ source: new OSM() }),
+                  radarLayer
+              ],
+              view: new View({
+                  center: [0, 0], // Default center, updated dynamically
+                  zoom: 0.5, // Radar map zoom level
+                  maxZoom: 16,
+                  minZoom: 10
+              }),
+              controls: [] // No controls for simplicity
+          });
+
+          radarMap.getView().setRotation(-Math.PI / 2);
+
+          // Global vector source and layer for the heading line
+          let headingLineSource = new VectorSource();
+
+          const headingLineLayer = new VectorLayer({
+              source: headingLineSource,
+              style: new Style({
+                  stroke: new Stroke({
+                      color: 'rgba(255,0,0,0.25)',
+                      width: 5
+                  })
+              })
+          });
+
+          function updateHeadingLine(longitude, latitude, distance = 1000) {
+              const heading = Math.PI / 2;
+              const earthRadius = 6371; // Earth's radius in kilometers
+              const endLatitude = latitude + (distance / earthRadius) * (180 / Math.PI) * Math.cos(heading);
+              const endLongitude = longitude + (distance / earthRadius) * (180 / Math.PI) * Math.sin(heading) / Math.cos(latitude * Math.PI / 180);
+
+              const coordinates = [
+                  fromLonLat([longitude, latitude]),
+                  fromLonLat([endLongitude, endLatitude])
+              ];
+
+              // Use `let` for reassignment
+              let headingLineFeature = headingLineSource.getFeatures()[0];
+              if (!headingLineFeature) {
+                  headingLineFeature = new Feature({
+                      geometry: new LineString(coordinates)
+                  });
+                  headingLineSource.addFeature(headingLineFeature);
+              } else {
+                  headingLineFeature.getGeometry().setCoordinates(coordinates);
+              }
+          }
+
+          // Add a feature to represent the plane's location
+          const planeFeature = new Feature({
+              geometry: new Point([0, 0]) // Updated dynamically
+          });
+          planeFeature.setStyle(new Style({
+              image: new Icon({
+                  src: 'red_marker.png', // Replace with your plane icon
+                  scale: 0.05
+              })
+          }));
+          radarSource.addFeature(planeFeature);
+
+          // Update radar map's view center
+          radarMap.getView().setCenter(fromLonLat([this.locations[this.currentLocation].longitude, this.locations[this.currentLocation].latitude]));
+
+          updateHeadingLine(this.locations[this.currentLocation].longitude, this.locations[this.currentLocation].latitude);
+
+          // Update plane's feature position
+          planeFeature.setGeometry(new Point(fromLonLat([this.locations[this.currentLocation].longitude, this.locations[this.currentLocation].latitude])));
+          
+          // Add the layer to the radar map
+          radarMap.addLayer(headingLineLayer);
+
+          window.addEventListener("changeMapView", (event) => {
+            const long = event.detail.location.longitude;
+            const lat = event.detail.location.latitude;
+
+            // Update radar map's view center
+            radarMap.getView().setCenter(fromLonLat([long, lat]));
+
+            // Update plane's feature position
+            planeFeature.setGeometry(new Point(fromLonLat([long, lat])));
+
+            if(event.detail.updateHeading) updateHeadingLine(long, lat)
+          })
+
+          window.addEventListener("changeView", () => {
+            setTimeout(() => {
+              radarMap.updateSize();
+            }, 100)
+          })
+
+          window.addEventListener("features", (event) => {
+            this.features = event.detail.features;
+            console.log(this.features)
+          })
+
+          // Vector source and layer for the drawn features
+          const drawSource = new VectorSource();
+          const drawLayer = new VectorLayer({
+            source: drawSource
+          });
+          radarMap.addLayer(drawLayer);
+
+          // Active tool state
+          let drawInteraction = null;
+
+          // Define styles
+          const obstacleStyle = new Style({
+            fill: new Fill({
+              color: 'rgba(255, 0, 0, 0.5)' // Red fill
+            }),
+            stroke: new Stroke({
+              color: 'red', // Red border
+              width: 2
+            })
+          });
+
+          const finishLineStyle = new Style({
+            fill: new Fill({
+              color: 'rgba(0, 255, 0, 0.5)' // Green fill
+            }),
+            stroke: new Stroke({
+              color: 'green', // Green border
+              width: 2
+            })
+          });
+
+          let isErasorOn = false;
+
+          // Function to activate the erase tool
+          radarMap.on('singleclick', (event) => {
+              radarMap.forEachFeatureAtPixel(event.pixel, (feature, layer) => {
+                if (layer === drawLayer && isErasorOn) {
+                  // Remove the feature from the source
+                  drawSource.removeFeature(feature);
+                  const features = drawSource.getFeatures();
+                  const event = new CustomEvent("features", {
+                    detail: { features: features }, // Optional payload
+                  });
+                  window.dispatchEvent(event);
+                }
+              });
+          });
+
+          // Function to set active tool
+          function setActiveTool(tool) {
+
+            // Remove existing interactions
+            radarMap.removeInteraction(drawInteraction);
+            drawInteraction = null;
+
+            // Highlight the active button
+            document.querySelectorAll('.tool-button').forEach((button) => {
+              button.classList.remove('active');
+            });
+            document.querySelector(`[data-tool="${tool}"]`).classList.add('active');
+
+            isErasorOn = false;
+
+            // Add drawing interaction based on selected tool
+            if (tool === 'circle-finish' || tool === 'circle-obstacle') {
+              drawInteraction = new Draw({
+                source: drawSource,
+                type: 'Circle'
+              });
+            } else if (tool === 'line-obstacle' || tool === 'line-finish') {
+              drawInteraction = new Draw({
+                source: drawSource,
+                type: 'LineString'
+              });
+            } else if (tool === 'polygon-obstacle' || tool === 'polygon-finish') {
+              drawInteraction = new Draw({
+                source: drawSource,
+                type: 'Polygon'
+              });
+            } else if (tool === 'erase') {
+              isErasorOn = true;
+            }
+
+            // Add the interaction and style features dynamically
+            if (drawInteraction) {
+              drawInteraction.on('drawend', (event) => {
+                const feature = event.feature;
+
+                // Apply style based on tool type
+                if (tool.startsWith('polygon')) {
+                  if (tool.includes('obstacle')) {
+                    feature.setStyle(obstacleStyle);
+                    feature.set("type", "obstacle")
+                  } else if (tool.includes('finish')) {
+                    feature.setStyle(finishLineStyle);
+                    feature.set("type", "finish-line")
+                  }
+                } else if (tool.startsWith('circle')) {
+                  if (tool.includes('obstacle')) {
+                    feature.setStyle(obstacleStyle);
+                    feature.set("type", "obstacle")
+                  } else if (tool.includes('finish')) {
+                    feature.setStyle(finishLineStyle);
+                    feature.set("type", "finish-line")
+                  }
+                }
+                setTimeout(() => {
+                  const features = drawSource.getFeatures();
+                  const event = new CustomEvent("features", {
+                    detail: { features: features }, // Optional payload
+                  });
+                  window.dispatchEvent(event);
+                }, 100)
+              });
+
+              radarMap.addInteraction(drawInteraction);
+            }
+          }
+
+          // Event listeners for tool buttons
+          document.querySelectorAll('.tool-button').forEach((button) => {
+            button.addEventListener('click', () => {
+              const tool = button.getAttribute('data-tool');
+              setActiveTool(tool);
+            });
+          });
+
+          const event = new CustomEvent("game", {
+            detail: { message: this.state, plane: this.planes[this.currentPlane], location: this.locations[this.currentLocation] }, // Optional payload
+          });
+          window.dispatchEvent(event); // Or use document.dispatchEvent(event);
+
+          let intervalId = null; // Stores the interval for continuous updates
+
+          const radarMapElement = document.getElementById("radarMap");
+          if (this.currentView === "locations" || this.currentView === "missions") {
+              radarMapElement.style.display = "block"; // Show the radar map
+          } else {
+              radarMapElement.style.display = "none"; // Hide the radar map
+          }
+
+          // Function to start holding down the button
+          function startHolding(callback) {
+            callback(); // Execute the action immediately
+            intervalId = setInterval(callback, 50); // Execute the action continuously every 50ms
+          }
+
+          // Function to stop holding down the button
+          function stopHolding() {
+            clearInterval(intervalId);
+            const event = new CustomEvent("controls", {
+              detail: { message: "stop" }, // Optional payload
+            });
+            window.dispatchEvent(event);
+          }
+
+          const addControlEventListener = (id, callback) => {
+            const button = document.getElementById(id);
+
+            // Handle mouse and touch events
+            button.addEventListener("mousedown", () => startHolding(callback));
+            button.addEventListener("mouseup", stopHolding);
+            button.addEventListener("mouseleave", stopHolding); // Stop when the mouse leaves the button
+            button.addEventListener("touchstart", (e) => {
+              e.preventDefault();
+              startHolding(callback);
+            });
+            button.addEventListener("touchend", stopHolding);
+            button.addEventListener("touchcancel", stopHolding);
+          };
+
+          addControlEventListener("up", () => {
+            const event = new CustomEvent("controls", {
+              detail: { message: "up" }, // Optional payload
+            });
+            window.dispatchEvent(event);
+          });
+
+          addControlEventListener("down", () => {
+            const event = new CustomEvent("controls", {
+              detail: { message: "down" }, // Optional payload
+            });
+            window.dispatchEvent(event);
+          });
+
+          addControlEventListener("left", () => {
+            const event = new CustomEvent("controls", {
+              detail: { message: "left" }, // Optional payload
+            });
+            window.dispatchEvent(event);
+          });
+
+          addControlEventListener("right", () => {
+            const event = new CustomEvent("controls", {
+              detail: { message: "right" }, // Optional payload
+            });
+            window.dispatchEvent(event);
+          });
+        },
+        beforeUnmount() {
+          const event = new CustomEvent("game", {
+            detail: { message: "stop-sim" }, // Optional payload
+          });
+          window.dispatchEvent(event); // Or use document.dispatchEvent(event);
+        },
         methods: {
           switchView(view) {
             this.currentView = view;            
             const radarMapElement = document.getElementById("radarMap");
-            if (this.currentView === "locations") {
+            if (this.currentView === "locations" || this.currentView === "missions") {
                 radarMapElement.style.display = "block"; // Show the radar map
             } else {
                 radarMapElement.style.display = "none"; // Hide the radar map
             }
+            const event = new CustomEvent("changeView", {
+              detail: { view: this.currentView }, // Optional payload
+            });
+            window.dispatchEvent(event);
           },
           displayModel(index) {
             const plane = this.planes[index];
@@ -522,7 +706,7 @@
           stopSim() {
             this.state = 'select-plane';
             const radarMapElement = document.getElementById("radarMap");
-            if (this.currentView === "locations") {
+            if (this.currentView === "locations" || this.currentView === "missions") {
                 radarMapElement.style.display = "block"; // Show the radar map
             } else {
                 radarMapElement.style.display = "none"; // Hide the radar map
@@ -535,15 +719,23 @@
             });
             window.dispatchEvent(event); // Or use document.dispatchEvent(event);
             window.dispatchEvent(event2);
+            const event3 = new CustomEvent("changeView", {
+              detail: { view: this.currentView }, // Optional payload
+            });
+            window.dispatchEvent(event3);
           },
           togglePlay() {
             this.state = 'start-sim';
             const radarMapElement = document.getElementById("radarMap");
             radarMapElement.style.display = "block"; // Show the radar map
             const event = new CustomEvent("game", {
-              detail: { message: this.state, plane: this.planes[this.currentPlane] }, // Optional payload
+              detail: { message: this.state, plane: this.planes[this.currentPlane], features: this.features }, // Optional payload
             });
             window.dispatchEvent(event); // Or use document.dispatchEvent(event);
+            const event3 = new CustomEvent("changeView", {
+              detail: { view: this.currentView }, // Optional payload
+            });
+            window.dispatchEvent(event3);
           },
         }
     }
@@ -551,6 +743,73 @@
 
 
 <style>
+
+    /* Toolbar styling */
+    .toolbar {
+      position: absolute;
+      top: 120px;
+      left: 5%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 200;
+    }
+
+    .tool-button {
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.479);
+      border: 3px solid #cccccc;
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+      font-size: 20px; /* Icon size */
+    }
+
+    .tool-button:hover {
+      width: 50px;
+      height: 50px;
+      background: #e8f0fed3;
+      border: 3px solid #cccccc;
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+      font-size: 20px; /* Icon size */
+    }
+
+    .tool-button.active {
+      background: #e8f0fe;
+      backdrop-filter: blur(8px);
+    }
+
+    .tool-group {
+      margin-top: 10px;
+    }
+
+    .obstacle-group .tool-button {
+      border-color: rgba(255, 0, 0, 0.493);
+    }
+
+    .finish-line-group .tool-button {
+      border-color: rgba(0, 128, 0, 0.507);
+    }
+
+    .default .tool-button {
+      border-color: #4286f48a;
+    }
+
+    .tool-button[data-tool="erase"] {
+      border-color: rgba(255, 0, 179, 0.541); /* Distinct color for the erase tool */
+    }
+
     .toggle-container {
       display: flex;
       justify-content: center;
@@ -587,7 +846,7 @@
       right: 60px; /* Distance from the right of the screen */
       width: 100px; /* Size of the play button */
       height: 100px;
-      z-index: 10;
+      z-index: 1000;
     }
 
     .stop-button-container {
@@ -715,8 +974,7 @@
         display: flex;
         justify-content: center;
         margin-bottom: 10px;
-        transform: translateY(-30px);
-        right: 5px;
+        transform: translateY(-30px) translateX(15px);
         position: fixed;
       }
         
@@ -763,7 +1021,7 @@
           right: 10px; /* Distance from the right of the screen */
           width: 100px; /* Size of the play button */
           height: 100px;
-          z-index: 10;
+          z-index: 1000;
         }
 
       .left-container h2 {
@@ -901,11 +1159,35 @@
       box-shadow: 0px 0px 4px 4px rgba(127, 180, 216, 0.5);
     }
 
+    .map-view.expand {
+      position: absolute;
+      top: 120px;
+      left: 10%;
+      width: 80%; /* Default width for desktop */
+      height: 65vh;
+      overflow: hidden;
+      z-index: 100;
+      border-radius: 30px 30px 30px 30px;
+      box-shadow: 0px 0px 4px 4px rgba(127, 180, 216, 0.5);
+    }
+
     /* Responsive adjustments */
     @media screen and (max-width: 768px) {
       .keypad-container {
         width: 35vw;
         height: 35vw;
+      }
+
+      .map-view.expand {
+        position: absolute;
+        top: 120px;
+        left: 10%;
+        width: 80%; /* Default width for desktop */
+        height: 60vh;
+        overflow: hidden;
+        z-index: 100;
+        border-radius: 30px 30px 30px 30px;
+        box-shadow: 0px 0px 4px 4px rgba(127, 180, 216, 0.5);
       }
 
       .map-view {
