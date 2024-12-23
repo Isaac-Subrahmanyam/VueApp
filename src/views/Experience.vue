@@ -7,36 +7,6 @@
             <div class="timeline__card card">
             <header class="card__header">
                 <time class="time" datetime="2022-02-02">
-                <span class="time__day">May 2023 - </span>
-                <span class="time__month">Current</span>
-                </time>
-                <h3 class="card__title r-title">Co-Chief Executive Officer
-                  <br>
-                  <a href="https://artiorganizer.com/home" target="_blank">ArtiOrganizer</a></h3>
-            </header>
-            <div class="card__content">
-                <p>
-                  <br>
-                  <b>Project - (AI-Powered Message Organizer)</b>
-                <ul>
-                  <li>Led and managed the strategic vision and product.</li>
-                  <br>
-                  <li>Designed and implemented the entire frontend architecture in Angular.</li>
-                  <br>
-                  <li>Led all branding and creative design initiatives, establishing a cohesive and impactful brand identity across various channels.</li>
-                  <br>
-                  <li>Collaborated closely with the other 3 Co-CEO to align business objectives and drive overall company performance.</li>
-                </ul>
-                <br>
-                </p>
-            </div>
-            </div>
-        </div>
-
-        <div class="timeline__cards">
-            <div class="timeline__card card">
-            <header class="card__header">
-                <time class="time" datetime="2022-02-02">
                 <span class="time__day">November 2022 - </span>
                 <span class="time__month">Current</span>
                 </time>

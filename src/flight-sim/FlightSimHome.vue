@@ -40,7 +40,7 @@
       :class="{ active: currentView === 'missions' }"
       @click="switchView('missions')"
     >
-      Missions
+      Mission
     </button>
   </div>
   <div class="left-container" v-show="state === 'select-plane' && currentView !== 'missions'">
@@ -109,6 +109,10 @@
       <button class="play-button" @click="togglePlay" style="user-select: none;">
         <i class="fas fa-play" style="user-select: none;"></i>
       </button>
+  </div>
+
+  <div id="statusCard" class="status-card" v-show="currentView === 'missions' && state === 'select-plane'">
+    <div id="missionStatus" class="mission-status">Mission Not Started</div>
   </div>
 </template>
 
@@ -670,6 +674,22 @@
           window.dispatchEvent(event); // Or use document.dispatchEvent(event);
         },
         methods: {
+          updateMissionCard(state) {
+            const missionStatusDiv = document.getElementById('missionStatus');
+
+            // Update the text
+            missionStatusDiv.textContent = state;
+
+            // Update the style based on the state
+            missionStatusDiv.className = 'mission-status'; // Reset classes
+            if (state === 'Mission Not Started') {
+              missionStatusDiv.classList.add('not-started');
+            } else if (state === 'Mission Complete') {
+              missionStatusDiv.classList.add('complete');
+            } else if (state === 'Mission Failed') {
+              missionStatusDiv.classList.add('failed');
+            }
+          },
           switchView(view) {
             this.currentView = view;            
             const radarMapElement = document.getElementById("radarMap");
@@ -723,6 +743,7 @@
               detail: { view: this.currentView }, // Optional payload
             });
             window.dispatchEvent(event3);
+            this.updateMissionCard("Mission Failed");
           },
           togglePlay() {
             this.state = 'start-sim';
@@ -743,6 +764,42 @@
 
 
 <style>
+
+    .status-card {
+      position: absolute;
+      top: 120px;
+      right: 60px;
+      width: 90px;
+      backdrop-filter: blur(8px);
+      background-color: #ffffff93;
+      border: 2px solid #cccccc;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 5px;
+      font-family: Arial, sans-serif;
+      z-index: 200;
+    }
+
+    .mission-status {
+      text-align: center;
+      font-size: 14px;
+      margin: 0;
+      padding: 10px;
+      font-weight: bold;
+      color: #555; /* Default text color */
+    }
+
+    .mission-status.not-started {
+      color: #555; /* Neutral gray */
+    }
+
+    .mission-status.complete {
+      color: #19bd1e; /* Green text */
+    }
+
+    .mission-status.failed {
+      color: #b12319; /* Red text */
+    }
 
     /* Toolbar styling */
     .toolbar {
@@ -973,9 +1030,22 @@
       .toggle-container {
         display: flex;
         justify-content: center;
-        margin-bottom: 10px;
-        transform: translateY(-30px) translateX(15px);
-        position: fixed;
+        transform: translateY(-25px);
+      }
+
+      .status-card {
+        position: absolute;
+        top: 120px;
+        right: 10px;
+        width: 90px;
+        backdrop-filter: blur(8px);
+        background-color: #ffffff93;
+        border: 2px solid #cccccc;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 5px;
+        font-family: Arial, sans-serif;
+        z-index: 200;
       }
         
       .right-container {
@@ -1003,7 +1073,7 @@
         top: 85px;
         left: 12px;
         width: 25%; /* Default width for desktop */
-        height: 60vh;
+        height: 55vh;
         backdrop-filter: blur(8px);
         background-color: #ffffffb3;
         border-radius: 46px 46px 46px 46px;

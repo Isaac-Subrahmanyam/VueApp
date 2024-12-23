@@ -17,11 +17,16 @@
         <br />
         <br />
         My experience includes the development of GIS / COP Applications, so I
-        am well versed using OpenLayers, GeoServer, and Cesium.
+        am well versed using OpenLayers, GeoServer, and Cesium. Check out this personal project I made that uses these tools:
+        <router-link to="/flight-sim" class="btn" style="color: aqua;">
+          Isaac's Flight Simulator
+        </router-link>
         <br />
         <br />
-        Welcome to my portfolio website! Feel free to look around, and be sure
-        to play a few of my JS games while you are at it!
+        Check out more of my personal projects here:
+        <router-link to="/projects" class="btn" style="color: aqua;">
+          Isaac's Projects
+        </router-link>
       </h1>
       <div id="socials">
         <n-tooltip placement="top" trigger="hover">
