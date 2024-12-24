@@ -1050,7 +1050,7 @@
         
       .right-container {
         position: fixed;
-        top: 85px;
+        top: 100px;
         right: 1rem;
         width: 25%; /* Default width for desktop */
         height: 27vh;
@@ -1070,7 +1070,7 @@
 
       .left-container {
         position: fixed;
-        top: 85px;
+        top: 100px;
         left: 12px;
         width: 25%; /* Default width for desktop */
         height: 55vh;
@@ -1253,7 +1253,7 @@
         top: 120px;
         left: 10%;
         width: 80%; /* Default width for desktop */
-        height: 60vh;
+        height: 55vh;
         overflow: hidden;
         z-index: 100;
         border-radius: 30px 30px 30px 30px;
