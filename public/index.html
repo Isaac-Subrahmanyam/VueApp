@@ -10,6 +10,7 @@
 
   <!-- Include the CesiumJS JavaScript and CSS files -->
   <script src="https://cesium.com/downloads/cesiumjs/releases/1.107/Build/Cesium/Cesium.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cannon@0.6.2/build/cannon.min.js"></script>
   <link href="https://cesium.com/downloads/cesiumjs/releases/1.107/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
 </head>
 
@@ -129,8 +130,7 @@
           const [longitude, latitude] = webMercatorToWGS84(projectedX, projectedY);
 
           console.log("[" + longitude + ", " + latitude + "]")
-
-          viewer.entities.add({
+          const entity = {
             name: feature.get('type'), // e.g., "obstacle" or "finish-line"
             position: Cesium.Cartesian3.fromDegrees(longitude, latitude, 10),
             cylinder: {
@@ -141,7 +141,8 @@
               outline: true,
               outlineColor: Cesium.Color.BLACK,
             }
-          });
+          }
+          viewer.entities.add(entity);
         } else if (geometry.getType() === 'Polygon') {
           // Convert Polygon coordinates to Cesium Cartesian3
           const coordinates = geometry.getCoordinates()[0].map((coord) => {
@@ -165,6 +166,23 @@
       viewer.zoomTo(viewer.entities);
     }
 
+    function webMercatorToWGS84Z(x, y, z) {
+      const R_MAJOR = 6378137.0; // Earth's major axis in meters
+      const R_MINOR = 6356752.3142; // Earth's minor axis in meters
+      const eccSquared = 1 - (R_MINOR * R_MINOR) / (R_MAJOR * R_MAJOR); // Ellipticity squared
+
+      const longitude = (x / R_MAJOR) * (180 / Math.PI);
+      const latitude = (Math.atan(Math.exp(y / R_MAJOR)) * (360 / Math.PI)) - 90;
+
+      // Calculate Earth's radius at latitude
+      const sinLat = Math.sin((latitude * Math.PI) / 180);
+      const earthRadiusAtLat = R_MAJOR / Math.sqrt(1 - eccSquared * sinLat * sinLat);
+
+      // Adjust z (altitude above sea level)
+      const altitude = z - earthRadiusAtLat;
+
+      return { longitude, latitude, altitude };
+    }
 
     function viewEventListeners() {
       let lastTime = viewer.clock.currentTime; // Store initial time

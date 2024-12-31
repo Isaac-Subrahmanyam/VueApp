@@ -15,7 +15,7 @@
     </div>
   </div>
   <div class="stop-button-container" v-show="state === 'start-sim'">
-      <button class="play-button" @click="stopSim">
+      <button class="play-button" @click="stopSim('failed')">
         <i class="fas fa-stop" style="user-select: none;"></i>
       </button>
   </div>
@@ -444,6 +444,31 @@
           // Add the layer to the radar map
           radarMap.addLayer(headingLineLayer);
 
+          let features = [];
+
+          function detectCollision() {
+            const planeGeometry = planeFeature.getGeometry();
+
+            features.forEach((feature) => {
+              const featureGeometry = feature.getGeometry();
+
+              if (planeGeometry.intersectsExtent(featureGeometry.getExtent())) {
+                const featureType = feature.get('type');
+                if (featureType === 'obstacle') {
+                  const event = new CustomEvent("stopSim", {
+                    detail: { state: "failed" }, // Optional payload
+                  });
+                  window.dispatchEvent(event);
+                } else if (featureType === 'finish-line') {
+                  const event = new CustomEvent("stopSim", {
+                    detail: { state: "complete" }, // Optional payload
+                  });
+                  window.dispatchEvent(event);
+                }
+              }
+            });
+          }
+
           window.addEventListener("changeMapView", (event) => {
             const long = event.detail.location.longitude;
             const lat = event.detail.location.latitude;
@@ -453,6 +478,8 @@
 
             // Update plane's feature position
             planeFeature.setGeometry(new Point(fromLonLat([long, lat])));
+
+            detectCollision();
 
             if(event.detail.updateHeading) updateHeadingLine(long, lat)
           })
@@ -465,7 +492,12 @@
 
           window.addEventListener("features", (event) => {
             this.features = event.detail.features;
-            console.log(this.features)
+            features = this.features;
+          })
+
+          window.addEventListener("stopSim", (event) => {
+            const state = event.detail.state;
+            this.stopSim(state);
           })
 
           // Vector source and layer for the drawn features
@@ -723,7 +755,7 @@
             window.dispatchEvent(event); // Or use document.dispatchEvent(event);
             window.dispatchEvent(event2);
           },
-          stopSim() {
+          stopSim(state) {
             this.state = 'select-plane';
             const radarMapElement = document.getElementById("radarMap");
             if (this.currentView === "locations" || this.currentView === "missions") {
@@ -743,7 +775,8 @@
               detail: { view: this.currentView }, // Optional payload
             });
             window.dispatchEvent(event3);
-            this.updateMissionCard("Mission Failed");
+            if(state === "failed") this.updateMissionCard("Mission Failed");
+            if(state === "complete") this.updateMissionCard("Mission Complete");
           },
           togglePlay() {
             this.state = 'start-sim';
