@@ -34,6 +34,36 @@
     <div class="header-section">
       <section>
         <div class="content">
+          <h2>Flight Simulator</h2>
+          <h2>Flight Simulator</h2>
+        </div>
+      </section>
+    </div>
+    <h1 style="color: white;">
+      Click
+      <router-link to="/flight-sim" class="arti">
+          HERE
+      </router-link>
+      to play!
+    </h1>
+    <iframe
+      width="80%"
+      style="
+        filter: drop-shadow(0 0 0.75rem #3a93b3);
+        max-width: 800px;
+        max-height: 800px;
+        padding-bottom: 5rem;
+      "
+      height="500px"
+      src="https://www.youtube.com/embed/9rUCdSf4UAI?si=PjjQa0EXeMec_NM4"
+      title="YouTube video player"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+    ></iframe>
+    <div class="header-section">
+      <section>
+        <div class="content">
           <h2>SD2 Project</h2>
           <h2>SD2 Project</h2>
         </div>
@@ -62,14 +92,9 @@
         </div>
       </section>
     </div>
-    <h1>
-      <a class="arti" href="https://artiorganizer.com/" target="_blank">
-        artiorganizer.com
-      </a>
-    </h1>
     <iframe
       width="80%"
-      style="padding-top: 2rem; filter: drop-shadow(0 0 0.75rem #3a93b3; max-width: 800px; max-height: 800px; padding-bottom: 5rem;"
+      style="filter: drop-shadow(0 0 0.75rem #3a93b3; max-width: 800px; max-height: 800px; padding-bottom: 5rem;"
       height="500px"
       src="https://www.youtube.com/embed/5TgSjWn_jB0"
       title="YouTube video player"
