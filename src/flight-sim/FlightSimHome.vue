@@ -130,7 +130,10 @@
     import { fromLonLat } from 'ol/proj';
     import { LineString } from 'ol/geom';
     import Draw from 'ol/interaction/Draw.js';
- 
+    import booleanIntersects from '@turf/boolean-intersects';
+    import { circle } from '@turf/turf';
+    import { toLonLat } from 'ol/proj';
+
    export default {
         name: 'App',
         data: function () {
@@ -447,12 +450,48 @@
           let features = [];
 
           function detectCollision() {
+            // Convert the plane's geometry to GeoJSON
             const planeGeometry = planeFeature.getGeometry();
+            const planeGeoJSON = {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: toLonLat(planeGeometry.getCoordinates()), // Convert coordinates to [lon, lat]
+              },
+              properties: { type: 'plane' },
+            };
 
             features.forEach((feature) => {
+              // Convert feature geometry to GeoJSON
               const featureGeometry = feature.getGeometry();
+              let featureGeoJSON;
 
-              if (planeGeometry.intersectsExtent(featureGeometry.getExtent())) {
+              if (featureGeometry.getType() === 'Circle') {
+                const center = toLonLat(featureGeometry.getCenter());
+                const radius = featureGeometry.getRadius(); // Radius in meters
+                featureGeoJSON = circle(center, radius, {
+                  steps: 64, // Number of vertices for the circle
+                  units: 'meters',
+                });
+              } else if (featureGeometry.getType() === 'Polygon') {
+                const coordinates = featureGeometry.getCoordinates();
+                featureGeoJSON = {
+                  type: 'Feature',
+                  geometry: {
+                    type: 'Polygon',
+                    coordinates: coordinates.map((ring) =>
+                      ring.map((coord) => toLonLat(coord)) // Convert each ring's coordinates to [lon, lat]
+                    ),
+                  },
+                  properties: { type: feature.get('type') },
+                };
+              } else {
+                console.error(`Unsupported geometry type: ${featureGeometry.getType()}`);
+                return;
+              }
+
+              // Use Turf.js to check for intersection
+              if (booleanIntersects(planeGeoJSON, featureGeoJSON)) {
                 const featureType = feature.get('type');
                 if (featureType === 'obstacle') {
                   const event = new CustomEvent("stopSim", {

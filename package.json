@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.3",
+    "@turf/turf": "^7.2.0",
     "core-js": "^3.6.5",
     "ol": "^6.15.1",
     "vue": "^3.0.0",
