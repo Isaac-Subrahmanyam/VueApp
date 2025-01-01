@@ -289,7 +289,7 @@
                   },
                   {
                     name: "Boeing B-52 Stratofortress",
-                    asset: 'boeing_b-52_stratofortress.glb',
+                    asset: "boeing_b-52_stratofortress.glb",
                     cameraZ: -100,
                     size: 100,
                     inverse: true,
@@ -297,7 +297,7 @@
                     speed: 194,
                     displayZoom: 100,
                     invert: false,
-                    description: "The Boeing E-767 is an airborne warning and control system (AWACS) aircraft, \nbased on the Boeing 767-200 platform. Developed for Japan's Air Self-Defense Force, \nthe E-767 is equipped with a Northrop Grumman radar system, capable of monitoring \nand tracking aerial threats over vast areas. It is powered by twin General Electric CF6-80C2 engines, \nallowing for a cruising speed of 850 km/h and an operational ceiling of 12,800 meters (42,000 feet). \nThe E-767 plays a critical role in air defense and command, with advanced communication systems \nand a crew of up to 19 personnel, making it a versatile platform for modern military operations."
+                    description: "The Boeing B-52 Stratofortress is a long-range, subsonic, strategic bomber that has been in service since the 1950s. \nRenowned for its durability and versatility, the B-52 can carry up to 32,000 kg (70,000 lbs) of payload, \nincluding conventional and nuclear weapons. Powered by eight Pratt & Whitney turbofan engines, \nit has a cruising speed of 1,000 km/h and a range of 14,162 km (8,800 miles) without aerial refueling. \nThe B-52 has been adapted over decades for various missions, from strategic bombing to close air support, \nand remains an integral part of the U.S. Air Force's global strike capability. \nKnown affectionately as the 'BUFF' (Big Ugly Fat Fellow), it continues to be modernized and is expected to serve into the 2050s."
                   },
                   {
                     name: "Boeing E-767",
