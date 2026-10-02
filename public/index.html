@@ -302,6 +302,8 @@
       }
 
       if (gameMode === 'start-sim') {
+        gameMode = 'loading-sim';
+
         // Destroy the current viewer
         viewer.entities.removeAll();
         viewer.scene.primitives.removeAll();
@@ -345,6 +347,14 @@
 
         // Automatically track the airplane
         viewer.trackedEntity = airplaneEntity;
+
+        const startSimulationAfterRender = () => {
+          viewer.scene.postRender.removeEventListener(startSimulationAfterRender);
+          gameMode = 'start-sim';
+        };
+
+        viewer.scene.postRender.addEventListener(startSimulationAfterRender);
+        viewer.scene.requestRender();
 
       } else if (event.detail.message === 'stop-sim') {
         // Destroy the current viewer

@@ -90,9 +90,9 @@ const routes = [
     component: () => import('../games/TheEmojiGame.vue')
   },
   {
-    path: '/spiral',
-    name: 'spiral',
-    component: () => import('../games/Spiral.vue')
+    path: '/wordrivals',
+    name: 'wordrivals',
+    component: () => import('../games/WordRivals.vue')
   }
 ]
 

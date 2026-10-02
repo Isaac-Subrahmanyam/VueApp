@@ -1,9 +1,9 @@
 <template>
   <title>Flight Sim</title>
-  <div style="background-color: #ffffffb3; backdrop-filter: blur(8px); box-shadow: 0px 0px 4px 4px rgba(127, 180, 216, 0.5); transform: translateY(-20px);">
+  <div style="background: rgba(7, 16, 21, 0.88); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(123, 195, 221, 0.14); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); transform: translateY(-20px); color: rgba(255,255,255,0.9);">
     <h1 style="padding: 0.5rem; user-select: none; font-size: 1.2rem; ">(IFS) - Isaac's Flight Simulator</h1>
   </div>
-  <div style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(8px); transform: translateY(-40px);">
+  <div style="background: rgba(7, 16, 21, 0.7); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(123, 195, 221, 0.08); transform: translateY(-40px);">
     <h1 style="padding: 0.5rem; font-size: 0.8rem; color: rgba(255, 255, 255, 0.6); user-select: none;" v-if="state === 'start-sim'">{{ planes[currentPlane]?.name || "No Plane Selected" }} - {{locations[currentLocation]?.name || "No Location Selected"}}</h1>
   </div>
   <div class="keypad-container" v-show="state === 'start-sim'">
@@ -16,7 +16,7 @@
   </div>
   <div class="stop-button-container" v-show="state === 'start-sim'">
       <button class="play-button" @click="stopSim('failed')">
-        <i class="fas fa-stop" style="user-select: none;"></i>
+        <i class="fas fa-stop" style="user-select: none;"></i><span class="sim-button-label">Stop</span>
       </button>
   </div>
   <!-- Toggle Button -->
@@ -52,7 +52,8 @@
           :class="{ selected: index === currentPlane }"
           @click="displayModel(index)"
         >
-          {{ plane.name }} <br> [speed: {{ Math.floor(plane.speed * 3.6) }} km/r, agility: {{ (plane?.speed / 100000).toFixed(4) }} radians/frame]
+          <b>{{ plane.name }}</b>
+          <br> [speed: {{ Math.floor(plane.speed * 3.6) }} km/r, agility: {{ (plane?.speed / 100000).toFixed(4) }} radians/frame]
         </li>
       </ul>
       <ul v-if="currentView === 'locations'">
@@ -62,7 +63,8 @@
           :class="{ selected: index === currentLocation }"
           @click="displayLocation(index)"
         >
-          {{ location.name }} <br> [long: {{ location.longitude }}, lat: {{ location.latitude }}, alt: {{ location.altitude }}]
+          <b>{{ location.name }}</b>
+          <br> [long: {{ location.longitude }}, lat: {{ location.latitude }}, alt: {{ location.altitude }}]
         </li>
       </ul>
   </div>
@@ -77,37 +79,37 @@
     <!-- Default tool -->
     <div class="tool-group default">
       <button id="defaultTool" class="tool-button active" data-tool="default" title="Default">
-        <i class="fas fa-mouse-pointer" style="color: rgba(0, 0, 0, 0.75);"></i>
+        <i class="fas fa-mouse-pointer" style="color: white"></i>
       </button>
       <button id="eraseTool" class="tool-button" data-tool="erase" title="Erase Shapes">
-        <i class="fas fa-eraser" style="color: rgba(0, 0, 0, 0.75);"></i>
+        <i class="fas fa-eraser" style="color: white"></i>
       </button>
     </div>
 
     <!-- Obstacle tools -->
     <div class="tool-group obstacle-group">
       <button id="circleToolObstacle" class="tool-button" data-tool="circle-obstacle" title="Draw Obstacle Circle">
-        <i class="far fa-circle" style="color: rgba(0, 0, 0, 0.75);"></i>
+        <i class="far fa-circle" style="color: white"></i>
       </button>
       <button id="polygonToolObstacle" class="tool-button" data-tool="polygon-obstacle" title="Draw Obstacle Polygon">
-        <i class="fas fa-draw-polygon" style="color: rgba(0, 0, 0, 0.75);"></i>
+        <i class="fas fa-draw-polygon" style="color: white"></i>
       </button>
     </div>
 
     <!-- Finish line tools -->
     <div class="tool-group finish-line-group">
       <button id="circleToolFinish" class="tool-button" data-tool="circle-finish" title="Draw Finish Circle">
-        <i class="far fa-circle" style="color: rgba(0, 0, 0, 0.75);"></i>
+        <i class="far fa-circle" style="color: white"></i>
       </button>
       <button id="polygonToolFinish" class="tool-button" data-tool="polygon-finish" title="Draw Finish Polygon">
-        <i class="fas fa-draw-polygon" style="color: rgba(0, 0, 0, 0.75);"></i>
+        <i class="fas fa-draw-polygon" style="color: white"></i>
       </button>
     </div>
   </div>
 
   <div class="play-button-container" v-show="state === 'select-plane'">
       <button class="play-button" @click="togglePlay" style="user-select: none;">
-        <i class="fas fa-play" style="user-select: none;"></i>
+        <i class="fas fa-play" style="user-select: none;"></i><span class="sim-button-label">Play</span>
       </button>
   </div>
 
@@ -837,519 +839,1190 @@
 
 <style>
 
-    .status-card {
-      position: absolute;
-      top: 120px;
-      right: 60px;
-      width: 90px;
-      backdrop-filter: blur(8px);
-      background-color: #ffffff93;
-      border: 2px solid #cccccc;
-      border-radius: 10px;
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-      padding: 5px;
-      font-family: Arial, sans-serif;
-      z-index: 200;
-    }
+:root {
+  --ifs-bg: rgba(7, 16, 21, 0.88);
+  --ifs-bg-solid: #071015;
+  --ifs-surface: rgba(13, 27, 34, 0.88);
+  --ifs-surface-light: rgba(21, 43, 53, 0.88);
 
-    .mission-status {
-      text-align: center;
-      font-size: 14px;
-      margin: 0;
-      padding: 10px;
-      font-weight: bold;
-      color: #555; /* Default text color */
-    }
+  --ifs-border: rgba(123, 195, 221, 0.16);
+  --ifs-border-hover: rgba(123, 195, 221, 0.32);
 
-    .mission-status.not-started {
-      color: #555; /* Neutral gray */
-    }
+  --ifs-accent: #69c6e7;
+  --ifs-accent-light: #9ce4fc;
+  --ifs-accent-dark: #3a93b3;
 
-    .mission-status.complete {
-      color: #19bd1e; /* Green text */
-    }
+  --ifs-text: rgba(255, 255, 255, 0.92);
+  --ifs-text-soft: rgba(255, 255, 255, 0.62);
+  --ifs-text-muted: rgba(255, 255, 255, 0.42);
 
-    .mission-status.failed {
-      color: #b12319; /* Red text */
-    }
+  --ifs-red: #e56767;
+  --ifs-green: #67d69a;
 
-    /* Toolbar styling */
-    .toolbar {
-      position: absolute;
-      top: 120px;
-      left: 5%;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 200;
-    }
+  --ifs-radius: 16px;
+}
 
-    .tool-button {
-      width: 50px;
-      height: 50px;
-      background: rgba(255, 255, 255, 0.479);
-      border: 3px solid #cccccc;
-      backdrop-filter: blur(8px);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-      font-size: 20px; /* Icon size */
-    }
 
-    .tool-button:hover {
-      width: 50px;
-      height: 50px;
-      background: #e8f0fed3;
-      border: 3px solid #cccccc;
-      backdrop-filter: blur(8px);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-      font-size: 20px; /* Icon size */
-    }
+/* =========================================================
+   GLOBAL
+========================================================= */
 
-    .tool-button.active {
-      background: #e8f0fe;
-      backdrop-filter: blur(8px);
-    }
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
 
-    .tool-group {
-      margin-top: 10px;
-    }
+  font-family: 'Inter', 'Poppins', Arial, sans-serif;
 
-    .obstacle-group .tool-button {
-      border-color: rgba(255, 0, 0, 0.493);
-    }
+  background: transparent;
+}
 
-    .finish-line-group .tool-button {
-      border-color: rgba(0, 128, 0, 0.507);
-    }
 
-    .default .tool-button {
-      border-color: #4286f48a;
-    }
+/* =========================================================
+   MISSION STATUS
+========================================================= */
 
-    .tool-button[data-tool="erase"] {
-      border-color: rgba(255, 0, 179, 0.541); /* Distinct color for the erase tool */
-    }
+.status-card {
+  position: absolute;
 
-    .toggle-container {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 10px;
-    }
+  top: 120px;
+  right: 60px;
 
-    .toggle-button {
-      backdrop-filter: blur(8px);
-      padding: 10px 20px;
-      background: rgba(255, 255, 255, 0.623);
-      border: none;
-      border-radius: 20px;
-      font-size: 16px;
-      font-weight: bold;
-      color: #074055bd;
-      margin: 0 5px;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
-    }
+  width: 130px;
 
-    .toggle-button:hover {
-      background: #d5d5d5;
-      backdrop-filter: blur(8px);
-    }
+  padding: 7px;
 
-    .toggle-button.active {
-      background: #074055cc;
-      backdrop-filter: blur(8px);
-      color: white;
-    }
-    .play-button-container {
-      position: fixed;
-      bottom: 130px; /* Distance from the bottom of the screen */
-      right: 60px; /* Distance from the right of the screen */
-      width: 100px; /* Size of the play button */
-      height: 100px;
-      z-index: 1000;
-    }
+  z-index: 200;
 
-    .stop-button-container {
-      position: fixed;
-      bottom: 150px; /* Distance from the bottom of the screen */
-      left: 20px; /* Distance from the right of the screen */
-      width: 100px; /* Size of the play button */
-      height: 100px;
-      z-index: 10;
-    }
+  background:
+    linear-gradient(
+      145deg,
+      rgba(13, 27, 34, 0.94),
+      rgba(7, 16, 21, 0.96)
+    );
 
-    .play-button {
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.616);
-      backdrop-filter: blur(8px);
-      border: none;
-      border-radius: 50%;
-      font-size: 40px;
-      color: #07405594;
-      box-shadow: 0px 0px 4px 4px rgba(127, 180, 216, 0.5);
-      cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+  border: 1px solid var(--ifs-border);
 
-    .play-button:hover {
-      background: #d5d5d5;
-    }
+  border-radius: 12px;
 
-    .play-button:active {
-      background: #bbb;
-      transform: scale(0.95);
-    }
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 
-    .left-container {
-      position: fixed;
-      top: 100px;
-      left: 3rem;
-      width: 25%; /* Default width for desktop */
-      height: 67vh;
-      backdrop-filter: blur(8px);
-      background-color: #ffffffb3;
-      border-radius: 46px 46px 46px 46px;
-      box-shadow: 0px 0px 4px 4px rgba(127, 180, 216, 0.5);
-      padding: 20px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 15px; /* Spacing between cards */
-      z-index: 0;
-    }
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
 
-    .right-container {
-      position: fixed;
-      top: 100px;
-      right: 3rem;
-      width: 25%; /* Default width for desktop */
-      height: 45vh;
-      backdrop-filter: blur(8px);
-      background-color: #074055bd;
-      border-radius: 46px 46px 46px 0px;
-      text-align: left;
-      box-shadow: 0px 0px 4px 4px rgba(255, 255, 255, 0.5);
-      padding: 20px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 15px; /* Spacing between cards */
-      z-index: 0;
-    }
+.mission-status {
+  margin: 0;
+  padding: 9px 7px;
 
-    /* Highlight selected item */
-    .left-container li.selected {
-      background-color: #074055b0; /* Highlighted color */
-      color: white;
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
+  text-align: center;
 
-    .left-container h2 {
-      font-size: 20px;
-      color: #333;
-      text-align: center;
-      margin-bottom: 10px;
-    }
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
 
-    .left-container ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 15px; /* Adds spacing between cards */
-    }
+  color: var(--ifs-text-soft);
 
-    .left-container li {
-      padding: 15px;
-      backdrop-filter: blur(8px);
-      background-color: #ffffff69;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.3s ease, transform 0.2s ease;
-      text-align: center;
-      font-size: 16px;
-      font-weight: bold;
-      color: #333;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
+  letter-spacing: 0.02em;
+}
 
-    .left-container li:hover {
-      background: #ececec;
-      transform: scale(1.02);
-    }
+.mission-status.not-started {
+  color: var(--ifs-text-soft);
+}
 
-    .left-container li:active {
-      background: #dcdcdc;
-      transform: scale(0.98);
-    }
+.mission-status.complete {
+  color: var(--ifs-green);
+}
 
-    @media screen and (max-width: 768px) {
-      .toggle-container {
-        display: flex;
-        justify-content: center;
-        transform: translateY(-25px);
-      }
+.mission-status.failed {
+  color: var(--ifs-red);
+}
 
-      .status-card {
-        position: absolute;
-        top: 120px;
-        right: 10px;
-        width: 90px;
-        backdrop-filter: blur(8px);
-        background-color: #ffffff93;
-        border: 2px solid #cccccc;
-        border-radius: 10px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 5px;
-        font-family: Arial, sans-serif;
-        z-index: 200;
-      }
-        
-      .right-container {
-        position: fixed;
-        top: 100px;
-        right: 1rem;
-        width: 25%; /* Default width for desktop */
-        height: 27vh;
-        backdrop-filter: blur(8px);
-        background-color: #074055bd;
-        border-radius: 46px 46px 46px 46px;
-        box-shadow: 0px 0px 4px 4px rgba(255, 255, 255, 0.5);
-        padding: 20px;
-        overflow-y: auto;
-        text-align: left;
-        display: flex;
-        font-size: 6px;
-        flex-direction: column;
-        gap: 15px; /* Spacing between cards */
-        z-index: 0;
-      }
 
-      .left-container {
-        position: fixed;
-        top: 100px;
-        left: 12px;
-        width: 25%; /* Default width for desktop */
-        height: 55vh;
-        backdrop-filter: blur(8px);
-        background-color: #ffffffb3;
-        border-radius: 46px 46px 46px 46px;
-        padding: 20px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 15px; /* Spacing between cards */
-        z-index: 0;
-      }
+/* =========================================================
+   TOOLBAR
+========================================================= */
 
-      .play-button-container {
-          position: fixed;
-          bottom: 130px; /* Distance from the bottom of the screen */
-          right: 10px; /* Distance from the right of the screen */
-          width: 100px; /* Size of the play button */
-          height: 100px;
-          z-index: 1000;
-        }
+.toolbar {
+  position: absolute;
 
-      .left-container h2 {
-        font-size: 15px;
-        color: #333;
-        text-align: center;
-        margin-bottom: 10px;
-      }
+  top: 120px;
+  left: 5%;
 
-      .left-container li {
-        padding: 5px;
-        backdrop-filter: blur(8px);
-        background-color: #ffffff69;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: background 0.3s ease, transform 0.2s ease;
-        text-align: center;
-        font-size: 10px;
-        font-weight: bold;
-        color: #333;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
+  display: flex;
+  flex-direction: column;
 
-      /* Highlight selected item */
-      .left-container li.selected {
-        background-color: #074055b0; /* Highlighted color */
-        color: white;
-        transform: scale(1.05);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      }
-    }
+  gap: 8px;
 
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      overflow: hidden;
-      background-color: #282c34;
-    }
+  z-index: 200;
+}
 
-    .keypad-container {
-      position: fixed;
-      bottom: 150px; /* Distance from the bottom of the screen */
-      right: 20px;   /* Distance from the left of the screen */
-      width: 35vw; /* Scale with the viewport width */
-      height: 35vw;
-      max-width: 250px; /* Limit maximum size for larger screens */
-      max-height: 250px;
-    }
+.tool-group {
+  display: flex;
+  flex-direction: column;
 
-    .keypad {
-      position: relative;
-      width: 100%; /* Take the container's size */
-      height: 100%;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.24);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+  gap: 7px;
 
-    .keypad button {
-      position: absolute;
-      width: 35%; /* Scale buttons based on the keypad size */
-      height: 35%;
-      background: #e0e0e03a;
-      backdrop-filter: blur(8px);
-      border: none;
-      border-radius: 50%;
-      font-size: calc(2vw + 10px); /* Dynamically adjust font size */
-      color: #07405581;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
-    }
+  margin-top: 8px;
 
-    .keypad button:hover {
-      background: #d5d5d5;
-    }
+  padding: 6px;
 
-    .keypad button:active {
-      background: #bbb;
-      transform: scale(0.95);
-    }
+  background: rgba(7, 16, 21, 0.82);
 
-    /* Button positions */
-    .keypad #up {
-      top: 5%;
-      left: 50%;
-      transform: translate(-50%, 0);
-    }
+  border: 1px solid rgba(123, 195, 221, 0.1);
 
-    .keypad #down {
-      bottom: 5%;
-      left: 50%;
-      transform: translate(-50%, 0);
-    }
+  border-radius: 14px;
 
-    .keypad #left {
-      left: 5%;
-      top: 50%;
-      transform: translate(0, -50%);
-    }
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 
-    .keypad #right {
-      right: 5%;
-      top: 50%;
-      transform: translate(0, -50%);
-    }
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.22);
+}
 
-    .keypad #reset {
-      width: 30%;
-      height: 30%;
-      background: #f5f5f500;
-      color: #555;
-      font-size: calc(1.5vw + 12px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+.tool-button {
+  width: 42px;
+  height: 42px;
 
-    .map-view {
-      position: absolute;
-      top: 102px;
-      right: 50px;
-      width: 15%; /* Default width for desktop */
-      height: 30vh;
-      overflow: hidden;
-      z-index: 100;
-      border-radius: 300px 300px 300px 300px;
-      box-shadow: 0px 0px 4px 4px rgba(127, 180, 216, 0.5);
-    }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    .map-view.expand {
-      position: absolute;
-      top: 120px;
-      left: 10%;
-      width: 80%; /* Default width for desktop */
-      height: 65vh;
-      overflow: hidden;
-      z-index: 100;
-      border-radius: 30px 30px 30px 30px;
-      box-shadow: 0px 0px 4px 4px rgba(127, 180, 216, 0.5);
-    }
+  padding: 0;
 
-    /* Responsive adjustments */
-    @media screen and (max-width: 768px) {
-      .keypad-container {
-        width: 35vw;
-        height: 35vw;
-      }
+  background: rgba(255, 255, 255, 0.045);
 
-      .map-view.expand {
-        position: absolute;
-        top: 120px;
-        left: 10%;
-        width: 80%; /* Default width for desktop */
-        height: 55vh;
-        overflow: hidden;
-        z-index: 100;
-        border-radius: 30px 30px 30px 30px;
-        box-shadow: 0px 0px 4px 4px rgba(127, 180, 216, 0.5);
-      }
+  border: 1px solid rgba(123, 195, 221, 0.13);
 
-      .map-view {
-        position: absolute;
-        top: 85px;
-        right: 25px;
-        width: 27%; /* Default width for desktop */
-        height: 20vh;
-        overflow: hidden;
-        z-index: 100;
-        border-radius: 100px 100px 100px 100px;
-        box-shadow: 0px 0px 4px 4px rgba(127, 180, 216, 0.5);
-      }
+  border-radius: 9px;
 
-      .keypad button {
-        font-size: calc(3vw + 8px);
-      }
+  cursor: pointer;
 
-      .keypad #reset {
-        font-size: calc(2vw + 10px);
-      }
-    }
+  font-size: 16px;
+
+  box-shadow: none;
+
+  backdrop-filter: blur(8px);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.tool-button i {
+  color: rgba(255, 255, 255, 0.62) !important;
+
+  transition: color 0.2s ease;
+}
+
+.tool-button:hover {
+  width: 42px;
+  height: 42px;
+
+  background: rgba(105, 197, 231, 0.548);
+
+  border: 1px solid rgba(105, 198, 231, 0.3);
+
+  border-radius: 9px;
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.2);
+}
+
+.tool-button:hover i {
+  color: var(--ifs-accent-light) !important;
+}
+
+.tool-button.active {
+  background: rgba(105, 198, 231, 0.75);
+
+  border-color: rgb(105, 197, 231);
+
+  box-shadow:
+    0 0 13px rgba(105, 198, 231, 0.12);
+}
+
+.tool-button.active i {
+  color: var(--ifs-accent-light) !important;
+}
+
+.obstacle-group .tool-button {
+  border-color: rgba(229, 103, 103, 0.60);
+}
+
+.obstacle-group .tool-button:hover,
+.obstacle-group .tool-button.active {
+  background: rgba(229, 103, 103, 0.534);
+  border-color: rgb(229, 103, 103);
+}
+
+.obstacle-group .tool-button:hover i,
+.obstacle-group .tool-button.active i {
+  color: #ff9b9b !important;
+}
+
+.finish-line-group .tool-button {
+  border-color: rgba(103, 214, 154, 0.60);
+}
+
+.finish-line-group .tool-button:hover,
+.finish-line-group .tool-button.active {
+  background: rgba(103, 214, 155, 0.5);
+  border-color: rgb(103, 214, 155);
+}
+
+.finish-line-group .tool-button:hover i,
+.finish-line-group .tool-button.active i {
+  color: #8aefb8 !important;
+}
+
+.default .tool-button {
+  border-color: rgba(105, 198, 231, 0.60);
+}
+
+.tool-button[data-tool="erase"] {
+  border-color: rgba(212, 112, 205, 0.60);
+}
+
+
+/* =========================================================
+   PLANES / LOCATIONS / MISSION TOGGLE
+========================================================= */
+
+.toggle-container {
+  display: flex;
+  justify-content: center;
+
+  gap: 4px;
+
+  width: fit-content;
+
+  margin: 0 auto 14px;
+  padding: 5px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(13, 27, 34, 0.92),
+      rgba(7, 16, 21, 0.94)
+    );
+
+  border: 1px solid var(--ifs-border);
+
+  border-radius: 13px;
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+.toggle-button {
+  margin: 0;
+
+  padding: 8px 17px;
+
+  background: transparent;
+
+  border: 1px solid transparent;
+
+  border-radius: 9px;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+
+  color: var(--ifs-text-soft);
+
+  cursor: pointer;
+
+  backdrop-filter: none;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.toggle-button:hover {
+  background: rgba(105, 198, 231, 0.07);
+
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.toggle-button.active {
+  background: rgba(105, 198, 231, 0.13);
+
+  border-color: rgba(105, 198, 231, 0.23);
+
+  color: var(--ifs-accent-light);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+
+/* =========================================================
+   LEFT SELECTION PANEL
+========================================================= */
+
+.left-container {
+  position: fixed;
+
+  top: 100px;
+  left: 3rem;
+
+  width: 25%;
+  height: 67vh;
+
+  padding: 18px;
+
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+
+  z-index: 10;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(13, 27, 34, 0.92),
+      rgba(7, 16, 21, 0.95)
+    );
+
+  border: 1px solid var(--ifs-border);
+
+  border-radius: 20px;
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    rgba(105, 198, 231, 0.3)
+    transparent;
+}
+
+.left-container::-webkit-scrollbar {
+  width: 5px;
+}
+
+.left-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.left-container::-webkit-scrollbar-thumb {
+  background: rgba(105, 198, 231, 0.25);
+
+  border-radius: 20px;
+}
+
+.left-container h2 {
+  margin: 2px 0 8px;
+
+  color: rgba(255, 255, 255, 0.88);
+
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+
+  text-align: left;
+}
+
+.left-container ul {
+  list-style: none;
+
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.left-container li b {
+  display: inline-block;
+  margin-bottom: 2px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.left-container li {
+  padding: 12px 13px;
+
+  background: rgba(255, 255, 255, 0.035);
+
+  border: 1px solid rgba(255, 255, 255, 0.055);
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  color: var(--ifs-text-soft);
+
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.6;
+
+  text-align: left;
+
+  box-shadow: none;
+
+  backdrop-filter: none;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.left-container li:hover {
+  background: rgba(105, 198, 231, 0.07);
+
+  border-color: rgba(105, 198, 231, 0.18);
+
+  color: rgba(255, 255, 255, 0.82);
+
+  transform: translateX(2px);
+}
+
+.left-container li:active {
+  background: rgba(105, 198, 231, 0.1);
+
+  transform: translateX(1px);
+}
+
+.left-container li.selected {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(58, 147, 179, 0.18),
+      rgba(58, 147, 179, 0.07)
+    );
+
+  border-color: rgba(105, 198, 231, 0.32);
+
+  color: #e5f8ff;
+
+  transform: none;
+
+  box-shadow:
+    inset 3px 0 0 var(--ifs-accent);
+}
+
+
+/* =========================================================
+   PLANE DESCRIPTION PANEL
+========================================================= */
+
+.right-container {
+  position: fixed;
+
+  top: 100px;
+  right: 3rem;
+
+  width: 25%;
+  height: 45vh;
+
+  padding: 20px;
+
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 15px;
+
+  z-index: 10;
+
+  text-align: left;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(13, 27, 34, 0.91),
+      rgba(7, 16, 21, 0.95)
+    );
+
+  border: 1px solid var(--ifs-border);
+
+  border-radius: 20px;
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    rgba(105, 198, 231, 0.3)
+    transparent;
+}
+
+.right-container::-webkit-scrollbar {
+  width: 5px;
+}
+
+.right-container::-webkit-scrollbar-thumb {
+  background: rgba(105, 198, 231, 0.25);
+
+  border-radius: 20px;
+}
+
+.right-container h2 {
+  margin: 0;
+
+  color: var(--ifs-text-soft) !important;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.8;
+
+  white-space: pre-line;
+}
+
+
+/* =========================================================
+   PLAY / STOP
+========================================================= */
+
+.play-button-container {
+  position: fixed;
+
+  right: 60px;
+  bottom: 130px;
+
+  width: 64px;
+  height: 64px;
+
+  z-index: 1000;
+}
+
+.stop-button-container {
+  position: fixed;
+
+  left: 60px;
+  bottom: 150px;
+
+  width: 58px;
+  height: 58px;
+
+  z-index: 1000;
+}
+
+.play-button {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(58, 147, 179, 0.28),
+      rgba(13, 35, 44, 0.94)
+    );
+
+  border: 1px solid rgba(105, 198, 231, 0.35);
+
+  border-radius: 50%;
+
+  color: var(--ifs-accent-light);
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.3),
+    0 0 18px rgba(105, 198, 231, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.play-button:hover {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(69, 168, 203, 0.4),
+      rgba(13, 35, 44, 0.96)
+    );
+
+  border-color: rgba(105, 198, 231, 0.58);
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 13px 30px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(105, 198, 231, 0.15);
+}
+
+.play-button:active {
+  transform: scale(0.94);
+}
+
+.stop-button-container .play-button {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(229, 103, 103, 0.23),
+      rgba(40, 18, 20, 0.94)
+    );
+
+  border-color: rgba(229, 103, 103, 0.35);
+
+  color: #ff9d9d;
+
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.3),
+    0 0 15px rgba(229, 103, 103, 0.08);
+}
+
+.stop-button-container .play-button:hover {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(229, 103, 103, 0.34),
+      rgba(40, 18, 20, 0.96)
+    );
+
+  border-color: rgba(229, 103, 103, 0.55);
+}
+
+
+/* =========================================================
+   FLIGHT KEYPAD
+========================================================= */
+
+.keypad-container {
+  position: fixed;
+
+  right: 20px;
+  bottom: 150px;
+
+  width: 35vw;
+  height: 35vw;
+
+  max-width: 220px;
+  max-height: 220px;
+
+  z-index: 500;
+}
+
+.keypad {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(22, 47, 58, 0.9),
+      rgba(7, 16, 21, 0.91)
+    );
+
+  border: 1px solid rgba(105, 198, 231, 0.18);
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.keypad::after {
+  content: '';
+
+  position: absolute;
+
+  width: 22%;
+  height: 22%;
+
+  border-radius: 50%;
+
+  background: rgba(105, 198, 231, 0.055);
+
+  border: 1px solid rgba(105, 198, 231, 0.1);
+}
+
+.keypad button {
+  position: absolute;
+
+  width: 31%;
+  height: 31%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  background: rgba(255, 255, 255, 0.045);
+
+  border: 1px solid rgba(105, 198, 231, 0.13);
+
+  border-radius: 50%;
+
+  color: rgba(156, 228, 252, 0.65);
+
+  font-size: clamp(17px, 2vw, 25px);
+
+  cursor: pointer;
+
+  box-shadow: none;
+
+  backdrop-filter: blur(8px);
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.keypad button:hover {
+  background: rgba(105, 198, 231, 0.12);
+
+  border-color: rgba(105, 198, 231, 0.35);
+
+  color: var(--ifs-accent-light);
+}
+
+.keypad button:active {
+  background: rgba(105, 198, 231, 0.2);
+
+  transform: scale(0.9);
+}
+
+.keypad #up {
+  top: 6%;
+  left: 34.5%;
+}
+
+.keypad #down {
+  bottom: 6%;
+  left: 34.5%;
+}
+
+.keypad #left {
+  left: 6%;
+  top: 34.5%;
+}
+
+.keypad #right {
+  right: 6%;
+  top: 34.5%;
+}
+
+
+/* =========================================================
+   MAP
+========================================================= */
+
+.map-view {
+  position: absolute;
+
+  top: 100px;
+  right: 50px;
+
+  width: 15%;
+  height: 30vh;
+
+  z-index: 100;
+
+  overflow: hidden;
+
+  border: 2px solid rgba(105, 198, 231, 0.32);
+  border-radius: 50%;
+
+  background: rgba(7, 16, 21, 0.9);
+
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.35),
+    0 0 18px rgba(58, 147, 179, 0.1);
+}
+
+/* Mission editor expanded map */
+.map-view.expand {
+  position: absolute;
+
+  top: 120px;
+  left: 10%;
+  right: auto;
+
+  width: 80%;
+  height: 65vh;
+
+  z-index: 100;
+
+  border: 1px solid rgba(105, 198, 231, 0.25);
+  border-radius: 18px;
+
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.4),
+    0 0 22px rgba(58, 147, 179, 0.08);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media screen and (max-width: 768px) {
+
+  .toggle-container {
+    display: flex;
+    justify-content: center;
+
+    transform: translateY(-25px);
+
+    gap: 2px;
+
+    padding: 4px;
+  }
+
+  .toggle-button {
+    padding: 7px 11px;
+
+    font-size: 10px;
+  }
+
+
+  /* STATUS */
+
+  .status-card {
+    top: 120px;
+    right: 10px;
+
+    width: 95px;
+
+    padding: 4px;
+  }
+
+  .mission-status {
+    padding: 7px 4px;
+
+    font-size: 9px;
+  }
+
+
+  /* TOOLBAR */
+
+  .toolbar {
+    left: 10px;
+  }
+
+  .tool-group {
+    padding: 4px;
+
+    gap: 5px;
+  }
+
+  .tool-button i {
+    color: rgba(255, 255, 255, 0.9) !important;
+    transition: color 0.2s ease;
+  }
+
+  .tool-button:hover i {
+    color: #ffffff !important;
+  }
+
+  .tool-button.active i {
+    color: #ffffff !important;
+  }
+  
+
+  /* LEFT PANEL */
+
+  .left-container {
+    position: fixed;
+
+    top: 100px;
+    left: 12px;
+
+    width: 28%;
+    height: 55vh;
+
+    padding: 11px;
+
+    border-radius: 15px;
+
+    gap: 9px;
+  }
+
+  .left-container h2 {
+    margin-bottom: 5px;
+
+    font-size: 12px;
+  }
+
+  .left-container ul {
+    gap: 6px;
+  }
+
+  .left-container li {
+    padding: 7px;
+
+    border-radius: 8px;
+
+    font-size: 9px;
+    line-height: 1.45;
+  }
+
+  .left-container li:hover {
+    transform: none;
+  }
+
+  .left-container li.selected {
+    transform: none;
+  }
+
+
+  /* RIGHT PANEL */
+
+  .right-container {
+    position: fixed;
+
+    top: 100px;
+    right: 1rem;
+
+    width: 27%;
+    height: 27vh;
+
+    padding: 12px;
+
+    border-radius: 15px;
+
+    gap: 8px;
+  }
+
+  .right-container h2 {
+    font-size: 7px;
+    line-height: 1.6;
+  }
+
+
+  /* PLAY */
+
+  .play-button-container {
+    right: 10px;
+    bottom: 130px;
+
+    width: 58px;
+    height: 58px;
+  }
+
+  .stop-button-container {
+    left: 12px;
+    bottom: 135px;
+
+    width: 52px;
+    height: 52px;
+  }
+
+  .play-button {
+    font-size: 19px;
+  }
+
+.play-button {
+  width: 178px;
+  height: 78px;
+  min-width: 178px;
+  min-height: 78px;
+  box-sizing: border-box;
+  border-radius: 22px;
+  padding: 0 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  overflow: visible;
+  white-space: nowrap;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.play-button i {
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  position: static;
+  transform: none;
+  font-size: 21px;
+  line-height: 1;
+}
+
+.sim-button-label {
+  display: inline-block;
+  flex: 0 0 auto;
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+}
+
+
+
+
+  /* KEYPAD */
+
+  .keypad-container {
+    right: 12px;
+    bottom: 130px;
+
+    width: 38vw;
+    height: 38vw;
+
+    max-width: 185px;
+    max-height: 185px;
+  }
+
+  .keypad button {
+    font-size: clamp(14px, 4vw, 20px);
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media screen and (max-width: 480px) {
+
+  .left-container {
+    width: 31%;
+
+    left: 8px;
+
+    padding: 8px;
+  }
+
+  .right-container {
+    width: 30%;
+
+    right: 8px;
+
+    padding: 9px;
+  }
+
+  .left-container li {
+    padding: 6px;
+
+    font-size: 8px;
+  }
+
+  .toggle-button {
+    padding: 6px 9px;
+
+    font-size: 9px;
+  }
+
+  .toolbar {
+    left: 6px;
+  }
+
+  .tool-button,
+  .tool-button:hover {
+    width: 33px;
+    height: 33px;
+  }
+}
+
+.play-button-container,
+.stop-button-container {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+.play-button-container .play-button,
+.stop-button-container .play-button {
+  width: 180px !important;
+  height: 76px !important;
+  min-width: 180px !important;
+  min-height: 76px !important;
+  max-width: none !important;
+  max-height: none !important;
+  aspect-ratio: auto !important;
+  border-radius: 22px !important;
+  padding: 0 26px !important;
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 13px !important;
+  overflow: visible !important;
+  white-space: nowrap !important;
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+}
+
+.play-button-container .play-button i,
+.stop-button-container .play-button i {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  transform: none !important;
+  flex: 0 0 auto !important;
+  font-size: 21px !important;
+  line-height: 1 !important;
+}
+
+.play-button-container .sim-button-label,
+.stop-button-container .sim-button-label {
+  display: inline-block !important;
+  position: static !important;
+  width: auto !important;
+  margin: 0 !important;
+  transform: none !important;
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
+}
+
 </style>

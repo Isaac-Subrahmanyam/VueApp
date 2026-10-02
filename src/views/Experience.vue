@@ -1,320 +1,928 @@
 <template>
   <title>Experience</title>
-  <div class="page">
-    <div class="timeline">
-        <div class="timeline__group">
-        <div class="timeline__cards">
-            <div class="timeline__card card">
-            <header class="card__header">
-                <time class="time" datetime="2022-02-02">
-                <span class="time__day">November 2022 - </span>
-                <span class="time__month">Current</span>
-                </time>
-                <h3 class="card__title r-title">Software Engineer
-                  <br>
-                  <a href="https://www.cae.com/" target="_blank">CAE</a></h3>
-            </header>
-            <div class="card__content">
-                <p>
-                  <br>
-                  <b>Project #1 (Common Operating Picture (COP) application using OpenLayers, GeoServer, and Angular)</b>
-                <ul>
-                  <li>Held a key role as one of the head UI developers, responsible for designing and implementing the user interface.</li>
-                  <br>
-                  <li>Utilized PrimeNG, a UI component library for Angular, to enhance the user interface and provide a consistent look and feel.</li>
-                  <br>
-                  <li>Integrated interactive maps and data folders/layers to offer a comprehensive view of the operational environment.</li>
-                  <br>
-                  <li>Successfully integrated real-time collaborative features, allowing users to collaboratively draw shapes and routes on the map in real-time.</li>
-                </ul>
-                <br>
-                </p>
-            </div>
-            </div>
-        </div>
 
-        <div class="timeline__cards">
-            <div class="timeline__card card">
-            <header class="card__header">
-                <time class="time" datetime="2022-02-02">
-                <span class="time__day">May 2022 - </span>
-                <span class="time__month">November 2022</span>
-                </time>
-                <h3 class="card__title r-title">Software Engineer Intern
-                  <br>
-                  <a href="https://www.jhuapl.edu/" target="_blank">
-                  The Johns Hopkins University Applied Physics Laboratory
-                  </a>
-                  </h3>
-            </header>
-            <div class="card__content">
-                <p>
-                  <br>
-                  <b>Project #1 (Software that predicts the probability of successfully transmitting/receiving radio signals)</b>
-                <ul>
-                  <li>Completed UI development coding tasks that went into production, which include analyzing user 
-                interface issues and creating manageable solutions using agile development.</li>
-                  <br>
-                  <li>Improved a Dotnet application that used entity framework to query data and reformat it into more 
-                efficient data structures, which improved retrieval speeds.</li>
-                  <br>
-                  <li>Containerized the application using Docker.</li>
-                </ul>
-                <br>
-                <b>Project #2 (Satellite communications system that ensures a survival path is present)</b>
-                <ul>
-                  <li>Refactored a Java thick client into a web application using a Vue.js frontend and Java backend.</li>
-                  <br>
-                  <li>Acted as a full-stack developer, creating backend endpoints to retrieve data, and APIs/UI
-                components to visualize data.</li>
-                  <br>
-                  <li>Conducted testing and performed documentation of UI and services.</li>
-                </ul>
-                </p>
-            </div>
-            </div>
-        </div>
-        </div>
-        <div class="timeline__group">
-        <!-- <span class="timeline__year time" aria-hidden="true">2022</span> -->
-        </div>
+  <div class="experience-page">
+    <section class="experience-section">
+
+      <div class="section-heading">
+        <span class="section-label">Career</span>
+
+        <h1>Experience</h1>
+
+        <div class="section-divider"></div>
       </div>
+
+      <div class="experience-list">
+
+        <!-- CAE -->
+        <article class="experience-card">
+          <div class="timeline-marker">
+            <span></span>
+          </div>
+
+          <div class="experience-card-header">
+            <div class="experience-heading">
+              <span class="experience-date">
+                NOV 2022 — PRESENT
+              </span>
+
+              <h2>Software Engineer</h2>
+
+              <a
+                href="https://www.cae.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="company-link"
+              >
+                CAE
+                <span>↗</span>
+              </a>
+
+              <span class="experience-location">
+                Orlando, Florida
+              </span>
+            </div>
+
+            <div class="experience-number">
+              01
+            </div>
+          </div>
+
+          <div class="experience-summary">
+            Developing mission-planning, simulation, autonomy,
+            geospatial, and training software for defense applications.
+          </div>
+
+          <!-- VISTA -->
+          <div class="project-block">
+            <div class="project-header">
+              <div>
+                <span class="project-label">
+                  PROJECT
+                </span>
+
+                <h3>Vista</h3>
+              </div>
+
+              <div class="project-tags">
+                <span>Angular</span>
+                <span>OpenLayers</span>
+                <span>Cesium</span>
+                <span>.NET</span>
+              </div>
+            </div>
+
+            <ul class="project-details">
+              <li>
+                Designed and implemented a multi-user mission planning
+                and execution system supporting concurrent scenario
+                editing, timeline-based mission scripting and playback,
+                and real-time control of simulated entities.
+              </li>
+
+              <li>
+                Integrated AI-driven autonomous agents and developed
+                geospatial Common Operating Picture and analytics
+                capabilities.
+              </li>
+            </ul>
+
+            <div class="secondary-tags">
+              <span>GridStack.js</span>
+              <span>Observable Plot</span>
+              <span>Mission Planning</span>
+              <span>Autonomy</span>
+            </div>
+          </div>
+
+          <!-- CCA ACADEMY -->
+          <div class="project-block">
+            <div class="project-header">
+              <div>
+                <span class="project-label">
+                  PROJECT
+                </span>
+
+                <h3>CCA Academy</h3>
+              </div>
+
+              <div class="project-tags">
+                <span>React</span>
+                <span>AGRA</span>
+                <span>HMI</span>
+              </div>
+            </div>
+
+            <ul class="project-details">
+              <li>
+                Integrated General Atomics Collaborative Combat
+                Aircraft AI models using the Autonomous Government
+                Reference Architecture into a cockpit flight simulator.
+              </li>
+
+              <li>
+                Implemented HMI controls, state visualization, and
+                command workflows supporting autonomous aircraft
+                operations.
+              </li>
+
+              <li>
+                Developed a React-based courseware application with
+                interactive lessons, assessments, and simulator
+                integration for pilot training.
+              </li>
+            </ul>
+          </div>
+
+          <!-- SOLDIER VIRTUAL TRAINER -->
+          <div class="project-block">
+            <div class="project-header">
+              <div>
+                <span class="project-label">
+                  PROJECT · SOFTWARE LEAD
+                </span>
+
+                <h3>Soldier Virtual Trainer</h3>
+              </div>
+
+              <div class="project-tags">
+                <span>Angular</span>
+                <span>TypeScript</span>
+                <span>Webpack</span>
+              </div>
+            </div>
+
+            <ul class="project-details">
+              <li>
+                Served as Software Lead and Scrum Master, providing
+                technical direction, coordinating development
+                priorities, and leading sprint execution while
+                contributing directly to application development.
+              </li>
+
+              <li>
+                Led development of the core Angular and TypeScript UI
+                and plugin architecture used to integrate independent
+                vendor-developed UI components.
+              </li>
+
+              <li>
+                Standardized how external plugins were packaged,
+                loaded, and integrated into the broader training
+                environment.
+              </li>
+            </ul>
+
+            <div class="leadership-badge">
+              <span class="leadership-dot"></span>
+              Software Lead & Scrum Master
+            </div>
+          </div>
+        </article>
+
+        <!-- JHU APL -->
+        <article class="experience-card">
+          <div class="timeline-marker">
+            <span></span>
+          </div>
+
+          <div class="experience-card-header">
+            <div class="experience-heading">
+              <span class="experience-date">
+                MAY 2022 — NOV 2022
+              </span>
+
+              <h2>Software Engineer Intern</h2>
+
+              <a
+                href="https://www.jhuapl.edu/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="company-link"
+              >
+                Johns Hopkins University
+                Applied Physics Laboratory
+                <span>↗</span>
+              </a>
+
+              <span class="experience-location">
+                Laurel, Maryland
+              </span>
+            </div>
+
+            <div class="experience-number">
+              02
+            </div>
+          </div>
+
+          <div class="experience-summary">
+            Worked on full-stack software modernization for
+            mission-focused engineering applications.
+          </div>
+
+          <div class="project-block">
+            <div class="project-header">
+              <div>
+                <span class="project-label">
+                  APPLICATION MODERNIZATION
+                </span>
+
+                <h3>Full-Stack Web Architecture</h3>
+              </div>
+
+              <div class="project-tags">
+                <span>Vue.js</span>
+                <span>Java</span>
+                <span>Spark Java</span>
+              </div>
+            </div>
+
+            <ul class="project-details">
+              <li>
+                Modernized a Java and Spring Boot thick-client
+                application into a web-based architecture.
+              </li>
+
+              <li>
+                Developed the new frontend using Vue.js and transitioned
+                backend functionality to Spark Java.
+              </li>
+
+              <li>
+                Improved application usability, maintainability, and
+                deployment flexibility through the new web architecture.
+              </li>
+            </ul>
+          </div>
+        </article>
+
+      </div>
+    </section>
   </div>
 </template>
 
 <style scoped>
-.r-title {
-  margin-top: var(--rTitleMarginTop, 0) !important;
-  margin-bottom: var(--rTitleMarginBottom, 0) !important;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
 }
 
-p:not([class]) {
-  line-height: var(--cssTypographyLineHeight, 1.78);
-  margin-top: var(--cssTypographyBasicMargin, 1em);
-  margin-bottom: 0;
+.experience-page {
+  width: 100%;
+  padding: 40px 0 120px;
 }
 
-p:not([class]):first-child {
-  margin-top: 0;
+.experience-section {
+  width: min(1000px, 90%);
+  margin: 0 auto;
 }
 
-/*
-text component
-*/
+/* ========================================
+   PAGE HEADER
+======================================== */
 
-.text {
-  display: var(--textDisplay, inline-flex);
-  font-size: var(--textFontSize, 1rem);
+.section-heading {
+  max-width: 650px;
+  margin: 0 auto 65px;
+
+  text-align: center;
 }
 
-/*
-time component
-*/
+.section-label {
+  display: block;
 
-/*
-core styles
-*/
+  margin-bottom: 9px;
 
-.time {
-  display: var(--timeDisplay, inline-flex);
+  color: #58b7d8;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
-/*
-extensions
-*/
+.section-heading h1 {
+  margin: 0;
 
-.time__month {
-  margin-left: var(--timelineMounthMarginLeft, 0.25em);
+  color: #ffffff;
+
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(32px, 5vw, 44px);
+  font-weight: 600;
+
+  letter-spacing: -0.035em;
 }
 
-/*
-skin
-*/
+.section-heading p {
+  max-width: 570px;
 
-.time {
-  padding: var(--timePadding, 0.25rem 1.25rem 0.25rem);
-  background-color: var(--timeBackgroundColor, #f0f0f05b);
-  backdrop-filter: blur(8px);
+  margin: 12px auto 0;
 
-  font-size: var(--timeFontSize, 0.75rem);
-  font-weight: var(--timeFontWeight, 700);
-  text-transform: var(--timeTextTransform, uppercase);
-  color: var(--timeColor, currentColor);
+  color: rgba(255, 255, 255, 0.55);
+
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+
+  line-height: 1.7;
 }
 
-/*
-card component
-*/
+.section-divider {
+  width: 44px;
+  height: 3px;
 
-/*
-core styles
-*/
+  margin: 18px auto 0;
 
-.card {
-  padding: var(--timelineCardPadding, 1.5rem 1.5rem 1.25rem);
+  border-radius: 100px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #3a93b3,
+    transparent
+  );
+
+  box-shadow:
+    0 0 12px rgba(58, 147, 179, 0.4);
 }
 
-.card__content {
-  margin-top: var(--cardContentMarginTop, 0.5rem);
+/* ========================================
+   EXPERIENCE LIST
+======================================== */
+
+.experience-list {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 35px;
+}
+
+.experience-list::before {
+  content: '';
+
+  position: absolute;
+
+  top: 30px;
+  bottom: 30px;
+  left: -31px;
+
+  width: 1px;
+
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(91, 188, 222, 0.55) 8%,
+    rgba(91, 188, 222, 0.25) 90%,
+    transparent
+  );
+}
+
+/* ========================================
+   EXPERIENCE CARD
+======================================== */
+
+.experience-card {
+  position: relative;
+
+  padding: 34px;
+
+  overflow: visible;
+
+  text-align: left;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(13, 27, 34, 0.88),
+      rgba(7, 16, 21, 0.92)
+    );
+
+  border:
+    1px solid rgba(123, 195, 221, 0.12);
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+
+  backdrop-filter: blur(10px);
+
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.experience-card:hover {
+  transform: translateY(-3px);
+
+  border-color:
+    rgba(123, 195, 221, 0.25);
+
+  box-shadow:
+    0 25px 55px rgba(0, 0, 0, 0.34),
+    0 0 30px rgba(58, 147, 179, 0.05);
+}
+
+/* ========================================
+   TIMELINE MARKER
+======================================== */
+
+.timeline-marker {
+  position: absolute;
+
+  left: -38px;
+  top: 35px;
+
+  width: 15px;
+  height: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #071116;
+
+  border: 2px solid #55b4d5;
+
+  box-shadow:
+    0 0 13px rgba(85, 180, 213, 0.45);
+}
+
+.timeline-marker span {
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: #8edcf7;
+}
+
+/* ========================================
+   EXPERIENCE HEADER
+======================================== */
+
+.experience-card-header {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 25px;
+
   text-align: left;
 }
 
-/*
-skin
-*/
-
-.card {
-  border-radius: var(--timelineCardBorderRadius, 2px);
-  border-left: var(--timelineCardBorderLeftWidth, 3px) solid
-    var(--timelineCardBorderLeftColor, var(--uiTimelineMainColor));
-  box-shadow: var(
-    --timelineCardBoxShadow,
-    0 1px 3px 0 rgba(0, 0, 0, 0.12),
-    0 1px 2px 0 rgba(0, 0, 0, 0.24)
-  );
-  background-color: var(--timelineCardBackgroundColor, #ffffff91);
-  filter: drop-shadow(0 0 0.75rem #3a93b381);
-  backdrop-filter: blur(8px);
-}
-
-/*
-extensions
-*/
-
-.card__title {
-  --rTitleMarginTop: var(--cardTitleMarginTop, 1rem);
-  font-size: var(--cardTitleFontSize, 1.25rem);
-}
-
-/*
-=====
-CORE STYLES
-=====
-*/
-
-.timeline {
-  display: var(--timelineDisplay, grid);
-  grid-row-gap: var(--timelineGroupsGap, 2rem);
-}
-
-/*
-1. If timeline__year isn't displaed the gap between it and timeline__cards isn't displayed too
-*/
-
-.timeline__year {
-  margin-bottom: 1.25rem; /* 1 */
-}
-
-.timeline__cards {
-  display: var(--timeloneCardsDisplay, grid);
-  grid-row-gap: var(--timeloneCardsGap, 1.5rem);
-}
-
-/*
-=====
-SKIN
-=====
-*/
-
-.timeline {
-  --uiTimelineMainColor: var(--timelineMainColor, #222);
-  --uiTimelineSecondaryColor: var(--timelineSecondaryColor, #fff);
-
-  border-left: var(--timelineLineWidth, 3px) solid
-    var(--timelineLineBackgroundColor, var(--uiTimelineMainColor));
-  padding-top: 1rem;
-  padding-bottom: 1.5rem;
-}
-
-.timeline__year {
-  --timePadding: var(--timelineYearPadding, 0.5rem 1.5rem);
-  --timeColor: var(--uiTimelineSecondaryColor);
-  --timeBackgroundColor: var(--uiTimelineMainColor);
-  --timeFontWeight: var(--timelineYearFontWeight, 400);
-}
-
-.timeline__card {
-  position: relative;
-  margin-left: var(--timelineCardLineGap, 1rem);
-}
-
-/*
-1. Stoping cut box shadow
-*/
-
-.timeline__cards {
-  overflow: hidden;
-  padding-top: 0.25rem; /* 1 */
-  padding-bottom: 0.25rem; /* 1 */
-}
-
-.timeline__card::before {
-  content: '';
-  width: 100%;
-  height: var(--timelineCardLineWidth, 2px);
-  background-color: var(
-    --timelineCardLineBackgroundColor,
-    var(--uiTimelineMainColor)
-  );
-
-  position: absolute;
-  top: var(--timelineCardLineTop, 1rem);
-  left: -50%;
-  z-index: -1;
-}
-
-/*
-=====
-SETTINGS
-=====
-*/
-/**/
-.timeline {
-  --timelineMainColor: #3a93b3;
-}
-
-/*
-=====
-DEMO
-=====
-*/
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans,
-    Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
-  color: #222;
-  overflow-y: auto;
-
-  background-color: #f0f0f0;
-  margin: 0;
+.experience-heading {
   display: flex;
   flex-direction: column;
+
+  align-items: flex-start;
+
+  text-align: left;
 }
 
-p {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  line-height: 1.5;
+.experience-date {
+  margin-bottom: 10px;
+
+  color: #5eb9da;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.13em;
 }
 
-p:last-child {
+.experience-heading h2 {
+  margin: 0 0 5px;
+
+  color: #f4f9fb;
+
+  font-family: 'Poppins', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+
+  letter-spacing: -0.025em;
+
+  text-align: left;
+}
+
+.company-link {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  color: #83d4f1;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+
+  line-height: 1.4;
+
+  text-decoration: none;
+  text-align: left;
+
+  transition: color 0.2s ease;
+}
+
+.company-link span {
+  font-size: 12px;
+
+  transition: transform 0.2s ease;
+}
+
+.company-link:hover {
+  color: #b4eaff;
+}
+
+.company-link:hover span {
+  transform: translate(2px, -2px);
+}
+
+.experience-location {
+  margin-top: 7px;
+
+  color: rgba(255, 255, 255, 0.38);
+
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+
+  text-align: left;
+}
+
+/* ========================================
+   EXPERIENCE NUMBER
+======================================== */
+
+.experience-number {
+  color: rgba(123, 195, 221, 0.07);
+
+  font-family: 'Poppins', sans-serif;
+  font-size: 54px;
+  font-weight: 700;
+
+  line-height: 1;
+
+  user-select: none;
+}
+
+/* ========================================
+   SUMMARY
+======================================== */
+
+.experience-summary {
+  max-width: 720px;
+
+  margin-top: 23px;
+  padding-top: 21px;
+
+  color: rgba(255, 255, 255, 0.58);
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.06);
+
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+
+  line-height: 1.7;
+
+  text-align: left;
+}
+
+/* ========================================
+   PROJECT BLOCKS
+======================================== */
+
+.project-block {
+  position: relative;
+
+  margin-top: 25px;
+  padding: 23px;
+
+  border-radius: 14px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.055);
+
+  text-align: left;
+}
+
+.project-header {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 17px;
+
+  text-align: left;
+}
+
+.project-label {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: rgba(123, 195, 221, 0.55);
+
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+
+  text-align: left;
+}
+
+.project-header h3 {
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.93);
+
+  font-family: 'Poppins', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+
+  text-align: left;
+}
+
+/* ========================================
+   TECHNOLOGY TAGS
+======================================== */
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+
+  justify-content: flex-end;
+
+  gap: 6px;
+}
+
+.project-tags span,
+.secondary-tags span {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 5px 9px;
+
+  color: #8dd8f3;
+
+  background:
+    rgba(58, 147, 179, 0.08);
+
+  border:
+    1px solid rgba(123, 195, 221, 0.14);
+
+  border-radius: 7px;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+/* ========================================
+   PROJECT DETAILS
+======================================== */
+
+.project-details {
+  width: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+
+  text-align: left !important;
+}
+
+.project-details li {
+  position: relative;
+
+  display: block;
+
+  width: 100%;
+
+  margin: 0 0 12px;
+  padding-left: 25px;
+
+  color: rgba(255, 255, 255, 0.62);
+
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+
+  line-height: 1.7;
+
+  text-align: left !important;
+}
+
+.project-details li:last-child {
   margin-bottom: 0;
 }
 
-.page {
-  max-width: 47rem;
-  padding: 5rem 2rem;
-  padding-bottom: 100px;
-  margin-left: auto;
-  margin-right: auto;
+.project-details li::before {
+  content: '';
+
+  position: absolute;
+
+  top: 8px;
+  left: 2px;
+
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: #4da9ca;
+
+  box-shadow:
+    0 0 7px rgba(77, 169, 202, 0.45);
 }
 
-.substack {
-  border: 1px solid #eee;
-  background-color: #fff;
-  width: 100%;
-  max-width: 480px;
-  height: 280px;
-  margin: 1rem auto;
+/* ========================================
+   SECONDARY TAGS
+======================================== */
+
+.secondary-tags {
+  display: flex;
+  flex-wrap: wrap;
+
+  justify-content: flex-start;
+
+  gap: 6px;
+
+  margin-top: 17px;
+  padding-top: 15px;
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.05);
+
+  text-align: left;
+}
+
+.secondary-tags span {
+  color: rgba(255, 255, 255, 0.45);
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  border-color:
+    rgba(255, 255, 255, 0.06);
+}
+
+/* ========================================
+   LEADERSHIP
+======================================== */
+
+.leadership-badge {
+  width: fit-content;
+
+  margin-top: 17px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 7px 10px;
+
+  color: #9eddf3;
+
+  background:
+    rgba(58, 147, 179, 0.08);
+
+  border:
+    1px solid rgba(123, 195, 221, 0.14);
+
+  border-radius: 8px;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+
+  text-align: left;
+}
+
+.leadership-dot {
+  width: 6px;
+  height: 6px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #67c7e9;
+
+  box-shadow:
+    0 0 7px rgba(103, 199, 233, 0.5);
+}
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 850px) {
+  .experience-section {
+    width: 88%;
+  }
+
+  .experience-list::before {
+    left: -23px;
+  }
+
+  .timeline-marker {
+    left: -30px;
+  }
+
+  .experience-card {
+    padding: 28px;
+  }
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 600px) {
+  .experience-page {
+    padding-top: 20px;
+  }
+
+  .experience-section {
+    width: 92%;
+  }
+
+  .section-heading {
+    margin-bottom: 42px;
+  }
+
+  .section-heading h1 {
+    font-size: 30px;
+  }
+
+  .experience-list::before {
+    display: none;
+  }
+
+  .timeline-marker {
+    display: none;
+  }
+
+  .experience-card {
+    padding: 22px;
+
+    border-radius: 16px;
+  }
+
+  .experience-card-header {
+    gap: 10px;
+  }
+
+  .experience-heading h2 {
+    font-size: 20px;
+  }
+
+  .experience-number {
+    font-size: 40px;
+  }
+
+  .project-block {
+    padding: 18px;
+  }
+
+  .project-header {
+    flex-direction: column;
+
+    gap: 12px;
+  }
+
+  .project-tags {
+    justify-content: flex-start;
+  }
+
+  .project-details li {
+    padding-left: 21px;
+
+    font-size: 12px;
+
+    text-align: left !important;
+  }
 }
 </style>

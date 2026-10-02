@@ -1,9 +1,9 @@
 <template>
-  <title>Spiral</title>
+  <title>Word Rivals</title>
     <div id="projectsStyle1">
         <div id="projectsStyle2">
             <n-tag type="info" size="large" round dashed>
-            #Spiral
+            #WordRivals
             </n-tag>
         </div>
         <div id="projectsStyle2">
@@ -17,8 +17,8 @@
 		<iframe 
 		frameborder="0" 
 		scrolling="no" 
-		style="border: 0px; width: 500px; height: 500px;" 
-		src="https://www.khanacademy.org/computer-programming/spiral/6312160950943744/embedded?id=1664825458239-0.41397621295846454&origin=file%3A%2F%2F&editor=no&buttons=no&author=no&embed=yes">
+		style="border: 0px; width: 600px; height: 600px;" 
+		src="https://www.khanacademy.org/computer-programming/word-rivals/6278190887976960/embedded?id=1664825458239-0.41397621295846454&origin=file%3A%2F%2F&editor=no&buttons=no&author=no&embed=yes">
 		</iframe>
 		</h2>
 	</div>
@@ -29,7 +29,7 @@
         name: 'App',
         data: function () {
             return {
-                handleClick() { window.open("https://www.khanacademy.org/computer-programming/spiral/6312160950943744") }
+                handleClick() { window.open("https://www.khanacademy.org/computer-programming/word-rivals/6278190887976960") }
             }
         }
     }

@@ -1,153 +1,931 @@
-
 <template>
   <title>Contact</title>
-  <div class="about">
-    <div class="description">
-      <div class="copy-text phone">
-        <h2 class="left">407-725-5513</h2>
-        <button class="right" @:click="copy('.phone', '407-725-5513')">
-          <i class="fa fa-clone"></i>
-        </button>
+
+  <div class="contact-page">
+    <section class="contact-section">
+
+      <!-- HEADER -->
+      <div class="section-heading">
+        <span class="section-label">Get In Touch</span>
+
+        <h1>Contact Me</h1>
+        
+        <div class="section-divider"></div>
       </div>
-      <br />
-      <br />
-      <br />
-      <div class="copy-text email">
-        <h2 class="left">isaac.subrahmanyam@outlook.com</h2>
-        <button
-          class="right"
-          @:click="copy('.email', 'isaac.subrahmanyam@outlook.com')"
-        >
-          <i class="fa fa-clone"></i>
-        </button>
+
+      <!-- CONTACT CARD -->
+      <div class="contact-card">
+
+        <!-- INTRO -->
+        <div class="contact-intro">
+          <span class="content-label">
+            LET'S CONNECT
+          </span>
+
+          <h2>
+            I'd love to hear
+            <span>from you.</span>
+          </h2>
+
+          <p>
+            The easiest way to reach me is by email. You can also
+            give me a call or connect with me through LinkedIn.
+          </p>
+
+        </div>
+
+        <!-- CONTACT METHODS -->
+        <div class="contact-methods">
+
+          <!-- EMAIL -->
+          <div
+            class="contact-method"
+            :class="{ copied: copiedField === 'email' }"
+          >
+            <div class="method-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 6H20V18H4V6Z"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linejoin="round"
+                />
+
+                <path
+                  d="M4 7L12 13L20 7"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+
+            <div class="method-content">
+              <span class="method-label">EMAIL</span>
+
+              <a href="mailto:isaac.subrahmanyam@outlook.com">
+                isaac.subrahmanyam@outlook.com
+              </a>
+            </div>
+
+            <button
+              class="copy-button"
+              type="button"
+              aria-label="Copy email address"
+              @click="copy('email', 'isaac.subrahmanyam@outlook.com')"
+            >
+              <svg
+                v-if="copiedField !== 'email'"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="8"
+                  y="8"
+                  width="11"
+                  height="11"
+                  rx="2"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                />
+
+                <path
+                  d="M16 8V6C16 4.89543 15.1046 4 14 4H6C4.89543 4 4 4.89543 4 6V14C4 15.1046 4.89543 16 6 16H8"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                />
+              </svg>
+
+              <svg
+                v-else
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5 12.5L9.5 17L19 7.5"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+
+              <span class="copy-tooltip">
+                {{ copiedField === 'email' ? 'Copied!' : 'Copy' }}
+              </span>
+            </button>
+          </div>
+
+          <!-- PHONE -->
+          <div
+            class="contact-method"
+            :class="{ copied: copiedField === 'phone' }"
+          >
+            <div class="method-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M7.5 4.5L10 8.5L8.5 10.5C9.6 12.7 11.3 14.4 13.5 15.5L15.5 14L19.5 16.5L18.5 20C18.3 20.7 17.6 21.1 16.9 21C9.8 20 4 14.2 3 7.1C2.9 6.4 3.3 5.7 4 5.5L7.5 4.5Z"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+
+            <div class="method-content">
+              <span class="method-label">PHONE</span>
+
+              <a href="tel:+14077255513">
+                407-725-5513
+              </a>
+            </div>
+
+            <button
+              class="copy-button"
+              type="button"
+              aria-label="Copy phone number"
+              @click="copy('phone', '407-725-5513')"
+            >
+              <svg
+                v-if="copiedField !== 'phone'"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="8"
+                  y="8"
+                  width="11"
+                  height="11"
+                  rx="2"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                />
+
+                <path
+                  d="M16 8V6C16 4.89543 15.1046 4 14 4H6C4.89543 4 4 4.89543 4 6V14C4 15.1046 4.89543 16 6 16H8"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                />
+              </svg>
+
+              <svg
+                v-else
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5 12.5L9.5 17L19 7.5"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+
+              <span class="copy-tooltip">
+                {{ copiedField === 'phone' ? 'Copied!' : 'Copy' }}
+              </span>
+            </button>
+          </div>
+
+          <!-- LINKEDIN -->
+          <a
+            href="https://www.linkedin.com/in/isaac-subrahmanyam/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contact-method contact-link"
+          >
+            <div class="method-icon">
+              <span class="linkedin-icon">in</span>
+            </div>
+
+            <div class="method-content">
+              <span class="method-label">LINKEDIN</span>
+
+              <span class="method-value">
+                Connect on LinkedIn
+              </span>
+            </div>
+
+            <span class="external-arrow">
+              ↗
+            </span>
+          </a>
+
+          <!-- GITHUB -->
+          <a
+            href="https://github.com/Isaac-Subrahmanyam"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contact-method contact-link"
+          >
+            <div class="method-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.58 2 12.23C2 16.75 4.87 20.58 8.84 21.93C9.34 22.02 9.52 21.71 9.52 21.44C9.52 21.2 9.51 20.39 9.51 19.54C6.73 20.16 6.14 18.33 6.14 18.33C5.68 17.13 5 16.81 5 16.81C4.07 16.16 5.07 16.17 5.07 16.17C6.1 16.25 6.64 17.25 6.64 17.25C7.55 18.85 9.03 18.39 9.61 18.12C9.7 17.44 9.97 16.98 10.26 16.72C8.04 16.46 5.7 15.58 5.7 11.66C5.7 10.54 6.09 9.63 6.75 8.92C6.64 8.66 6.29 7.62 6.85 6.22C6.85 6.22 7.71 5.94 9.6 7.27C10.42 7.04 11.23 6.93 12 6.93C12.77 6.93 13.58 7.04 14.4 7.27C16.29 5.94 17.15 6.22 17.15 6.22C17.71 7.62 17.36 8.66 17.25 8.92C17.91 9.63 18.3 10.54 18.3 11.66C18.3 15.59 15.96 16.45 13.73 16.71C14.09 17.03 14.41 17.65 14.41 18.61C14.41 19.98 14.4 21.08 14.4 21.44C14.4 21.71 14.58 22.03 15.09 21.93C19.05 20.57 22 16.75 22 12.23C22 6.58 17.52 2 12 2Z"
+                />
+              </svg>
+            </div>
+
+            <div class="method-content">
+              <span class="method-label">GITHUB</span>
+
+              <span class="method-value">
+                View my GitHub
+              </span>
+            </div>
+
+            <span class="external-arrow">
+              ↗
+            </span>
+          </a>
+
+        </div>
       </div>
-    </div>
+
+    </section>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Contact',
+
   data() {
-    return {}
+    return {
+      copiedField: null,
+      copyTimeout: null
+    }
   },
+
   methods: {
-    copy(select, input) {
-      let copyText = document.querySelector(select)
-      copyText.classList.add('active')
-      window.getSelection().removeAllRanges()
-      navigator.clipboard.writeText(input)
-      setTimeout(function () {
-        copyText.classList.remove('active')
-      }, 2000)
+    async copy(field, value) {
+      try {
+        await navigator.clipboard.writeText(value)
+
+        this.copiedField = field
+
+        if (this.copyTimeout) {
+          clearTimeout(this.copyTimeout)
+        }
+
+        this.copyTimeout = setTimeout(() => {
+          this.copiedField = null
+        }, 1800)
+      } catch (error) {
+        console.error('Unable to copy to clipboard:', error)
+      }
+    }
+  },
+
+  beforeUnmount() {
+    if (this.copyTimeout) {
+      clearTimeout(this.copyTimeout)
     }
   }
 }
 </script>
 
-
 <style scoped>
-.about {
-  margin: 20vh auto;
-  width: min(80vw, 500px);
-  height: 100%;
-  padding-bottom: 50px;
-  padding-top: 50px;
-}
-
-.left {
-  text-align: left;
-  color: #f8f1f1;
-  padding: 10px;
-  font-size: min(20px, 80%);
-}
-
-.contact {
-  width: min(400px, 90%);
-  margin: auto;
-  color: white;
-  margin-top: 45px;
-  background-color: #243964;
-  border-radius: 10px;
-}
-
-p {
-  color: black;
-}
-
-.right {
-  position: absolute;
-  right: 10px;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
 
 * {
-  margin: 0px;
-  padding: 0px;
   box-sizing: border-box;
 }
 
-.container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.label {
-  padding: 10px;
-  font-size: 18px;
-  color: #111;
-}
-.copy-text {
-  margin: auto;
-  font-size: 20px;
-  width: 90%;
-  position: relative;
-  padding: 10px;
-  filter: drop-shadow(0 0 0.75rem #3a93b3);
-  background-color: #ffffff6e;
-  backdrop-filter: blur(8px);
-  border-radius: 10px;
-  display: flex;
+.contact-page {
+  width: 100%;
+  padding: 40px 0 120px;
 }
 
-.copy-text button {
-  padding: 10px;
-  background-image: linear-gradient(#72d2dbd2, #3a93b3a4);
-  color: white;
-  font-size: 18px;
-  border: none;
-  outline: none;
+.contact-section {
+  width: min(950px, 90%);
+  margin: 0 auto;
+}
+
+/* ========================================
+   PAGE HEADER
+======================================== */
+
+.section-heading {
+  max-width: 620px;
+  margin: 0 auto 55px;
+
+  text-align: center;
+}
+
+.section-label,
+.content-label {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: #58b7d8;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.section-heading h1 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(32px, 5vw, 44px);
+  font-weight: 600;
+
+  letter-spacing: -0.035em;
+}
+
+.section-heading p {
+  max-width: 510px;
+
+  margin: 12px auto 0;
+
+  color: rgba(255, 255, 255, 0.55);
+
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+
+  line-height: 1.7;
+}
+
+.section-divider {
+  width: 44px;
+  height: 3px;
+
+  margin: 18px auto 0;
+
+  border-radius: 100px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #3a93b3,
+    transparent
+  );
+
+  box-shadow:
+    0 0 12px rgba(58, 147, 179, 0.4);
+}
+
+/* ========================================
+   CONTACT CARD
+======================================== */
+
+.contact-card {
+  display: grid;
+
+  grid-template-columns: 0.85fr 1.15fr;
+
+  overflow: hidden;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(13, 27, 34, 0.9),
+      rgba(7, 16, 21, 0.94)
+    );
+
+  border:
+    1px solid rgba(123, 195, 221, 0.13);
+
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+
+  backdrop-filter: blur(12px);
+}
+
+/* ========================================
+   INTRO
+======================================== */
+
+.contact-intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 45px 40px;
+
+  text-align: left;
+
+  background:
+    linear-gradient(
+      160deg,
+      rgba(58, 147, 179, 0.12),
+      rgba(5, 15, 20, 0.2)
+    );
+
+  border-right:
+    1px solid rgba(123, 195, 221, 0.09);
+}
+
+.contact-intro h2 {
+  margin: 0 0 17px;
+
+  color: #f3f8fa;
+
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(25px, 3vw, 32px);
+  font-weight: 600;
+
+  line-height: 1.25;
+
+  letter-spacing: -0.03em;
+}
+
+.contact-intro h2 span {
+  color: #72c9e8;
+}
+
+.contact-intro > p {
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.55);
+
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+
+  line-height: 1.8;
+}
+
+/* ========================================
+   AVAILABILITY
+======================================== */
+
+.availability {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 10px;
+
+  margin-top: 28px;
+  padding-top: 21px;
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.06);
+}
+
+.availability-dot {
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  margin-top: 5px;
+
+  border-radius: 50%;
+
+  background: #67c7e9;
+
+  box-shadow:
+    0 0 9px rgba(103, 199, 233, 0.65);
+}
+
+.availability div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.availability strong {
+  color: rgba(255, 255, 255, 0.8);
+
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.availability div > span {
+  color: rgba(255, 255, 255, 0.34);
+
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+
+  line-height: 1.5;
+}
+
+/* ========================================
+   CONTACT METHODS
+======================================== */
+
+.contact-methods {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  padding: 35px;
+}
+
+.contact-method {
+  position: relative;
+
+  min-height: 68px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 11px 12px;
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.06);
+
+  text-align: left;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.contact-method:hover {
+  transform: translateY(-2px);
+
+  background:
+    rgba(58, 147, 179, 0.055);
+
+  border-color:
+    rgba(123, 195, 221, 0.18);
+
+  box-shadow:
+    0 7px 20px rgba(0, 0, 0, 0.14);
+}
+
+.contact-method.copied {
+  border-color:
+    rgba(103, 199, 233, 0.34);
+
+  background:
+    rgba(58, 147, 179, 0.08);
+}
+
+/* ========================================
+   METHOD ICON
+======================================== */
+
+.method-icon {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #76cce9;
+
+  background:
+    rgba(58, 147, 179, 0.08);
+
+  border:
+    1px solid rgba(123, 195, 221, 0.13);
+
   border-radius: 10px;
+}
+
+.method-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.linkedin-icon {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+
+  letter-spacing: -0.06em;
+}
+
+/* ========================================
+   METHOD CONTENT
+======================================== */
+
+.method-content {
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.method-label {
+  color: rgba(123, 195, 221, 0.48);
+
+  font-family: 'Inter', sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+}
+
+.method-content a,
+.method-value {
+  overflow: hidden;
+
+  color: rgba(255, 255, 255, 0.78);
+
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+
+  text-decoration: none;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  transition: color 0.2s ease;
+}
+
+.method-content a:hover {
+  color: #9edff6;
+}
+
+/* ========================================
+   COPY BUTTON
+======================================== */
+
+.copy-button {
+  position: relative;
+
+  width: 35px;
+  height: 35px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  color: rgba(255, 255, 255, 0.45);
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.07);
+
+  border-radius: 8px;
+
+  outline: none;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.copy-button svg {
+  width: 17px;
+  height: 17px;
+}
+
+.copy-button:hover {
+  color: #8edcf7;
+
+  background:
+    rgba(58, 147, 179, 0.12);
+
+  border-color:
+    rgba(123, 195, 221, 0.25);
+
+  transform: scale(1.04);
+}
+
+.copied .copy-button {
+  color: #8edcf7;
+
+  background:
+    rgba(58, 147, 179, 0.12);
+
+  border-color:
+    rgba(123, 195, 221, 0.25);
+}
+
+/* ========================================
+   COPY TOOLTIP
+======================================== */
+
+.copy-tooltip {
+  position: absolute;
+
+  right: 50%;
+  bottom: calc(100% + 9px);
+
+  transform:
+    translateX(50%)
+    translateY(4px);
+
+  padding: 5px 8px;
+
+  color: #dff7ff;
+
+  background: #07151b;
+
+  border:
+    1px solid rgba(123, 195, 221, 0.18);
+
+  border-radius: 6px;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  opacity: 0;
+  visibility: hidden;
+
+  pointer-events: none;
+
+  box-shadow:
+    0 5px 15px rgba(0, 0, 0, 0.3);
+
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease,
+    transform 0.2s ease;
+}
+
+.copy-button:hover .copy-tooltip,
+.copied .copy-tooltip {
+  opacity: 1;
+  visibility: visible;
+
+  transform:
+    translateX(50%)
+    translateY(0);
+}
+
+/* ========================================
+   EXTERNAL LINKS
+======================================== */
+
+.contact-link {
+  color: inherit;
+
+  text-decoration: none;
+
   cursor: pointer;
 }
 
-.copy-text button:active {
-  background-image: linear-gradient(#35929bd2, #195d75a4);
+.external-arrow {
+  margin-left: auto;
+
+  color: rgba(123, 195, 221, 0.45);
+
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
-.copy-text button:before {
-  content: 'Copied';
-  position: absolute;
-  top: -55px;
-  right: -12px;
-  background-image: linear-gradient(#72d2dbd2, #3a93b3a4);
-  padding: 8px 10px;
-  border-radius: 20px;
-  font-size: 15px;
-  display: none;
+
+.contact-link:hover .external-arrow {
+  color: #8edcf7;
+
+  transform: translate(2px, -2px);
 }
-.copy-text button:after {
-  content: '';
-  position: absolute;
-  top: -30px;
-  right: 14px;
-  width: 10px;
-  height: 10px;
-  background-image: linear-gradient(#72d2dbd2, #3a93b3a4);
-  transform: rotate(45deg);
-  display: none;
+
+.contact-link:hover .method-value {
+  color: #ffffff;
 }
-.copy-text.active button:before,
-.copy-text.active button:after {
-  display: block;
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 750px) {
+  .contact-card {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-intro {
+    padding: 35px;
+
+    border-right: none;
+
+    border-bottom:
+      1px solid rgba(123, 195, 221, 0.09);
+  }
+
+  .contact-methods {
+    padding: 30px 35px 35px;
+  }
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 550px) {
+  .contact-page {
+    padding-top: 20px;
+  }
+
+  .contact-section {
+    width: 92%;
+  }
+
+  .section-heading {
+    margin-bottom: 40px;
+  }
+
+  .section-heading h1 {
+    font-size: 30px;
+  }
+
+  .contact-card {
+    border-radius: 17px;
+  }
+
+  .contact-intro {
+    padding: 28px 22px;
+  }
+
+  .contact-intro h2 {
+    font-size: 24px;
+  }
+
+  .contact-methods {
+    padding: 22px;
+
+    gap: 9px;
+  }
+
+  .contact-method {
+    min-height: 64px;
+
+    gap: 10px;
+
+    padding: 10px;
+  }
+
+  .method-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .method-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .method-content a,
+  .method-value {
+    font-size: 10px;
+  }
+
+  .copy-button {
+    width: 32px;
+    height: 32px;
+  }
 }
 </style>

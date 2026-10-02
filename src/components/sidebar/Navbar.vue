@@ -11,6 +11,7 @@
               name="About"
               value="0"
             />
+
             <bottom-nav-component
               @click="scrollToTop()"
               to="/experience"
@@ -18,6 +19,7 @@
               name="Experience"
               value="0"
             />
+
             <bottom-nav-component
               @click="scrollToTop()"
               to="/projects"
@@ -25,13 +27,15 @@
               name="Projects"
               value="0"
             />
+
             <bottom-nav-component
               @click="scrollToTop()"
               to="/flight-sim"
               icon="fas fa-plane"
-              name="IFS"
+              name="Flight Sim"
               value="0"
             />
+
             <bottom-nav-component
               @click="scrollToTop()"
               to="/contact"
@@ -49,57 +53,26 @@
 <script>
 export default {
   name: 'App',
-  data: function () {
-    return {
-      scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' })
-      }
+
+  methods: {
+    scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
     }
   }
 }
 </script>
 
-
-
 <style>
 :root {
-  /* --sidebar-bg-color: linear-gradient(#ffffff, #000000); */
-  --sidebar-item-hover: #e4f9ff;
-  --sidebar-item-active: #b3f5ff;
+  --sidebar-item-hover: #8edcf7;
+  --sidebar-item-active: #72c9e8;
 }
 </style>
 
 <style lang="scss">
-/*
-    ** Root element font size
-    ** No default margins and paddings
-*/
-html,
-body {
-  // font-size: 16px;
-  // margin: 0;
-  // padding: 0;
-}
-
-/*
-    **root elements display block
-*/
-html,
-body {
-  display: block;
-}
-
-/*
-    ** Body main style
-*/
-body {
-  line-height: 1.317101995;
-  scroll-behavior: smooth;
-  font-family: sans-serif;
-  background-color: #ffffff;
-  color: #333333;
-}
-
 .mobile-screen {
   text-align: center;
   justify-content: center;
@@ -107,60 +80,120 @@ body {
   align-items: center;
 }
 
-/* BOTTOM NAVIGATION */
+/* ========================================
+   BOTTOM NAVIGATION
+======================================== */
 
 .bottom-nav {
   position: fixed;
-  z-index: 1;
+
+  z-index: 1000;
+
   bottom: 5%;
-  width: 95%;
   left: 2.5%;
+
+  width: 95%;
   height: 62px;
-  background-color: #ffffffb3;
-  backdrop-filter: blur(8px);
-  box-shadow: 0px 0px 4px 4px rgba(127, 180, 216, 0.5);
-  border-radius: 46px 46px 46px 46px;
+
   display: flex;
   align-items: center;
   justify-content: space-around;
   flex-direction: row;
 
+  background:
+    linear-gradient(
+      145deg,
+      rgba(13, 27, 34, 0.9),
+      rgba(7, 16, 21, 0.94)
+    );
+
+  border:
+    1px solid rgba(123, 195, 221, 0.16);
+
+  border-radius: 46px;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.38),
+    0 0 20px rgba(58, 147, 179, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  /* ========================================
+     NAV ITEM
+  ======================================== */
+
   .case-icon {
-    cursor: default;
     position: relative;
-    display: grid;
-    place-items: center;
+
     width: 58px;
     height: 58px;
+
+    display: grid;
+    place-items: center;
+
     border-radius: 100%;
+
+    cursor: default;
+
+    transition:
+      background 0.2s ease,
+      box-shadow 0.2s ease;
 
     &::before {
       left: -22px;
+
       border-radius: 0 0 28px 0;
     }
 
     &::after {
       right: -22px;
+
       border-radius: 0 0 0 28px;
     }
 
+    /* ========================================
+       ACTIVE ITEM
+    ======================================== */
+
     &.active {
       animation: bounce 600ms both;
-      background-color: #ffffffb3;
-      backdrop-filter: blur(8px);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(20, 43, 53, 0.97),
+          rgba(8, 22, 28, 0.98)
+        );
+
+      border:
+        1px solid rgba(123, 195, 221, 0.26);
+
+      box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.35),
+        0 0 18px rgba(58, 147, 179, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
 
       .icon-bg {
         opacity: 1;
       }
 
       #icon {
-        color: rgb(255, 255, 255);
+        color: #d7f5ff;
       }
 
       .icon-title {
         animation: bounce-in 400ms;
       }
     }
+
+    /* ========================================
+       INACTIVE ITEM
+    ======================================== */
 
     &.inactive {
       animation: bounce-reverse 400ms both;
@@ -175,43 +208,118 @@ body {
     }
   }
 
+  /* ========================================
+     ICON BACKGROUND
+  ======================================== */
+
   .icon-bg {
-    background-image: linear-gradient(#72d2dbd2, #3a93b3a4);
-    backdrop-filter: blur(8px);
-    border-radius: 100%;
-    height: 48px;
-    width: 48px;
     position: absolute;
-    transition: all 200ms ease;
+
+    width: 48px;
+    height: 48px;
+
+    border-radius: 100%;
+
+    background:
+      linear-gradient(
+        145deg,
+        #69c8e9,
+        #3a93b3
+      );
+
+    border:
+      1px solid rgba(166, 229, 251, 0.35);
+
+    box-shadow:
+      0 5px 15px rgba(0, 0, 0, 0.25),
+      0 0 14px rgba(58, 147, 179, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+
+    backdrop-filter: blur(8px);
+
+    transition:
+      opacity 200ms ease,
+      box-shadow 200ms ease,
+      transform 200ms ease;
   }
+
+  /* ========================================
+     ICON
+  ======================================== */
 
   #icon {
-    height: 25px;
+    position: relative;
+
+    z-index: 1;
+
     width: 25px;
+    height: 25px;
+
     flex: none;
-    z-index: 0;
-    transition: all 200ms ease;
-    color: #3a93b3;
+
+    color: rgba(121, 205, 234, 0.72);
+
+    transition:
+      color 200ms ease,
+      transform 200ms ease;
   }
 
+  .case-icon:hover #icon {
+    color: #a6e5fb;
+
+    transform: scale(1.05);
+  }
+
+  /* ========================================
+     ACTIVE LABEL
+  ======================================== */
+
   .icon-title {
-    background-color: #ffffffb3;
-    backdrop-filter: blur(8px);
-    padding-right: 0.5rem;
-    padding-left: 0.5rem;
-    border-radius: 2rem;
-    backdrop-filter: blur(8px);
-    text-align: center;
-    font-size: 15px;
-    color: #3a93b3;
     position: absolute;
+
     bottom: -22px;
+
+    padding: 4px 9px;
+
+    color: #8edcf7;
+
+    background:
+      rgba(7, 20, 26, 0.96);
+
+    border:
+      1px solid rgba(123, 195, 221, 0.17);
+
+    border-radius: 2rem;
+
+    box-shadow:
+      0 5px 15px rgba(0, 0, 0, 0.28);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    font-family:
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Roboto,
+      sans-serif;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-align: center;
+
+    white-space: nowrap;
   }
 }
 
+/* ========================================
+   ACTIVE BOUNCE
+======================================== */
+
 @keyframes bounce {
   0% {
-    transform: translateY(0px);
+    transform: translateY(0);
   }
 
   50% {
@@ -222,6 +330,10 @@ body {
     transform: translateY(-28px);
   }
 }
+
+/* ========================================
+   RETURN TO NAV
+======================================== */
 
 @keyframes bounce-reverse {
   0% {
@@ -233,27 +345,89 @@ body {
   }
 
   100% {
-    transform: translateY(0px);
+    transform: translateY(0);
   }
 }
+
+/* ========================================
+   LABEL ENTER
+======================================== */
 
 @keyframes bounce-in {
   0% {
-    transform: scale(0);
+    opacity: 0;
+
+    transform:
+      translateY(4px)
+      scale(0.85);
   }
 
   100% {
-    transform: scale(1);
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
   }
 }
 
+/* ========================================
+   LABEL EXIT
+======================================== */
+
 @keyframes bounce-in-reverse {
   0% {
-    transform: scale(1);
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
   }
 
   100% {
-    transform: scale(0);
+    opacity: 0;
+
+    transform:
+      translateY(4px)
+      scale(0.85);
+  }
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 600px) {
+  .bottom-nav {
+    bottom: 3%;
+
+    width: 94%;
+    left: 3%;
+
+    height: 58px;
+
+    .case-icon {
+      width: 53px;
+      height: 53px;
+    }
+
+    .icon-bg {
+      width: 44px;
+      height: 44px;
+    }
+
+    #icon {
+      width: 22px;
+      height: 22px;
+    }
+
+    .icon-title {
+      bottom: -20px;
+
+      padding: 4px 8px;
+
+      font-size: 10px;
+    }
   }
 }
 </style>
