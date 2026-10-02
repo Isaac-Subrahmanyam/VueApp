@@ -1,11 +1,5 @@
 <template>
   <title>Flight Sim</title>
-  <div style="background: rgba(7, 16, 21, 0.88); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(123, 195, 221, 0.14); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); transform: translateY(-20px); color: rgba(255,255,255,0.9);">
-    <h1 style="padding: 0.5rem; user-select: none; font-size: 1.2rem; ">(IFS) - Isaac's Flight Simulator</h1>
-  </div>
-  <div style="background: rgba(7, 16, 21, 0.7); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(123, 195, 221, 0.08); transform: translateY(-40px);">
-    <h1 style="padding: 0.5rem; font-size: 0.8rem; color: rgba(255, 255, 255, 0.6); user-select: none;" v-if="state === 'start-sim'">{{ planes[currentPlane]?.name || "No Plane Selected" }} - {{locations[currentLocation]?.name || "No Location Selected"}}</h1>
-  </div>
   <div class="keypad-container" v-show="state === 'start-sim'">
     <div class="keypad">
       <button id="up"><i class="fas fa-arrow-up" style="user-select: none;"></i></button>
@@ -19,6 +13,7 @@
         <i class="fas fa-stop" style="user-select: none;"></i><span class="sim-button-label">Stop</span>
       </button>
   </div>
+  <div style="padding-top: 0.5rem;"></div>
   <!-- Toggle Button -->
   <div class="toggle-container" v-show="state === 'select-plane'">
     <button
@@ -1663,8 +1658,8 @@ body {
 .map-view {
   position: absolute;
 
-  top: 100px;
-  right: 50px;
+  top: 25px;
+  right: 25px;
 
   width: 15%;
   height: 30vh;
@@ -1712,7 +1707,7 @@ body {
 @media screen and (max-width: 768px) {
 
   .map-view {
-    top: 115px;
+    top: 15px;
     right: 12px;
 
     width: clamp(100px, 24vw, 125px);
@@ -1735,8 +1730,6 @@ body {
   .toggle-container {
     display: flex;
     justify-content: center;
-
-    transform: translateY(-25px);
 
     gap: 2px;
 
