@@ -30,7 +30,7 @@
             </div>
 
             <div class="project-game-action">
-              <span class="project-play-icon">▶</span>
+              <span class="project-play-icon"><i class="fas fa-play play-icon" aria-hidden="true"></i></span>
               Play Game
             </div>
           </div>
@@ -58,7 +58,7 @@
 
       <router-link to="/flight-sim" class="project-link">
         Launch Flight Simulator
-        <span>→</span>
+        <span><i class="fas fa-arrow-right arrow-icon" aria-hidden="true"></i></span>
       </router-link>
     </section>
 
@@ -639,4 +639,17 @@ export default {
     border-radius: 13px;
   }
 }
+
+.external-link-icon,
+.arrow-icon,
+.play-icon {
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.play-icon {
+  font-size: 13px;
+}
+
 </style>

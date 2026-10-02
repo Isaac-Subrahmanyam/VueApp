@@ -43,26 +43,7 @@
             :class="{ copied: copiedField === 'email' }"
           >
             <div class="method-icon">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6H20V18H4V6Z"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  stroke-linejoin="round"
-                />
-
-                <path
-                  d="M4 7L12 13L20 7"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+              <i class="fas fa-envelope" aria-hidden="true"></i>
             </div>
 
             <div class="method-content">
@@ -79,44 +60,9 @@
               aria-label="Copy email address"
               @click="copy('email', 'isaac.subrahmanyam@outlook.com')"
             >
-              <svg
-                v-if="copiedField !== 'email'"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect
-                  x="8"
-                  y="8"
-                  width="11"
-                  height="11"
-                  rx="2"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                />
+              <i v-if="copiedField !== 'email'" class="fas fa-copy" aria-hidden="true"></i>
 
-                <path
-                  d="M16 8V6C16 4.89543 15.1046 4 14 4H6C4.89543 4 4 4.89543 4 6V14C4 15.1046 4.89543 16 6 16H8"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  stroke-linecap="round"
-                />
-              </svg>
-
-              <svg
-                v-else
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M5 12.5L9.5 17L19 7.5"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+              <i v-else class="fas fa-check" aria-hidden="true"></i>
 
               <span class="copy-tooltip">
                 {{ copiedField === 'email' ? 'Copied!' : 'Copy' }}
@@ -130,19 +76,7 @@
             :class="{ copied: copiedField === 'phone' }"
           >
             <div class="method-icon">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.5 4.5L10 8.5L8.5 10.5C9.6 12.7 11.3 14.4 13.5 15.5L15.5 14L19.5 16.5L18.5 20C18.3 20.7 17.6 21.1 16.9 21C9.8 20 4 14.2 3 7.1C2.9 6.4 3.3 5.7 4 5.5L7.5 4.5Z"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+              <i class="fas fa-phone" aria-hidden="true"></i>
             </div>
 
             <div class="method-content">
@@ -159,44 +93,9 @@
               aria-label="Copy phone number"
               @click="copy('phone', '407-725-5513')"
             >
-              <svg
-                v-if="copiedField !== 'phone'"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect
-                  x="8"
-                  y="8"
-                  width="11"
-                  height="11"
-                  rx="2"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                />
+              <i v-if="copiedField !== 'phone'" class="fas fa-copy" aria-hidden="true"></i>
 
-                <path
-                  d="M16 8V6C16 4.89543 15.1046 4 14 4H6C4.89543 4 4 4.89543 4 6V14C4 15.1046 4.89543 16 6 16H8"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  stroke-linecap="round"
-                />
-              </svg>
-
-              <svg
-                v-else
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M5 12.5L9.5 17L19 7.5"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+              <i v-else class="fas fa-check" aria-hidden="true"></i>
 
               <span class="copy-tooltip">
                 {{ copiedField === 'phone' ? 'Copied!' : 'Copy' }}
@@ -212,7 +111,7 @@
             class="contact-method contact-link"
           >
             <div class="method-icon">
-              <span class="linkedin-icon">in</span>
+              <i class="fab fa-linkedin-in linkedin-icon" aria-hidden="true"></i>
             </div>
 
             <div class="method-content">
@@ -224,7 +123,7 @@
             </div>
 
             <span class="external-arrow">
-              ↗
+              <i class="fas fa-external-link-alt external-link-icon" aria-hidden="true"></i>
             </span>
           </a>
 
@@ -236,15 +135,7 @@
             class="contact-method contact-link"
           >
             <div class="method-icon">
-              <svg
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 2C6.48 2 2 6.58 2 12.23C2 16.75 4.87 20.58 8.84 21.93C9.34 22.02 9.52 21.71 9.52 21.44C9.52 21.2 9.51 20.39 9.51 19.54C6.73 20.16 6.14 18.33 6.14 18.33C5.68 17.13 5 16.81 5 16.81C4.07 16.16 5.07 16.17 5.07 16.17C6.1 16.25 6.64 17.25 6.64 17.25C7.55 18.85 9.03 18.39 9.61 18.12C9.7 17.44 9.97 16.98 10.26 16.72C8.04 16.46 5.7 15.58 5.7 11.66C5.7 10.54 6.09 9.63 6.75 8.92C6.64 8.66 6.29 7.62 6.85 6.22C6.85 6.22 7.71 5.94 9.6 7.27C10.42 7.04 11.23 6.93 12 6.93C12.77 6.93 13.58 7.04 14.4 7.27C16.29 5.94 17.15 6.22 17.15 6.22C17.71 7.62 17.36 8.66 17.25 8.92C17.91 9.63 18.3 10.54 18.3 11.66C18.3 15.59 15.96 16.45 13.73 16.71C14.09 17.03 14.41 17.65 14.41 18.61C14.41 19.98 14.4 21.08 14.4 21.44C14.4 21.71 14.58 22.03 15.09 21.93C19.05 20.57 22 16.75 22 12.23C22 6.58 17.52 2 12 2Z"
-                />
-              </svg>
+              <i class="fab fa-github github-icon" aria-hidden="true"></i>
             </div>
 
             <div class="method-content">
@@ -256,7 +147,7 @@
             </div>
 
             <span class="external-arrow">
-              ↗
+              <i class="fas fa-external-link-alt external-link-icon" aria-hidden="true"></i>
             </span>
           </a>
 
@@ -622,17 +513,18 @@ export default {
   border-radius: 10px;
 }
 
-.method-icon svg {
-  width: 20px;
-  height: 20px;
+.method-icon i {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.method-icon .github-icon {
+  font-size: 20px;
 }
 
 .linkedin-icon {
-  font-family: Arial, sans-serif;
   font-size: 18px;
-  font-weight: 700;
-
-  letter-spacing: -0.06em;
+  line-height: 1;
 }
 
 /* ========================================
@@ -721,9 +613,9 @@ export default {
     transform 0.2s ease;
 }
 
-.copy-button svg {
-  width: 17px;
-  height: 17px;
+.copy-button i {
+  font-size: 15px;
+  line-height: 1;
 }
 
 .copy-button:hover {
@@ -828,6 +720,11 @@ export default {
     transform 0.2s ease;
 }
 
+.external-link-icon {
+  font-size: 13px;
+  line-height: 1;
+}
+
 .contact-link:hover .external-arrow {
   color: #8edcf7;
 
@@ -913,9 +810,12 @@ export default {
     height: 36px;
   }
 
-  .method-icon svg {
-    width: 18px;
-    height: 18px;
+  .method-icon i {
+    font-size: 16px;
+  }
+
+  .method-icon .github-icon {
+    font-size: 18px;
   }
 
   .method-content a,
@@ -928,4 +828,5 @@ export default {
     height: 32px;
   }
 }
+
 </style>

@@ -57,20 +57,11 @@
                 class="social-button"
               >
                 <div class="social-icon">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M12 2C6.48 2 2 6.58 2 12.23C2 16.75 4.87 20.58 8.84 21.93C9.34 22.02 9.52 21.71 9.52 21.44C9.52 21.2 9.51 20.39 9.51 19.54C6.73 20.16 6.14 18.33 6.14 18.33C5.68 17.13 5 16.81 5 16.81C4.07 16.16 5.07 16.17 5.07 16.17C6.1 16.25 6.64 17.25 6.64 17.25C7.55 18.85 9.03 18.39 9.61 18.12C9.7 17.44 9.97 16.98 10.26 16.72C8.04 16.46 5.7 15.58 5.7 11.66C5.7 10.54 6.09 9.63 6.75 8.92C6.64 8.66 6.29 7.62 6.85 6.22C6.85 6.22 7.71 5.94 9.6 7.27C10.42 7.04 11.23 6.93 12 6.93C12.77 6.93 13.58 7.04 14.4 7.27C16.29 5.94 17.15 6.22 17.15 6.22C17.71 7.62 17.36 8.66 17.25 8.92C17.91 9.63 18.3 10.54 18.3 11.66C18.3 15.59 15.96 16.45 13.73 16.71C14.09 17.03 14.41 17.65 14.41 18.61C14.41 19.98 14.4 21.08 14.4 21.44C14.4 21.71 14.58 22.03 15.09 21.93C19.05 20.57 22 16.75 22 12.23C22 6.58 17.52 2 12 2Z"
-                    />
-                  </svg>
+                  <i class="fab fa-github github-icon" aria-hidden="true"></i>
                 </div>
 
                 <span class="social-name">GitHub</span>
-                <span class="social-arrow">↗</span>
+                <span class="social-arrow"><i class="fas fa-external-link-alt external-link-icon" aria-hidden="true"></i></span>
               </a>
 
               <a
@@ -80,11 +71,11 @@
                 class="social-button"
               >
                 <div class="social-icon">
-                  <span class="linkedin-icon">in</span>
+                  <i class="fab fa-linkedin-in linkedin-icon" aria-hidden="true"></i>
                 </div>
 
                 <span class="social-name">LinkedIn</span>
-                <span class="social-arrow">↗</span>
+                <span class="social-arrow"><i class="fas fa-external-link-alt external-link-icon" aria-hidden="true"></i></span>
               </a>
 
             </div>
@@ -141,7 +132,7 @@
               class="primary-action"
             >
               View My Projects
-              <span>→</span>
+              <span><i class="fas fa-arrow-right arrow-icon" aria-hidden="true"></i></span>
             </router-link>
 
             <router-link
@@ -149,7 +140,7 @@
               class="primary-action"
             >
               Flight Simulator
-              <span>→</span>
+              <span><i class="fas fa-arrow-right arrow-icon" aria-hidden="true"></i></span>
             </router-link>
 
           </div>
@@ -517,17 +508,14 @@ export default {
     1px solid rgba(123, 195, 221, 0.13);
 }
 
-.social-icon svg {
-  width: 16px;
-  height: 16px;
+.social-icon i {
+  font-size: 16px;
+  line-height: 1;
 }
 
 .linkedin-icon {
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-
-  letter-spacing: -0.06em;
+  font-size: 16px;
+  line-height: 1;
 }
 
 .social-name {
@@ -559,6 +547,22 @@ export default {
 
   box-shadow:
     0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.arrow-icon {
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.external-link-icon {
+  font-size: 13px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.github-icon {
+  font-size: 18px;
 }
 
 .social-button:hover .social-arrow {

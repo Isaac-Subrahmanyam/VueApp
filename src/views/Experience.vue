@@ -35,7 +35,7 @@
                 class="company-link"
               >
                 CAE
-                <span>↗</span>
+                <span><i class="fas fa-external-link-alt external-link-icon" aria-hidden="true"></i></span>
               </a>
 
               <span class="experience-location">
@@ -202,7 +202,7 @@
               >
                 Johns Hopkins University
                 Applied Physics Laboratory
-                <span>↗</span>
+                <span><i class="fas fa-external-link-alt external-link-icon" aria-hidden="true"></i></span>
               </a>
 
               <span class="experience-location">
@@ -925,4 +925,13 @@
     text-align: left !important;
   }
 }
+
+.external-link-icon,
+.arrow-icon,
+.play-icon {
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
 </style>
