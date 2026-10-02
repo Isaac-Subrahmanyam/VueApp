@@ -1711,6 +1711,27 @@ body {
 
 @media screen and (max-width: 768px) {
 
+  .map-view {
+    top: 115px;
+    right: 12px;
+
+    width: clamp(100px, 24vw, 125px);
+    height: clamp(100px, 24vw, 125px);
+
+    border-radius: 50%;
+  }
+
+  .map-view.expand {
+    top: 120px;
+    left: 5%;
+    right: auto;
+
+    width: 90%;
+    height: 65vh;
+
+    border-radius: 18px;
+  }
+
   .toggle-container {
     display: flex;
     justify-content: center;
