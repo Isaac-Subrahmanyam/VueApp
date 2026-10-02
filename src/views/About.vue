@@ -130,28 +130,26 @@
           </p>
 
           <p>
-            That interest eventually led me to earn my degree in
-            Computer Science and build a career as a software
-            engineer. Today, I work across full-stack development,
-            defense simulation, autonomous systems, and interactive
-            geospatial applications.
+            That interest led me to earn my B.S. in Computer Science
+            from UCF and build a career as a software engineer. I have
+            {{ professionalYears }}+ years of experience developing full-stack software,
+            simulation systems, and interactive applications.
           </p>
 
           <p>
-            I've worked on everything from multi-user mission
-            planning software and AI-driven aircraft simulations to
-            training applications and extensible UI platforms.
-            I especially enjoy projects where engineering,
-            visualization, and interactivity come together.
+            My experience includes designing real-time systems,
+            building interactive geospatial applications, and
+            developing modular software architectures that integrate
+            capabilities across larger software environments.
           </p>
 
           <!-- SKILLS -->
           <div class="about-skills">
             <span>Full-Stack</span>
-            <span>Simulation</span>
+            <span>Modeling & Simulation</span>
+            <span>Data Visualization</span>
             <span>Geospatial</span>
-            <span>Autonomy</span>
-            <span>UI / UX</span>
+            <span>Modular Systems</span>
           </div>
 
           <!-- ACTIONS -->
@@ -182,6 +180,29 @@
     </section>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    professionalYears() {
+      const careerStart = new Date(2022, 4, 1)
+      const today = new Date()
+
+      let years = today.getFullYear() - careerStart.getFullYear()
+
+      if (
+        today.getMonth() < careerStart.getMonth() ||
+        (today.getMonth() === careerStart.getMonth() &&
+          today.getDate() < careerStart.getDate())
+      ) {
+        years--
+      }
+
+      return years
+    }
+  }
+}
+</script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
