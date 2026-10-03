@@ -60,9 +60,21 @@
               aria-label="Copy email address"
               @click="copy('email', 'isaac.subrahmanyam@outlook.com')"
             >
-              <i v-if="copiedField !== 'email'" class="fas fa-copy" aria-hidden="true"></i>
+              <transition name="copy-icon" mode="out-in">
+                <i
+                  v-if="copiedField !== 'email'"
+                  key="email-copy"
+                  class="fas fa-clone"
+                  aria-hidden="true"
+                ></i>
 
-              <i v-else class="fas fa-check" aria-hidden="true"></i>
+                <i
+                  v-else
+                  key="email-check"
+                  class="fas fa-check copied-check"
+                  aria-hidden="true"
+                ></i>
+              </transition>
 
               <span class="copy-tooltip">
                 {{ copiedField === 'email' ? 'Copied!' : 'Copy' }}
@@ -93,9 +105,21 @@
               aria-label="Copy phone number"
               @click="copy('phone', '407-725-5513')"
             >
-              <i v-if="copiedField !== 'phone'" class="fas fa-copy" aria-hidden="true"></i>
+              <transition name="copy-icon" mode="out-in">
+                <i
+                  v-if="copiedField !== 'phone'"
+                  key="phone-copy"
+                  class="fas fa-clone"
+                  aria-hidden="true"
+                ></i>
 
-              <i v-else class="fas fa-check" aria-hidden="true"></i>
+                <i
+                  v-else
+                  key="phone-check"
+                  class="fas fa-check copied-check"
+                  aria-hidden="true"
+                ></i>
+              </transition>
 
               <span class="copy-tooltip">
                 {{ copiedField === 'phone' ? 'Copied!' : 'Copy' }}
@@ -616,6 +640,42 @@ export default {
 .copy-button i {
   font-size: 15px;
   line-height: 1;
+}
+
+.copy-icon-enter-active {
+  animation: copy-success-pop 0.34s cubic-bezier(0.2, 0.9, 0.3, 1.35);
+}
+
+.copy-icon-leave-active {
+  transition:
+    opacity 0.1s ease,
+    transform 0.1s ease;
+}
+
+.copy-icon-leave-to {
+  opacity: 0;
+  transform: scale(0.65);
+}
+
+.copied-check {
+  color: #8edcf7;
+}
+
+@keyframes copy-success-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.45) rotate(-18deg);
+  }
+
+  65% {
+    opacity: 1;
+    transform: scale(1.22) rotate(4deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
 }
 
 .copy-button:hover {

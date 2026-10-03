@@ -98,7 +98,28 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
+
+  scrollBehavior() {
+    return new Promise((resolve) => {
+      requestAnimationFrame(() => {
+        const scrollContainer = document.querySelector('.section-content')
+
+        if (scrollContainer) {
+          scrollContainer.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'auto'
+          })
+        }
+
+        resolve({
+          top: 0,
+          left: 0
+        })
+      })
+    })
+  }
 })
 
 router.replace({ path: '*', redirect: '/' })
